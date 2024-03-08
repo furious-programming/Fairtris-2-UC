@@ -12,22 +12,21 @@
         <CompatibilityMode Value="True"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <Title Value="Fair implementation of Classic Tetris®"/>
+      <Title Value="Fairtris 2: The Ultimate Challenge"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <XPManifest>
-        <TextName Value="FuriousProgramming.Fairtris"/>
-        <TextDesc Value="Fair implementation of Classic Tetris®"/>
+        <TextName Value="FuriousProgramming.Fairtris2"/>
+        <TextDesc Value="Fairtris 2: The Ultimate Challenge"/>
       </XPManifest>
       <Icon Value="0"/>
     </General>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <MajorVersionNr Value="3"/>
-      <BuildNr Value="4"/>
-      <StringTable CompanyName="furious programming" FileDescription="Fair implementation of Classic Tetris®" InternalName="fairtris" LegalCopyright="Copyleft 2021-2022 furious programming. All rights reversed." OriginalFilename="fairtris.exe" ProductName="Fairtris" ProductVersion="3"/>
+      <MajorVersionNr Value="1"/>
+      <StringTable CompanyName="furious programming" FileDescription="Fairtris 2: The Ultimate Challenge" InternalName="fairtris2" LegalCopyright="Copyleft 2024 furious programming. All rights reversed." OriginalFilename="fairtris2.exe" ProductName="Fairtris 2" ProductVersion="1"/>
     </VersionInfo>
     <BuildModes Count="2">
       <Item1 Name="Debug" Default="True"/>
@@ -36,7 +35,7 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="..\bin\fairtris.exe"/>
+            <Filename Value="..\bin\fairtris2.exe"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
@@ -196,7 +195,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="..\bin\fairtris.exe"/>
+      <Filename Value="..\bin\fairtris2.exe"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

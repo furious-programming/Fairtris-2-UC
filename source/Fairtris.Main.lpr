@@ -51,6 +51,8 @@ uses
     Halt;
   end;
 
+{$R *.res}
+
 begin
   Randomize();
 

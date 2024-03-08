@@ -64,17 +64,16 @@ end;
 procedure TTaskbar.Update();
 var
   ButtonValue: Integer;
-  ButtonTotal: Integer = 100;
 begin
   if Clock.FrameRate.Changed then
     SDL_SetWindowTitle(Window.Window, PChar('Fairtris 2 — %dfps'.Format([Clock.FrameRate.Current])));
 
   if FSupported and Clock.FrameLoad.Changed then
   begin
-    ButtonValue := Max(1, Min(Clock.FrameLoad.Current, ButtonTotal));
+    ButtonValue := Max(1, Min(Clock.FrameLoad.Current, 100));
 
     FButton.SetProgressState(Window.Handle, TBPF_PAUSED);
-    FButton.SetProgressValue(Window.Handle, ButtonValue, ButtonTotal);
+    FButton.SetProgressValue(Window.Handle, ButtonValue, 100);
   end;
 end;
 

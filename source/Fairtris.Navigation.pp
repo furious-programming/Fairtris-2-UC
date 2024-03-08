@@ -1,8 +1,9 @@
-{
-  Fairtris — a fair implementation of Classic Tetris®
-  Copyleft (ɔ) furious programming 2021-2022. All rights reversed.
 
-  https://github.com/furious-programming/fairtris
+{
+  Fairtris 2: The Ultimate Challenge
+  Copyleft (ɔ) furious programming 2024. All rights reversed.
+
+  https://github.com/furious-programming/fairtris-2-uc
 
 
   This is free and unencumbered software released into the public domain.

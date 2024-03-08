@@ -63,9 +63,8 @@ end;
 
 procedure TTaskbar.Update();
 var
-  ButtonState: Integer = TBPF_ERROR;
-  ButtonTotal: Integer = 100;
   ButtonValue: Integer;
+  ButtonTotal: Integer = 100;
 begin
   if Clock.FrameRate.Changed then
     SDL_SetWindowTitle(Window.Window, PChar('Fairtris 2 — %dfps'.Format([Clock.FrameRate.Current])));
@@ -74,12 +73,7 @@ begin
   begin
     ButtonValue := Max(1, Min(Clock.FrameLoad.Current, ButtonTotal));
 
-    case ButtonValue of
-      00 .. 60: ButtonState := TBPF_NORMAL;
-      61 .. 85: ButtonState := TBPF_PAUSED;
-    end;
-
-    FButton.SetProgressState(Window.Handle, ButtonState);
+    FButton.SetProgressState(Window.Handle, TBPF_PAUSED);
     FButton.SetProgressValue(Window.Handle, ButtonValue, ButtonTotal);
   end;
 end;

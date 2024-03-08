@@ -26,7 +26,7 @@ uses
   SDL2;
 
 
-  function SDL_Rect(ALeft, ATop, AWidth, AHeight: SInt32): TSDL_Rect;
+  function SDL_Rect(ALeft, ATop, AWidth, AHeight: Integer): TSDL_Rect;
 
   function WrapAround(AValue, ACount, AStep: Integer): Integer;
 
@@ -44,7 +44,7 @@ uses
   Fairtris.Constants;
 
 
-function SDL_Rect(ALeft, ATop, AWidth, AHeight: SInt32): TSDL_Rect;
+function SDL_Rect(ALeft, ATop, AWidth, AHeight: Integer): TSDL_Rect;
 begin
   Result.X := ALeft;
   Result.Y := ATop;

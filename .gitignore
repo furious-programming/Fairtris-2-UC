@@ -1,0 +1,10 @@
+source/lib/
+releases/
+bin/*.exe
+
+*.exe
+*.dbg
+*.lps
+*.res
+
+*desktop.ini

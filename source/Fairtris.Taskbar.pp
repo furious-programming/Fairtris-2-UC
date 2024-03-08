@@ -68,7 +68,7 @@ var
   ButtonValue: Integer;
 begin
   if Clock.FrameRate.Changed then
-    SDL_SetWindowTitle(Window.Window, PChar('Fairtris — %dfps'.Format([Clock.FrameRate.Current])));
+    SDL_SetWindowTitle(Window.Window, PChar('Fairtris 2 — %dfps'.Format([Clock.FrameRate.Current])));
 
   if FSupported and Clock.FrameLoad.Changed then
   begin

@@ -842,41 +842,41 @@ const
 
 
 const
-  TOP_TITLE_X: array [THEME_FIRST .. THEME_LAST] of Integer = (72, 192);
+  TOP_TITLE_X: array [THEME_FIRST .. THEME_LAST] of Integer = (112, 232);
   TOP_TITLE_Y: array [THEME_FIRST .. THEME_LAST] of Integer = (40, 32);
 
 const
-  TOP_X: array [THEME_FIRST .. THEME_LAST] of Integer = (16, 192);
+  TOP_X: array [THEME_FIRST .. THEME_LAST] of Integer = (56, 232);
   TOP_Y: array [THEME_FIRST .. THEME_LAST] of Integer = (50, 40);
 
 
 const
-  SCORES_X: array [THEME_FIRST .. THEME_LAST] of Integer = (184, 192);
+  SCORES_X: array [THEME_FIRST .. THEME_LAST] of Integer = (224, 232);
   SCORES_Y: array [THEME_FIRST .. THEME_LAST] of Integer = (50,  64);
 
 
 const
-  LINES_X: array [THEME_FIRST .. THEME_LAST] of Integer = (184, 152);
+  LINES_X: array [THEME_FIRST .. THEME_LAST] of Integer = (224, 192);
   LINES_Y: array [THEME_FIRST .. THEME_LAST] of Integer = (82,  24);
 
 
 const
-  LEVEL_X: array [THEME_FIRST .. THEME_LAST] of Integer = (184, 208);
+  LEVEL_X: array [THEME_FIRST .. THEME_LAST] of Integer = (224, 248);
   LEVEL_Y: array [THEME_FIRST .. THEME_LAST] of Integer = (106, 168);
 
 
 const
-  NEXT_X: array [THEME_FIRST .. THEME_LAST] of Integer = (184, 192);
+  NEXT_X: array [THEME_FIRST .. THEME_LAST] of Integer = (224, 232);
   NEXT_Y: array [THEME_FIRST .. THEME_LAST] of Integer = (144, 120);
 
 
 const
-  TIME_X: array [THEME_FIRST .. THEME_LAST] of Integer = (184, 192);
+  TIME_X: array [THEME_FIRST .. THEME_LAST] of Integer = (224, 232);
   TIME_Y: array [THEME_FIRST .. THEME_LAST] of Integer = (192, 200);
 
 
 const
-  STACK_X: array [THEME_FIRST .. THEME_LAST] of Integer = (88, 96);
+  STACK_X: array [THEME_FIRST .. THEME_LAST] of Integer = (128, 136);
   STACK_Y: array [THEME_FIRST .. THEME_LAST] of Integer = (40, 48);
 
 

@@ -156,7 +156,7 @@ begin
     SIZE_NATIVE, SIZE_ZOOM_2X, SIZE_ZOOM_3X, SIZE_ZOOM_4X:
     begin
       NewWidth := Ord(FWindowSizeID) * BUFFER_WIDTH + BUFFER_WIDTH;
-      NewWidth := Round(NewWidth * WINDOW_RATIO);
+      NewWidth := Round(NewWidth * PIXEL_RATIO);
 
       NewHeight := Ord(FWindowSizeID) * BUFFER_HEIGHT + BUFFER_HEIGHT;
 

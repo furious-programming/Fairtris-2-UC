@@ -38,17 +38,17 @@ const
 
 
 const
-  BUFFER_WIDTH  = 256;
+  BUFFER_WIDTH  = 336;
   BUFFER_HEIGHT = 240;
 
 
 const
-  CLIENT_RATIO_LANDSCAPE = 4 / 3;
-  CLIENT_RATIO_PORTRAIT  = 3 / 4;
+  CLIENT_RATIO_LANDSCAPE = 16 / 10;
+  CLIENT_RATIO_PORTRAIT  = 10 / 16;
 
 
 const
-  WINDOW_RATIO = 8 / 7;
+  PIXEL_RATIO = 8 / 7;
 
 
 const

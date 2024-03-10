@@ -439,7 +439,7 @@ begin
       ITEM_X_GAME_MODE_PARAM,
       ITEM_Y_GAME_MODE_SEED,
       Memory.GameModes.SeedData,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   else
   begin
@@ -484,7 +484,7 @@ begin
       IfThen(
         Memory.GameModes.TimerData = TIMER_DEFAULT_DATA,
         COLOR_DARK,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     )
   else
@@ -546,7 +546,7 @@ begin
       IfThen(
         Memory.FreeMarathon.ItemIndex = ITEM_FREE_MARATHON_START,
         COLOR_WHITE,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       ),
       COLOR_DARK
     )
@@ -563,7 +563,7 @@ begin
     IfThen(
       Memory.FreeMarathon.ItemIndex = ITEM_FREE_MARATHON_REGION,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 
@@ -574,7 +574,7 @@ begin
     IfThen(
       Memory.FreeMarathon.ItemIndex = ITEM_FREE_MARATHON_GENERATOR,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 
@@ -585,7 +585,7 @@ begin
     IfThen(
       Memory.FreeMarathon.ItemIndex = ITEM_FREE_MARATHON_LEVEL,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 end;
@@ -599,19 +599,19 @@ begin
     if Index < BestScores[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Count then
       RenderText(
         ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES[Memory.Options.Theme] + Index * BEST_SCORES_SPACING_Y,
+        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         MarathonEntryToString(
           BestScores
             [Memory.GameModes.IsSpeedrun]
             [Memory.GameModes.Region]
             [Memory.GameModes.Generator].Entry[Index]
         ),
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     else
       RenderText(
         ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES[Memory.Options.Theme] + Index * BEST_SCORES_SPACING_Y,
+        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         MarathonEntryToString(),
         COLOR_DARK
       );
@@ -650,7 +650,7 @@ begin
       IfThen(
         Memory.FreeSpeedrun.ItemIndex = ITEM_FREE_SPEEDRUN_START,
         COLOR_WHITE,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       ),
       COLOR_DARK
     )
@@ -667,7 +667,7 @@ begin
     IfThen(
       Memory.FreeSpeedrun.ItemIndex = ITEM_FREE_SPEEDRUN_REGION,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 
@@ -678,7 +678,7 @@ begin
     IfThen(
       Memory.FreeSpeedrun.ItemIndex = ITEM_FREE_SPEEDRUN_GENERATOR,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 end;
@@ -692,19 +692,19 @@ begin
     if Index < BestScores[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Count then
       RenderText(
         ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES[Memory.Options.Theme] + Index * BEST_SCORES_SPACING_Y,
+        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         SpeedrunEntryToString(
           BestScores
             [Memory.GameModes.IsSpeedrun]
             [Memory.GameModes.Region]
             [Memory.GameModes.Generator].Entry[Index]
         ),
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     else
       RenderText(
         ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES[Memory.Options.Theme] + Index * BEST_SCORES_SPACING_Y,
+        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         SpeedrunEntryToString(),
         COLOR_DARK
       );
@@ -733,7 +733,7 @@ begin
           Memory.GameModes.TimerChanging,
           IfThen(
             Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA,
-            IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+            COLOR_GRAY,
             COLOR_DARK
           ),
           IfThen(Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA, COLOR_WHITE, COLOR_DARK)
@@ -764,14 +764,14 @@ begin
           Memory.GameModes.TimerChanging,
           IfThen(
             Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA,
-            IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+            COLOR_GRAY,
             COLOR_DARK
           ),
           IfThen(Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA, COLOR_WHITE, COLOR_DARK)
         ),
         IfThen(
           Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA,
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+          COLOR_GRAY,
           COLOR_DARK
         )
       ),
@@ -810,7 +810,7 @@ begin
       IfThen(
         Memory.MarathonQuals.ItemIndex = ITEM_MARATHON_QUALS_REGION,
         COLOR_WHITE,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     )
   );
@@ -825,7 +825,7 @@ begin
       IfThen(
         Memory.MarathonQuals.ItemIndex = ITEM_MARATHON_QUALS_GENERATOR,
         COLOR_WHITE,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     )
   );
@@ -837,7 +837,7 @@ begin
     IfThen(
       Memory.MarathonQuals.ItemIndex = ITEM_MARATHON_QUALS_LEVEL,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 
@@ -853,19 +853,19 @@ begin
     if Index < BestScores.Quals[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Count then
       RenderText(
         ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES[Memory.Options.Theme] + Index * BEST_SCORES_SPACING_Y,
+        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         MarathonEntryToString(
           BestScores.Quals
             [Memory.GameModes.IsSpeedrun]
             [Memory.GameModes.Region]
             [Memory.GameModes.Generator].Entry[Index]
         ),
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     else
       RenderText(
         ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES[Memory.Options.Theme] + Index * BEST_SCORES_SPACING_Y,
+        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         MarathonEntryToString(),
         COLOR_DARK
       );
@@ -891,7 +891,7 @@ begin
         Input.Device.Connected,
         IfThen(
           Memory.GameModes.SeedChanging,
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+          COLOR_GRAY,
           COLOR_WHITE
         ),
         COLOR_DARK
@@ -914,10 +914,10 @@ begin
         Memory.MarathonMatch.ItemIndex = ITEM_MARATHON_MATCH_START,
         IfThen(
           Memory.GameModes.SeedChanging,
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+          COLOR_GRAY,
           COLOR_WHITE
         ),
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       ),
       COLOR_DARK
     )
@@ -934,7 +934,7 @@ begin
     IfThen(
       Memory.MarathonMatch.ItemIndex = ITEM_MARATHON_MATCH_REGION,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 
@@ -945,7 +945,7 @@ begin
     IfThen(
       Memory.MarathonMatch.ItemIndex = ITEM_MARATHON_MATCH_GENERATOR,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 
@@ -956,7 +956,7 @@ begin
     IfThen(
       Memory.MarathonMatch.ItemIndex = ITEM_MARATHON_MATCH_LEVEL,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 
@@ -972,19 +972,19 @@ begin
     if Index < BestScores.Match[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Count then
       RenderText(
         ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES[Memory.Options.Theme] + Index * BEST_SCORES_SPACING_Y,
+        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         MarathonEntryToString(
           BestScores.Match
             [Memory.GameModes.IsSpeedrun]
             [Memory.GameModes.Region]
             [Memory.GameModes.Generator].Entry[Index]
         ),
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     else
       RenderText(
         ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES[Memory.Options.Theme] + Index * BEST_SCORES_SPACING_Y,
+        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         MarathonEntryToString(),
         COLOR_DARK
       );
@@ -1012,7 +1012,7 @@ begin
           Memory.GameModes.TimerChanging,
           IfThen(
             Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA,
-            IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+            COLOR_GRAY,
             COLOR_DARK
           ),
           IfThen(Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA, COLOR_WHITE, COLOR_DARK)
@@ -1043,14 +1043,14 @@ begin
           Memory.GameModes.TimerChanging,
           IfThen(
             Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA,
-            IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+            COLOR_GRAY,
             COLOR_DARK
           ),
           IfThen(Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA, COLOR_WHITE, COLOR_DARK)
         ),
         IfThen(
           Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA,
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+          COLOR_GRAY,
           COLOR_DARK
         )
       ),
@@ -1089,7 +1089,7 @@ begin
       IfThen(
         Memory.SpeedrunQuals.ItemIndex = ITEM_SPEEDRUN_QUALS_REGION,
         COLOR_WHITE,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     )
   );
@@ -1104,7 +1104,7 @@ begin
       IfThen(
         Memory.SpeedrunQuals.ItemIndex = ITEM_SPEEDRUN_QUALS_GENERATOR,
         COLOR_WHITE,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     )
   );
@@ -1121,19 +1121,19 @@ begin
     if Index < BestScores.Quals[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Count then
       RenderText(
         ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES[Memory.Options.Theme] + Index * BEST_SCORES_SPACING_Y,
+        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         SpeedrunEntryToString(
           BestScores.Quals
             [Memory.GameModes.IsSpeedrun]
             [Memory.GameModes.Region]
             [Memory.GameModes.Generator].Entry[Index]
         ),
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     else
       RenderText(
         ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES[Memory.Options.Theme] + Index * BEST_SCORES_SPACING_Y,
+        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         SpeedrunEntryToString(),
         COLOR_DARK
       );
@@ -1159,7 +1159,7 @@ begin
         Input.Device.Connected,
         IfThen(
           Memory.GameModes.SeedChanging,
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+          COLOR_GRAY,
           COLOR_WHITE
         ),
         COLOR_DARK
@@ -1182,10 +1182,10 @@ begin
         Memory.SpeedrunMatch.ItemIndex = ITEM_SPEEDRUN_MATCH_START,
         IfThen(
           Memory.GameModes.SeedChanging,
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+          COLOR_GRAY,
           COLOR_WHITE
         ),
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       ),
       COLOR_DARK
     )
@@ -1202,7 +1202,7 @@ begin
     IfThen(
       Memory.SpeedrunMatch.ItemIndex = ITEM_SPEEDRUN_MATCH_REGION,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 
@@ -1213,7 +1213,7 @@ begin
     IfThen(
       Memory.SpeedrunMatch.ItemIndex = ITEM_SPEEDRUN_MATCH_GENERATOR,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 
@@ -1229,19 +1229,19 @@ begin
     if Index < BestScores.Match[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Count then
       RenderText(
         ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES[Memory.Options.Theme] + Index * BEST_SCORES_SPACING_Y,
+        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         SpeedrunEntryToString(
           BestScores.Match
             [Memory.GameModes.IsSpeedrun]
             [Memory.GameModes.Region]
             [Memory.GameModes.Generator].Entry[Index]
         ),
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     else
       RenderText(
         ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES[Memory.Options.Theme] + Index * BEST_SCORES_SPACING_Y,
+        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         SpeedrunEntryToString(),
         COLOR_DARK
       );
@@ -1252,11 +1252,11 @@ procedure TRenderer.RenderGameBestTitle();
 begin
   if Memory.GameModes.IsQuals then
     RenderText(
-      TOP_TITLE_X[Memory.Options.Theme],
-      TOP_TITLE_Y[Memory.Options.Theme],
+      TOP_TITLE_X,
+      TOP_TITLE_Y,
       ITEM_TEXT_QUALS_LEFT,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, ALIGN_RIGHT, ALIGN_LEFT)
+      ALIGN_RIGHT
     );
 end;
 
@@ -1264,8 +1264,8 @@ end;
 procedure TRenderer.RenderGameBest();
 begin
   RenderText(
-    TOP_X[Memory.Options.Theme],
-    TOP_Y[Memory.Options.Theme],
+    TOP_X,
+    TOP_Y,
     IfThen(
       Memory.GameModes.IsQuals,
       Converter.FramesToTimerString(Memory.GameModes.QualsRemaining),
@@ -1291,8 +1291,8 @@ end;
 procedure TRenderer.RenderGameScore();
 begin
   RenderText(
-    SCORES_X[Memory.Options.Theme],
-    SCORES_Y[Memory.Options.Theme],
+    SCORES_X,
+    SCORES_Y,
     Converter.ScoreToString(Memory.Game.Score)
   );
 end;
@@ -1301,8 +1301,8 @@ end;
 procedure TRenderer.RenderGameLines();
 begin
   RenderText(
-    LINES_X[Memory.Options.Theme],
-    LINES_Y[Memory.Options.Theme],
+    LINES_X,
+    LINES_Y,
     Converter.LinesToString(Memory.Game.Lines)
   );
 end;
@@ -1311,8 +1311,8 @@ end;
 procedure TRenderer.RenderGameLevel();
 begin
   RenderText(
-    LEVEL_X[Memory.Options.Theme],
-    LEVEL_Y[Memory.Options.Theme],
+    LEVEL_X,
+    LEVEL_Y,
     Converter.LevelToString(Memory.Game.Level)
   );
 end;
@@ -1322,8 +1322,8 @@ procedure TRenderer.RenderGameNext();
 begin
   if Memory.Game.NextVisible then
     RenderNext(
-      NEXT_X[Memory.Options.Theme],
-      NEXT_Y[Memory.Options.Theme],
+      NEXT_X,
+      NEXT_Y,
       Memory.Game.Next,
       Memory.Game.Level
     );
@@ -1334,8 +1334,8 @@ procedure TRenderer.RenderGameTime();
 begin
   if Memory.GameModes.IsSpeedrun then
     RenderText(
-      TIME_X[Memory.Options.Theme],
-      TIME_Y[Memory.Options.Theme],
+      TIME_X,
+      TIME_Y,
       Converter.FramesToTimeString(Memory.Game.SpeedrunTimer),
       IfThen(
         Memory.Game.State <> STATE_UPDATE_TOP_OUT,
@@ -1354,12 +1354,12 @@ procedure TRenderer.RenderGameStack();
 var
   OffsetX, OffsetY, BrickX, BrickY: Integer;
 begin
-  OffsetY := STACK_Y[Memory.Options.Theme];
+  OffsetY := STACK_Y;
   BrickY := 0;
 
   while BrickY <= 19 do
   begin
-    OffsetX := STACK_X[Memory.Options.Theme];
+    OffsetX := STACK_X;
     BrickX := 0;
 
     while BrickX <= 9 do
@@ -1396,12 +1396,12 @@ begin
 
   for BrickY := BrickYMin to BrickYMax do
   begin
-    OffsetY := STACK_Y[Memory.Options.Theme];
+    OffsetY := STACK_Y;
     OffsetY += BrickY * BRICK_CELL_HEIGHT;
 
     for BrickX := BrickXMin to BrickXMax do
     begin
-      OffsetX := STACK_X[Memory.Options.Theme];
+      OffsetX := STACK_X;
       OffsetX += BrickX * BRICK_CELL_WIDTH;
 
       RenderBrick(
@@ -1522,7 +1522,7 @@ begin
         IfThen(
           Memory.Pause.ItemIndex = ITEM_PAUSE_RESUME,
           COLOR_WHITE,
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+          COLOR_GRAY
         )
       ),
       COLOR_DARK
@@ -1542,14 +1542,14 @@ begin
           IfThen(
             Memory.Pause.ItemIndex = ITEM_PAUSE_RESTART,
             COLOR_WHITE,
-            IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+            COLOR_GRAY
           ),
           COLOR_DARK
         ),
         IfThen(
           Memory.Pause.ItemIndex = ITEM_PAUSE_RESTART,
           COLOR_WHITE,
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+          COLOR_GRAY
         )
       ),
       COLOR_DARK
@@ -1578,7 +1578,7 @@ begin
     ITEM_X_TOP_OUT_RESULT_TOTAL_TIME_TITLE,
     ITEM_Y_TOP_OUT_RESULT_TOTAL_TIME_TITLE,
     ITEM_TEXT_TOP_OUT_RESULT_TOTAL_TIME_TITLE,
-    IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_ORANGE, COLOR_WHITE)
+    COLOR_ORANGE
   );
 
   RenderText(
@@ -1682,7 +1682,7 @@ begin
     ITEM_X_TOP_OUT_RESULT_QUALS_END_IN_TITLE,
     ITEM_Y_TOP_OUT_RESULT_QUALS_END_IN_TITLE,
     ITEM_TEXT_TOP_OUT_RESULT_QUALS_END_IN_TITLE,
-    IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_ORANGE, COLOR_WHITE)
+    COLOR_ORANGE
   );
 
   RenderText(
@@ -1747,10 +1747,10 @@ begin
           Memory.GameModes.IsQuals,
           IfThen(
             Memory.GameModes.QualsRemaining > 0,
-            IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+            COLOR_GRAY,
             COLOR_DARK
           ),
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+          COLOR_GRAY
         )
       ),
       COLOR_DARK
@@ -1816,7 +1816,7 @@ begin
       IfThen(
         Memory.Options.ItemIndex = ITEM_OPTIONS_SET_UP,
         COLOR_WHITE,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       ),
       COLOR_DARK
     )
@@ -1832,7 +1832,7 @@ begin
       IfThen(
         Placement.VideoEnabled,
         COLOR_DARK,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     )
   );
@@ -1846,7 +1846,7 @@ begin
       IfThen(
         Memory.Options.ItemIndex = ITEM_OPTIONS_BACK,
         COLOR_WHITE,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       ),
       COLOR_DARK
     )
@@ -1865,7 +1865,7 @@ begin
       IfThen(
         Memory.Options.ItemIndex = ITEM_OPTIONS_INPUT,
         COLOR_WHITE,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       ),
       COLOR_DARK
     )
@@ -1885,19 +1885,8 @@ begin
       IfThen(
         Placement.VideoEnabled,
         COLOR_DARK,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
-    )
-  );
-
-  RenderText(
-    ITEM_X_OPTIONS_PARAM,
-    ITEM_Y_OPTIONS_THEME,
-    ITEM_TEXT_OPTIONS_THEME[Memory.Options.Theme],
-    IfThen(
-      Memory.Options.ItemIndex = ITEM_OPTIONS_THEME,
-      COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
     )
   );
 
@@ -1908,7 +1897,7 @@ begin
     IfThen(
       Memory.Options.ItemIndex = ITEM_OPTIONS_CONTROLS,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 
@@ -1919,7 +1908,7 @@ begin
     IfThen(
       Memory.Options.ItemIndex = ITEM_OPTIONS_SOUNDS,
       COLOR_WHITE,
-      IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+      COLOR_GRAY
     )
   );
 end;
@@ -1945,7 +1934,7 @@ begin
         Memory.Keyboard.ItemIndex = ITEM_KEYBOARD_CHANGE,
         IfThen(
           Memory.Keyboard.Changing,
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+          COLOR_GRAY,
           COLOR_WHITE
         ),
         COLOR_WHITE
@@ -1966,7 +1955,7 @@ begin
       IfThen(
         Memory.Keyboard.ItemIndex = ITEM_KEYBOARD_SAVE,
         COLOR_WHITE,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       ),
       COLOR_DARK
     )
@@ -2020,9 +2009,9 @@ begin
             IfThen(Clock.FrameIndexInHalf, COLOR_DARK, COLOR_WHITE),
             COLOR_WHITE
           ),
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+          COLOR_GRAY
         ),
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     );
 end;
@@ -2048,7 +2037,7 @@ begin
         Memory.Controller.ItemIndex = ITEM_CONTROLLER_CHANGE,
         IfThen(
           Memory.Controller.Changing,
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE),
+          COLOR_GRAY,
           COLOR_WHITE
         ),
         COLOR_WHITE
@@ -2069,7 +2058,7 @@ begin
       IfThen(
         Memory.Controller.ItemIndex = ITEM_CONTROLLER_SAVE,
         COLOR_WHITE,
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       ),
       COLOR_DARK
     )
@@ -2123,9 +2112,9 @@ begin
             IfThen(Clock.FrameIndexInHalf, COLOR_DARK, COLOR_WHITE),
             COLOR_WHITE
           ),
-          IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+          COLOR_GRAY
         ),
-        IfThen(Memory.Options.Theme = THEME_MODERN, COLOR_GRAY, COLOR_WHITE)
+        COLOR_GRAY
       )
     );
 end;

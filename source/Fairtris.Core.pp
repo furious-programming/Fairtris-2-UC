@@ -671,7 +671,7 @@ begin
   if Gain > 0 then
   begin
     Memory.Game.Gain := Gain;
-    Memory.Game.GainTimer := DURATION_GAIN_VISIBLE * Clock.FrameRateLimit;
+    Memory.Game.GainTimer := DURATION_HANG_GAIN * Clock.FrameRateLimit;
   end;
 
   if HappenedFirstTransition or HappenedLaterTransition then

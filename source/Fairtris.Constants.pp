@@ -129,8 +129,7 @@ const
 const
   DURATION_HANG_LEGAL = 5;
   DURATION_HANG_QUIT  = 2;
-
-  DURATION_GAIN_VISIBLE = 3;
+  DURATION_HANG_GAIN  = 3;
 
 
 const

@@ -160,40 +160,20 @@ end;
 
 
 function TConverter.ScoreToString(AScore: Integer): String;
-var
-  Prefix: Integer;
 begin
-  if Memory.Options.Theme = THEME_MODERN then
-    Result := '%.7d'.Format([AScore])
-  else
-  begin
-    Result := '%.6d'.Format([AScore]);
-
-    if Result.Length > 6 then
-    begin
-      Prefix := Result.Substring(0, 2).ToInteger();
-      Result := Result.Remove(0, 2);
-      Result := Result.Insert(0, Chr(Prefix + Ord('A') - 10));
-    end;
-  end;
+  Result := '%.7d'.Format([AScore])
 end;
 
 
 function TConverter.LinesToString(ALines: Integer): String;
 begin
-  if Memory.Options.Theme = THEME_MODERN then
-    Result := ALines.ToString()
-  else
-    Result := '%.3d'.Format([ALines]);
+  Result := ALines.ToString();
 end;
 
 
 function TConverter.LevelToString(ALevel: Integer): String;
 begin
-  if Memory.Options.Theme = THEME_MODERN then
-    Result := ALevel.ToString()
-  else
-    Result := '%.2d'.Format([ALevel]);
+  Result := ALevel.ToString();
 end;
 
 
@@ -224,16 +204,10 @@ begin
   FramesToTimeComponents(AFramesCount, Hours, Minutes, Seconds, Milliseconds);
 
   if not AIsBestScore then
-    if Memory.Options.Theme = THEME_MODERN then
-    begin
-      Milliseconds := Trunc(Milliseconds / 10);
-      TimeFormatDecimal := TIME_FORMAT_DECIMAL_MODERN;
-    end
-    else
-    begin
-      Milliseconds := Trunc(Milliseconds / 100);
-      TimeFormatDecimal := TIME_FORMAT_DECIMAL_CLASSIC;
-    end;
+  begin
+    Milliseconds := Trunc(Milliseconds / 10);
+    TimeFormatDecimal := TIME_FORMAT_DECIMAL_MODERN;
+  end;
 
   Result := (TIME_FORMAT_MAJOR + TimeFormatDecimal).Format([Minutes, Seconds, Milliseconds]);
 end;
@@ -248,13 +222,7 @@ begin
   if AIsEditor then
     Result := TIMER_FORMAT_EDITOR.Format([Hours, Minutes, Seconds])
   else
-    if Memory.Options.Theme = THEME_MODERN then
-      Result := TIMER_FORMAT_GAME_MODERN.Format([Hours, Minutes, Seconds])
-    else
-    begin
-      Minutes += Hours * 60;
-      Result := TIMER_FORMAT_GAME_CLASSIC.Format([Minutes, Seconds]);
-    end;
+    Result := TIMER_FORMAT_GAME_MODERN.Format([Hours, Minutes, Seconds]);
 end;
 
 

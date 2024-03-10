@@ -1892,17 +1892,6 @@ begin
 
   RenderText(
     ITEM_X_OPTIONS_PARAM,
-    ITEM_Y_OPTIONS_CONTROLS,
-    ITEM_TEXT_OPTIONS_CONTROLS[Memory.Options.Controls],
-    IfThen(
-      Memory.Options.ItemIndex = ITEM_OPTIONS_CONTROLS,
-      COLOR_WHITE,
-      COLOR_GRAY
-    )
-  );
-
-  RenderText(
-    ITEM_X_OPTIONS_PARAM,
     ITEM_Y_OPTIONS_SOUNDS,
     ITEM_TEXT_OPTIONS_SOUNDS[Memory.Options.Sounds],
     IfThen(

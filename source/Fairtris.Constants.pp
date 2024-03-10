@@ -789,7 +789,6 @@ const
 
   MULTIBAG_BAGS_COUNT = MULTIBAG_BAG_LAST + 1;
 
-
 const
   MULTIBAG_PIECE_FIRST = 0;
   MULTIBAG_PIECE_LAST  = 7;
@@ -856,16 +855,13 @@ const
   BURNED_X = 112;
   BURNED_Y = 82;
 
-
 const
   TETRISES_X = 112;
   TETRISES_Y = 106;
 
-
 const
   GAIN_X = 112;
   GAIN_Y = 138;
-
 
 const
   CONTROLLER_X = 55;

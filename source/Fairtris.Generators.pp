@@ -89,18 +89,13 @@ type
   protected
     FRegister: TShiftRegister;
   protected
-    FCustomSeed: Boolean;
-  protected
     procedure PerformStep(); virtual; abstract;
-    procedure PerformFixedSteps(); virtual; abstract;
   public
     constructor Create(); virtual;
     destructor Destroy(); override;
   public
     procedure Initialize(); virtual;
-    procedure UnlockRandomness();
   public
-    procedure Prepare(ASeed: Integer = SEED_USE_RANDOM); virtual;
     procedure Shuffle(APreShuffling: Boolean = False); virtual; abstract;
     procedure Step(APicking: Boolean = False); virtual;
   public
@@ -120,14 +115,12 @@ type
     procedure PreShuffle();
   protected
     procedure PerformStep(); override;
-    procedure PerformFixedSteps(); override;
   public
     constructor Create(); override;
     destructor Destroy(); override;
   public
     procedure Initialize(); override;
   public
-    procedure Prepare(ASeed: Integer = SEED_USE_RANDOM); override;
     procedure Shuffle(APreShuffling: Boolean = False); override;
   public
     function Pick(): Integer; override;
@@ -149,14 +142,12 @@ type
     procedure PreShuffle();
   protected
     procedure PerformStep(); override;
-    procedure PerformFixedSteps(); override;
   public
     constructor Create(); override;
     destructor Destroy(); override;
   public
     procedure Initialize(); override;
   public
-    procedure Prepare(ASeed: Integer = SEED_USE_RANDOM); override;
     procedure Shuffle(APreShuffling: Boolean = False); override;
   public
     function Pick(): Integer; override;
@@ -173,9 +164,7 @@ type
     function SpawnIDToPieceID(ASpawnID: UInt8): Integer;
   protected
     procedure PerformStep(); override;
-    procedure PerformFixedSteps(); override;
   public
-    procedure Prepare(ASeed: Integer = SEED_USE_RANDOM); override;
     procedure Shuffle(APreShuffling: Boolean = False); override;
   public
     function Pick(): Integer; override;
@@ -200,9 +189,7 @@ type
     procedure UpdateDrought(APiece: Integer);
   protected
     procedure PerformStep(); override;
-    procedure PerformFixedSteps(); override;
   public
-    procedure Prepare(ASeed: Integer = SEED_USE_RANDOM); override;
     procedure Shuffle(APreShuffling: Boolean = False); override;
   public
     function Pick(): Integer; override;
@@ -217,12 +204,10 @@ type
     FHistory: TPool;
   protected
     procedure PerformStep(); override;
-    procedure PerformFixedSteps(); override;
   public
     constructor Create(); override;
     destructor Destroy(); override;
   public
-    procedure Prepare(ASeed: Integer = SEED_USE_RANDOM); override;
     procedure Shuffle(APreShuffling: Boolean = False); override;
   public
     function Pick(): Integer; override;
@@ -240,12 +225,10 @@ type
     FHistory: TPool;
   protected
     procedure PerformStep(); override;
-    procedure PerformFixedSteps(); override;
   public
     constructor Create(); override;
     destructor Destroy(); override;
   public
-    procedure Prepare(ASeed: Integer = SEED_USE_RANDOM); override;
     procedure Shuffle(APreShuffling: Boolean = False); override;
   public
     function Pick(): Integer; override;
@@ -448,34 +431,9 @@ begin
 end;
 
 
-procedure TCustomGenerator.UnlockRandomness();
-begin
-  FCustomSeed := False;
-end;
-
-
-procedure TCustomGenerator.Prepare(ASeed: Integer);
-begin
-  FCustomSeed := ASeed <> SEED_USE_RANDOM;
-
-  if FCustomSeed then
-  begin
-    FRegister.Seed := ASeed and SEED_MASK_REGISTER shr SEED_REGISTER_OFFSET;
-
-    if FRegister.Seed = 0 then
-      FRegister.Initialize();
-  end;
-end;
-
-
 procedure TCustomGenerator.Step(APicking: Boolean);
 begin
-  if FCustomSeed and not APicking then Exit;
-
-  if FCustomSeed then
-    PerformFixedSteps()
-  else
-    PerformStep();
+  PerformStep();
 end;
 
 
@@ -518,20 +476,6 @@ begin
 end;
 
 
-procedure T7BagGenerator.PerformFixedSteps();
-var
-  StepsCount: Integer;
-begin
-  StepsCount := EnsureRange(Hi(FRegister.Seed), SEED_CUSTOM_STEP_COUNT_MIN, SEED_CUSTOM_STEP_COUNT_MAX);
-
-  while StepsCount > 0 do
-  begin
-    PerformStep();
-    StepsCount -= 1;
-  end;
-end;
-
-
 procedure T7BagGenerator.Initialize();
 begin
   inherited Initialize();
@@ -543,32 +487,8 @@ begin
 end;
 
 
-procedure T7BagGenerator.Prepare(ASeed: Integer);
-begin
-  inherited Prepare(ASeed);
-
-  if FCustomSeed then
-  begin
-    FBags[0].Reset();
-    FBags[1].Reset();
-  end;
-
-  PreShuffle();
-
-  if FCustomSeed then
-  begin
-    FBagPick := 0;
-    FBagSwap := 1;
-  end;
-
-  FBagPiece := 0;
-end;
-
-
 procedure T7BagGenerator.Shuffle(APreShuffling: Boolean);
 begin
-  if FCustomSeed and not APreShuffling then Exit;
-
   FRegister.Step();
   FBags[0].Swap(FRegister.Seed);
 
@@ -584,8 +504,6 @@ end;
 
 function T7BagGenerator.Pick(): Integer;
 begin
-  if FCustomSeed then Step(True);
-
   Result := FBags[FBagPick][FBagPiece];
   FBagPiece := (FBagPiece + 1) mod FBags[FBagPick].Size;
 
@@ -650,20 +568,6 @@ begin
 end;
 
 
-procedure TMultiBagGenerator.PerformFixedSteps();
-var
-  StepsCount: Integer;
-begin
-  StepsCount := EnsureRange(Hi(FRegister.Seed), SEED_CUSTOM_STEP_COUNT_MIN, SEED_CUSTOM_STEP_COUNT_MAX);
-
-  while StepsCount > 0 do
-  begin
-    PerformStep();
-    StepsCount -= 1;
-  end;
-end;
-
-
 procedure TMultiBagGenerator.Initialize();
 begin
   inherited Initialize();
@@ -677,43 +581,10 @@ begin
 end;
 
 
-procedure TMultiBagGenerator.Prepare(ASeed: Integer);
-var
-  Index: Integer;
-begin
-  inherited Prepare(ASeed);
-
-  if FCustomSeed then
-  begin
-    for Index := Low(FIndexBags) to High(FIndexBags) do FIndexBags[Index].Reset();
-    for Index := Low(FPieceBags) to High(FPieceBags) do FPieceBags[Index].Reset();
-  end;
-
-  PreShuffle();
-
-  if FCustomSeed then
-  begin
-    FBagPick := MULTIBAG_BAG_FIRST;
-    FBagSwap := MULTIBAG_BAG_FIRST + 1;
-
-    FBagPiece := MULTIBAG_PIECE_FIRST;
-  end
-  else
-  begin
-    FBagPick := FBagPick xor 1;
-    FBagSwap := FBagSwap xor 1;
-  end;
-
-  FIndexPick := 0;
-end;
-
-
 procedure TMultiBagGenerator.Shuffle(APreShuffling: Boolean);
 var
   Index: Integer;
 begin
-  if FCustomSeed and not APreShuffling then Exit;
-
   for Index := Low(FIndexBags) to High(FIndexBags) do
   begin
     FRegister.Step();
@@ -737,8 +608,6 @@ end;
 
 function TMultiBagGenerator.Pick(): Integer;
 begin
-  if FCustomSeed then Step(True);
-
   Result := FPieceBags[FIndexBags[FBagPick][FIndexPick]][FBagPiece];
   FBagPiece := (FBagPiece + 1) mod FPieceBags[0].Size;
 
@@ -797,33 +666,8 @@ begin
 end;
 
 
-procedure TClassicGenerator.PerformFixedSteps();
-var
-  StepsCount: Integer;
-begin
-  StepsCount := EnsureRange(Hi(FRegister.Seed), SEED_CUSTOM_STEP_COUNT_MIN, SEED_CUSTOM_STEP_COUNT_MAX);
-
-  while StepsCount > 0 do
-  begin
-    PerformStep();
-    StepsCount -= 1;
-  end;
-end;
-
-
-procedure TClassicGenerator.Prepare(ASeed: Integer);
-begin
-  inherited Prepare(ASeed);
-
-  if FCustomSeed then
-    FSpawnCount := ASeed and SEED_MASK_SPAWN_COUNTER;
-end;
-
-
 procedure TClassicGenerator.Shuffle(APreShuffling: Boolean = False);
 begin
-  if FCustomSeed and not APreShuffling then Exit;
-
   FRegister.Step();
 end;
 
@@ -832,8 +676,6 @@ function TClassicGenerator.Pick(): Integer;
 var
   Index: UInt8;
 begin
-  if FCustomSeed then Step(True);
-
   {$PUSH}{$RANGECHECKS OFF}
   FSpawnCount += 1;
   Index := (Hi(FRegister.Seed) + FSpawnCount) and %111;
@@ -902,38 +744,8 @@ begin
 end;
 
 
-procedure TBalancedGenerator.PerformFixedSteps();
-var
-  StepsCount: Integer;
-begin
-  StepsCount := EnsureRange(Hi(FRegister.Seed), SEED_CUSTOM_STEP_COUNT_MIN, SEED_CUSTOM_STEP_COUNT_MAX);
-
-  while StepsCount > 0 do
-  begin
-    PerformStep();
-    StepsCount -= 1;
-  end;
-end;
-
-
-procedure TBalancedGenerator.Prepare(ASeed: Integer);
-begin
-  inherited Prepare(ASeed);
-
-  if FCustomSeed then
-    FSpawnCount := ASeed and SEED_MASK_SPAWN_COUNTER;
-
-  FHistory := BALANCED_HISTORY_PIECES;
-  FDrought := BALANCED_DROUGHT_COUNTS;
-
-  FHistoryIndex := 0;
-end;
-
-
 procedure TBalancedGenerator.Shuffle(APreShuffling: Boolean);
 begin
-  if FCustomSeed and not APreShuffling then Exit;
-
   FRegister.Step();
 end;
 
@@ -943,8 +755,6 @@ var
   Index: UInt8;
   Roll: Boolean;
 begin
-  if FCustomSeed then Step(True);
-
   {$PUSH}{$RANGECHECKS OFF}
   FSpawnCount += 1;
   {$POP}
@@ -976,20 +786,6 @@ begin
 end;
 
 
-procedure TTGMGenerator.PerformFixedSteps();
-var
-  StepsCount: Integer;
-begin
-  StepsCount := EnsureRange(Hi(FRegister.Seed), SEED_CUSTOM_STEP_COUNT_MIN, SEED_CUSTOM_STEP_COUNT_MAX);
-
-  while StepsCount > 0 do
-  begin
-    PerformStep();
-    StepsCount -= 1;
-  end;
-end;
-
-
 constructor TTGMGenerator.Create();
 begin
   inherited Create();
@@ -1010,24 +806,8 @@ begin
 end;
 
 
-procedure TTGMGenerator.Prepare(ASeed: Integer);
-begin
-  inherited Prepare(ASeed);
-
-  if FCustomSeed then
-  begin
-    FPieces.Reset();
-    FSpecial.Reset();
-  end;
-
-  FHistory.Reset();
-end;
-
-
 procedure TTGMGenerator.Shuffle(APreShuffling: Boolean);
 begin
-  if FCustomSeed and not APreShuffling then Exit;
-
   FRegister.Step();
 end;
 
@@ -1036,8 +816,6 @@ function TTGMGenerator.Pick(): Integer;
 var
   Roll: Integer;
 begin
-  if FCustomSeed then Step(True);
-
   if FHistory.Size = TGM_POOL_HISTORY_COUNT then
   begin
     Result := FSpecial[Hi(FRegister.Seed) mod FSpecial.Size];
@@ -1061,20 +839,6 @@ end;
 procedure TTGM3Generator.PerformStep();
 begin
   FRegister.Step();
-end;
-
-
-procedure TTGM3Generator.PerformFixedSteps();
-var
-  StepsCount: Integer;
-begin
-  StepsCount := EnsureRange(Hi(FRegister.Seed), SEED_CUSTOM_STEP_COUNT_MIN, SEED_CUSTOM_STEP_COUNT_MAX);
-
-  while StepsCount > 0 do
-  begin
-    PerformStep();
-    StepsCount -= 1;
-  end;
 end;
 
 
@@ -1104,27 +868,8 @@ begin
 end;
 
 
-procedure TTGM3Generator.Prepare(ASeed: Integer);
-begin
-  inherited Prepare(ASeed);
-
-  if FCustomSeed then
-  begin
-    FPieces.Reset();
-    FSpecial.Reset();
-  end;
-
-  FPool.Reset();
-  FHistory.Reset();
-
-  FOrder.Clear();
-end;
-
-
 procedure TTGM3Generator.Shuffle(APreShuffling: Boolean);
 begin
-  if FCustomSeed and not APreShuffling then Exit;
-
   FRegister.Step();
 end;
 
@@ -1133,8 +878,6 @@ function TTGM3Generator.Pick(): Integer;
 var
   Roll, Index: Integer;
 begin
-  if FCustomSeed then Step(True);
-
   if FHistory.Size = TGM3_POOL_HISTORY_COUNT then
   begin
     Result := FSpecial[Hi(FRegister.Seed) mod FSpecial.Size];
@@ -1168,8 +911,6 @@ function TUnfairGenerator.Pick(): Integer;
 var
   Index: UInt8;
 begin
-  if FCustomSeed then Step(True);
-
   {$PUSH}{$RANGECHECKS OFF}
   FSpawnCount += 1;
   Index := (Hi(FRegister.Seed) + FSpawnCount) and %111;

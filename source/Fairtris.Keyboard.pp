@@ -91,8 +91,6 @@ type
     procedure Invalidate();
   public
     function CatchedOneKey(out AScanCode: UInt8): Boolean;
-    function CatchedOneDigit(out AScanCode: UInt8): Boolean;
-    function CatchedOneHexDigit(out AScanCode: UInt8): Boolean;
   public
     property Device: TDevice read FDevice;
     property Connected: Boolean read GetConnected;
@@ -317,20 +315,6 @@ begin
     Result := True;
     AScanCode := CatchedScanCode;
   end;
-end;
-
-
-function TKeyboard.CatchedOneDigit(out AScanCode: UInt8): Boolean;
-begin
-  Result := CatchedOneKey(AScanCode);
-  Result := Result and (AScanCode in KEYBOARD_SCANCODE_DIGITS);
-end;
-
-
-function TKeyboard.CatchedOneHexDigit(out AScanCode: UInt8): Boolean;
-begin
-  Result := CatchedOneKey(AScanCode);
-  Result := Result and (AScanCode in KEYBOARD_SCANCODE_HEX_DIGITS);
 end;
 
 

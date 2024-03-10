@@ -59,7 +59,6 @@ type
   private
     procedure UpdateCommonGain();
     procedure UpdateCommonNext();
-    procedure UpdateCommonSpeedrun();
   private
     procedure UpdateCommon();
     procedure UpdatePieceControl();
@@ -372,7 +371,7 @@ begin
   Memory.Game.FallSpeed := 1;
 
   if Memory.Game.Level < LEVEL_LAST_FREE_GAME then
-    Memory.Game.FallSpeed := AUTOFALL_FRAMES[Memory.GameModes.Region, Memory.Game.Level];
+    Memory.Game.FallSpeed := AUTOFALL_FRAMES[Memory.Lobby.Region, Memory.Game.Level];
 
   if Memory.Game.FallTimer >= Memory.Game.FallSpeed then
     UpdatePieceControlDropMove();
@@ -392,10 +391,10 @@ begin
   begin
     Memory.Game.AutorepeatX += 1;
 
-    if Memory.Game.AutorepeatX < AUTOSHIFT_FRAMES_CHARGE[Memory.GameModes.Region] then
+    if Memory.Game.AutorepeatX < AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region] then
       Exit
     else
-      Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_PRECHARGE[Memory.GameModes.Region];
+      Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_PRECHARGE[Memory.Lobby.Region];
   end;
 
   if Input.Device.Left.Pressed then
@@ -405,7 +404,7 @@ begin
       Sounds.PlaySound(SOUND_SHIFT);
     end
     else
-      Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_CHARGE[Memory.GameModes.Region];
+      Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region];
 
   if Input.Device.Right.Pressed then
     if CanShiftPiece(PIECE_SHIFT_RIGHT) then
@@ -414,7 +413,7 @@ begin
       Sounds.PlaySound(SOUND_SHIFT);
     end
     else
-      Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_CHARGE[Memory.GameModes.Region];
+      Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region];
 end;
 
 
@@ -501,34 +500,10 @@ procedure TCore.UpdateCommonNext();
 begin
   if Input.Device.Select.JustPressed then
     if Memory.Game.State <> STATE_UPDATE_TOP_OUT then
-      if Memory.GameModes.IsFreeGame then
-      begin
-        Memory.Game.NextVisible := not Memory.Game.NextVisible;
-        Sounds.PlaySound(SOUND_COIN);
-      end
-      else
-        Sounds.PlaySound(SOUND_HUM);
-end;
-
-
-procedure TCore.UpdateCommonSpeedrun();
-begin
-  if not Memory.GameModes.IsSpeedrun then Exit;
-
-  if Memory.Game.State <> STATE_UPDATE_TOP_OUT then
-  begin
-    Memory.Game.SpeedrunTimer += 1;
-
-    if Converter.IsTimeTooLong(Memory.Game.SpeedrunTimer) then
     begin
-      Memory.Game.SpeedrunTimer -= 1;
-
-      Memory.Game.State := STATE_UPDATE_TOP_OUT;
-      Memory.Game.TopOutTimer := TOP_OUT_FRAMES[False, Memory.GameModes.Region];
-
-      Sounds.PlaySound(SOUND_TOP_OUT, True);
+      Memory.Game.NextVisible := not Memory.Game.NextVisible;
+      Sounds.PlaySound(SOUND_COIN);
     end;
-  end;
 end;
 
 
@@ -538,7 +513,6 @@ begin
 
   UpdateCommonGain();
   UpdateCommonNext();
-  UpdateCommonSpeedrun();
 end;
 
 
@@ -571,14 +545,14 @@ begin
 
   Memory.Game.AutospinCharged := False;
   Memory.Game.FallPoints := 0;
-  Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_CHARGE[Memory.GameModes.Region];
+  Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region];
 
   if CanPlacePiece() then
     Memory.Game.State := STATE_PIECE_CONTROL
   else
   begin
     Memory.Game.State := STATE_UPDATE_TOP_OUT;
-    Memory.Game.TopOutTimer := TOP_OUT_FRAMES[False, Memory.GameModes.Region];
+    Memory.Game.TopOutTimer := TOP_OUT_FRAMES[False, Memory.Lobby.Region];
 
     Sounds.PlaySound(SOUND_TOP_OUT, True);
   end;
@@ -657,13 +631,7 @@ begin
     Memory.Game.LowerTimer -= 1;
   end
   else
-    if not Memory.GameModes.HasHardKillScreen or not Memory.Game.AfterHardKillScreen then
-      Memory.Game.State := STATE_PIECE_SPAWN
-    else
-    begin
-      Memory.Game.State := STATE_UPDATE_TOP_OUT;
-      Memory.Game.TopOutTimer := TOP_OUT_FRAMES[True, Memory.GameModes.Region];
-    end;
+    Memory.Game.State := STATE_PIECE_SPAWN;
 end;
 
 
@@ -678,7 +646,7 @@ begin
   if Memory.Game.ClearCount > 0 then
   begin
     if not Memory.Game.AfterTransition then
-      if Memory.Game.Lines + Memory.Game.ClearCount >= TRANSITION_LINES[Memory.GameModes.Region, Memory.GameModes.Level] then
+      if Memory.Game.Lines + Memory.Game.ClearCount >= TRANSITION_LINES[Memory.Lobby.Region, Memory.Lobby.Level] then
         HappenedFirstTransition := True;
 
     if Memory.Game.AfterTransition then
@@ -688,22 +656,8 @@ begin
 
       if HappenedLaterTransition then
       begin
-        if Memory.Game.Lines + Memory.Game.ClearCount >= KILLSCREEN_LINES[Memory.GameModes.Region, Memory.GameModes.Level] then
+        if Memory.Game.Lines + Memory.Game.ClearCount >= KILLSCREEN_LINES[Memory.Lobby.Region, Memory.Lobby.Level] then
           HappenedKillScreen := True;
-
-        if Memory.GameModes.IsSpeedrun or (Memory.GameModes.IsMarathon and Memory.GameModes.IsMatch) then
-        begin
-          if Memory.GameModes.IsMarathon and Memory.GameModes.IsMatch then
-            if Memory.Game.Lines + Memory.Game.ClearCount >= KILLSCREEN_LINES_MARATHON[Memory.GameModes.Region, Memory.GameModes.Level] then
-              Memory.Game.AfterHardKillScreen := True;
-
-          if Memory.GameModes.IsSpeedrun then
-            if Memory.Game.Lines + Memory.Game.ClearCount >= KILLSCREEN_LINES_SPEEDRUN then
-            begin
-              Memory.Game.AfterHardKillScreen := True;
-              Memory.Game.SpeedrunCompleted := True;
-            end;
-        end;
       end;
     end;
 
@@ -713,11 +667,7 @@ begin
     if HappenedFirstTransition or HappenedLaterTransition then
     begin
       Memory.Game.Level += 1;
-
-      if Memory.Game.AfterHardKillScreen then
-        Sounds.PlaySound(SOUND_SUCCESS, True)
-      else
-        Sounds.PlaySound(SOUND_TRANSITION, True);
+      Sounds.PlaySound(SOUND_TRANSITION, True);
     end;
 
     Memory.Game.Lines += Memory.Game.ClearCount;
@@ -752,8 +702,8 @@ begin
 
   if HappenedFirstTransition or HappenedLaterTransition then
   begin
-    if (Memory.GameModes.Level < 19) and (Memory.Game.Level = 19) then Memory.Game.Transition := Memory.Game.Score;
-    if (Memory.GameModes.Level = 19) and (Memory.Game.Level = 20) then Memory.Game.Transition := Memory.Game.Score;
+    if (Memory.Lobby.Level < 19) and (Memory.Game.Level = 19) then Memory.Game.Transition := Memory.Game.Score;
+    if (Memory.Lobby.Level = 19) and (Memory.Game.Level = 20) then Memory.Game.Transition := Memory.Game.Score;
   end;
 
   if Memory.Game.FallSkipped then
@@ -781,47 +731,17 @@ end;
 
 
 procedure TCore.Reset();
-var
-  InitialSeed: Integer = SEED_USE_RANDOM;
 begin
-  if Memory.GameModes.IsMatch then
-    InitialSeed := Converter.StringToSeed(Memory.GameModes.SeedData);
-
   Memory.Game.Reset();
   Memory.Game.Started := True;
-  Memory.Game.AutorepeatY := PIECE_FRAMES_HANG[Memory.GameModes.Region];
-
-  Generators.Generator.Prepare(InitialSeed);
-  Generators.Generator.Step();
+  Memory.Game.AutorepeatY := PIECE_FRAMES_HANG[Memory.Lobby.Region];
   Memory.Game.PieceID := Generators.Generator.Pick();
 
   Generators.Generator.Step();
   Memory.Game.Next := Generators.Generator.Pick();
-
-  if Memory.GameModes.IsSpeedrun then
-    Memory.GameModes.Level := 0;
-
-  Memory.Game.Level := Memory.GameModes.Level;
-
-  if Memory.GameModes.IsQuals then
-    Memory.Game.Best := BestScores.Quals
-      [Memory.GameModes.IsSpeedrun]
-      [Memory.GameModes.Region]
-      [Memory.GameModes.Generator].BestResult
-  else
-    if Memory.GameModes.IsMatch then
-      Memory.Game.Best := BestScores.Match
-        [Memory.GameModes.IsSpeedrun]
-        [Memory.GameModes.Region]
-        [Memory.GameModes.Generator].BestResult
-    else
-      Memory.Game.Best := BestScores
-        [Memory.GameModes.IsSpeedrun]
-        [Memory.GameModes.Region]
-        [Memory.GameModes.Generator].BestResult;
-
-  if not Memory.GameModes.IsFreeGame then
-    Memory.Game.NextVisible := True;
+  Memory.Game.Level := Memory.Lobby.Level;
+  Memory.Game.Best := BestScores[Memory.Lobby.Region][Memory.Lobby.Generator].BestResult;
+  Memory.Game.NextVisible := True;
 end;
 
 

@@ -53,14 +53,7 @@ type
   private
     procedure OpenHelp();
   private
-    procedure PrepareModesSelection();
-    procedure PrepareFreeMarathonSelection();
-    procedure PrepareFreeSpeedrunSelection();
-    procedure PrepareMarathonQualsSelection();
-    procedure PrepareMarathonQualsLevel();
-    procedure PrepareMarathonMatchSelection();
-    procedure PrepareSpeedrunQualsSelection();
-    procedure PrepareSpeedrunMatchSelection();
+    procedure PrepareLobbySelection();
   private
     procedure PrepareGameScene();
   private
@@ -80,13 +73,7 @@ type
     procedure PrepareControllerSelection();
     procedure PrepareControllerScanCodes();
   private
-    procedure PrepareModes();
-    procedure PrepareFreeMarathon();
-    procedure PrepareFreeSpeedrun();
-    procedure PrepareMarathonQuals();
-    procedure PrepareMarathonMatch();
-    procedure PrepareSpeedrunQuals();
-    procedure PrepareSpeedrunMatch();
+    procedure PrepareLobby();
     procedure PreparePause();
     procedure PrepareTopOut();
     procedure PreapreOptions();
@@ -94,61 +81,17 @@ type
     procedure PrepareController();
     procedure PrepareQuit();
   private
-    function CopySeedToClipboard(): Boolean;
-  private
-    function PasteSeedFromClipboard(): Boolean;
-    function PasteTimerFromClipboard(): Boolean;
-  private
-    procedure PasteRandomSeed();
-  private
     procedure UpdateLegalHang();
     procedure UpdateLegalScene();
   private
     procedure UpdateMenuSelection();
     procedure UpdateMenuScene();
   private
-    procedure UpdateModesSelection();
-    procedure UpdateModesScene();
-  private
-    procedure UpdateMatchSeed();
-    procedure UpdateQualsTimer();
-  private
-    procedure UpdateFreeMarathonSelection();
-    procedure UpdateFreeMarathonRegion();
-    procedure UpdateFreeMarathonGenerator();
-    procedure UpdateFreeMarathonLevel();
-    procedure UpdateFreeMarathonScene();
-  private
-    procedure UpdateFreeSpeedrunSelection();
-    procedure UpdateFreeSpeedrunRegion();
-    procedure UpdateFreeSpeedrunGenerator();
-    procedure UpdateFreeSpeedrunScene();
-  private
-    procedure UpdateMarathonQualsSelection();
-    procedure UpdateMarathonQualsRegion();
-    procedure UpdateMarathonQualsGenerator();
-    procedure UpdateMarathonQualsLevel();
-    procedure UpdateMarathonQualsTimer();
-    procedure UpdateMarathonQualsScene();
-  private
-    procedure UpdateMarathonMatchSelection();
-    procedure UpdateMarathonMatchRegion();
-    procedure UpdateMarathonMatchGenerator();
-    procedure UpdateMarathonMatchLevel();
-    procedure UpdateMarathonMatchSeed();
-    procedure UpdateMarathonMatchScene();
-  private
-    procedure UpdateSpeedrunQualsSelection();
-    procedure UpdateSpeedrunQualsRegion();
-    procedure UpdateSpeedrunQualsGenerator();
-    procedure UpdateSpeedrunQualsTimer();
-    procedure UpdateSpeedrunQualsScene();
-  private
-    procedure UpdateSpeedrunMatchSelection();
-    procedure UpdateSpeedrunMatchRegion();
-    procedure UpdateSpeedrunMatchGenerator();
-    procedure UpdateSpeedrunMatchSeed();
-    procedure UpdateSpeedrunMatchScene();
+    procedure UpdateLobbySelection();
+    procedure UpdateLobbyRegion();
+    procedure UpdateLobbyGenerator();
+    procedure UpdateLobbyLevel();
+    procedure UpdateLobbyScene();
   private
     procedure UpdateGameState();
     procedure UpdateGameScene();
@@ -182,13 +125,7 @@ type
     procedure UpdateCommon();
     procedure UpdateLegal();
     procedure UpdateMenu();
-    procedure UpdateModes();
-    procedure UpdateFreeMarathon();
-    procedure UpdateFreeSpeedrun();
-    procedure UpdateMarathonQuals();
-    procedure UpdateMarathonMatch();
-    procedure UpdateSpeedrunQuals();
-    procedure UpdateSpeedrunMatch();
+    procedure UpdateLobby();
     procedure UpdateGame();
     procedure UpdatePause();
     procedure UpdateTopOut();
@@ -342,57 +279,15 @@ begin
 end;
 
 
-procedure TLogic.PrepareModesSelection();
+procedure TLogic.PrepareLobbySelection();
 begin
-  Memory.Modes.ItemIndex := ITEM_MODES_FREE_MARATHON;
-end;
-
-
-procedure TLogic.PrepareFreeMarathonSelection();
-begin
-  Memory.FreeMarathon.ItemIndex := ITEM_FREE_MARATHON_START;
-end;
-
-
-procedure TLogic.PrepareFreeSpeedrunSelection();
-begin
-  Memory.FreeSpeedrun.ItemIndex := ITEM_FREE_SPEEDRUN_START;
-end;
-
-
-procedure TLogic.PrepareMarathonQualsSelection();
-begin
-  Memory.MarathonQuals.ItemIndex := ITEM_MARATHON_QUALS_START;
-end;
-
-
-procedure TLogic.PrepareMarathonQualsLevel();
-begin
-  Memory.GameModes.Level := Min(Memory.GameModes.Level, LEVEL_LAST_QUALS);
-end;
-
-
-procedure TLogic.PrepareMarathonMatchSelection();
-begin
-  Memory.MarathonMatch.ItemIndex := ITEM_MARATHON_MATCH_START;
-end;
-
-
-procedure TLogic.PrepareSpeedrunQualsSelection();
-begin
-  Memory.SpeedrunQuals.ItemIndex := ITEM_SPEEDRUN_QUALS_START;
-end;
-
-
-procedure TLogic.PrepareSpeedrunMatchSelection();
-begin
-  Memory.SpeedrunMatch.ItemIndex := ITEM_SPEEDRUN_MATCH_START;
+  Memory.Lobby.ItemIndex := ITEM_LOBBY_START;
 end;
 
 
 procedure TLogic.PrepareGameScene();
 begin
-  if not (FScene.Previous in [SCENE_GAME_NORMAL .. SCENE_SPEEDRUN_FLASH, SCENE_PAUSE]) then
+  if not (FScene.Previous in [SCENE_GAME_NORMAL, SCENE_GAME_FLASH, SCENE_PAUSE]) then
     Core.Reset();
 end;
 
@@ -405,7 +300,7 @@ end;
 
 procedure TLogic.PreparePauseScene();
 begin
-  if FScene.Previous in [SCENE_GAME_NORMAL .. SCENE_SPEEDRUN_FLASH] then
+  if FScene.Previous in [SCENE_GAME_NORMAL .. SCENE_GAME_FLASH] then
     Memory.Pause.FromScene := FScene.Previous;
 end;
 
@@ -432,23 +327,15 @@ procedure TLogic.PrepareTopOutBestScore();
 var
   Entry: TScoreEntry;
 begin
-  Entry := TScoreEntry.Create(Memory.GameModes.IsSpeedrun, Memory.GameModes.Region, True);
+  Entry := TScoreEntry.Create(Memory.Lobby.Region, True);
 
   Entry.LinesCleared := Memory.Game.LinesCleared;
-  Entry.LevelBegin := Memory.GameModes.Level;
+  Entry.LevelBegin := Memory.Lobby.Level;
   Entry.LevelEnd := Memory.Game.Level;
   Entry.TetrisRate := Memory.Game.TetrisRate;
   Entry.TotalScore := Memory.Game.Score;
-  Entry.TotalTime := Memory.Game.SpeedrunTimer;
-  Entry.Completed := Memory.Game.SpeedrunCompleted;
 
-  BestScores[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Add(Entry);
-
-  if Memory.GameModes.IsQuals then
-    BestScores.Quals[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Add(Entry.Clone());
-
-  if Memory.GameModes.IsMatch then
-    BestScores.Match[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Add(Entry.Clone());
+  BestScores[Memory.Lobby.Region][Memory.Lobby.Generator].Add(Entry);
 end;
 
 
@@ -497,93 +384,15 @@ begin
 end;
 
 
-procedure TLogic.PrepareModes();
+procedure TLogic.PrepareLobby();
 begin
   if not FScene.Changed then Exit;
 
   if FScene.Previous = SCENE_MENU then
-    PrepareModesSelection();
-end;
-
-
-procedure TLogic.PrepareFreeMarathon();
-begin
-  if not FScene.Changed then Exit;
-
-  if FScene.Previous = SCENE_MODES then
-    PrepareFreeMarathonSelection();
+    PrepareLobbySelection();
 
   Memory.Game.Started := False;
-  Memory.Game.FromScene := SCENE_FREE_MARATHON;
-  Memory.GameModes.Mode := MODE_FREE_MARATHON;
-end;
-
-
-procedure TLogic.PrepareFreeSpeedrun();
-begin
-  if not FScene.Changed then Exit;
-
-  if FScene.Previous = SCENE_MODES then
-    PrepareFreeSpeedrunSelection();
-
-  Memory.Game.Started := False;
-  Memory.Game.FromScene := SCENE_FREE_SPEEDRUN;
-  Memory.GameModes.Mode := MODE_FREE_SPEEDRUN;
-end;
-
-
-procedure TLogic.PrepareMarathonQuals();
-begin
-  if not FScene.Changed then Exit;
-
-  if FScene.Previous = SCENE_MODES then
-  begin
-    PrepareMarathonQualsSelection();
-    PrepareMarathonQualsLevel();
-  end;
-
-  Memory.Game.Started := False;
-  Memory.Game.FromScene := SCENE_MARATHON_QUALS;
-  Memory.GameModes.Mode := MODE_MARATHON_QUALS;
-end;
-
-
-procedure TLogic.PrepareMarathonMatch();
-begin
-  if not FScene.Changed then Exit;
-
-  if FScene.Previous = SCENE_MODES then
-    PrepareMarathonMatchSelection();
-
-  Memory.Game.Started := False;
-  Memory.Game.FromScene := SCENE_MARATHON_MATCH;
-  Memory.GameModes.Mode := MODE_MARATHON_MATCH;
-end;
-
-
-procedure TLogic.PrepareSpeedrunQuals();
-begin
-  if not FScene.Changed then Exit;
-
-  if FScene.Previous = SCENE_MODES then
-    PrepareSpeedrunQualsSelection();
-
-  Memory.Game.Started := False;
-  Memory.Game.FromScene := SCENE_SPEEDRUN_QUALS;
-  Memory.GameModes.Mode := MODE_SPEEDRUN_QUALS;
-end;
-
-
-procedure TLogic.PrepareSpeedrunMatch();
-begin
-  if not FScene.Changed then Exit;
-
-  if FScene.Previous = SCENE_MODES then
-    PrepareSpeedrunMatchSelection();
-
-  Memory.Game.Started := False;
-  Memory.Game.FromScene := SCENE_SPEEDRUN_MATCH;
-  Memory.GameModes.Mode := MODE_SPEEDRUN_MATCH;
+  Memory.Game.FromScene := SCENE_LOBBY;
 end;
 
 
@@ -608,7 +417,6 @@ begin
     PrepareTopOutBestScore();
 
     Memory.Game.Started := False;
-    Generators.Generator.UnlockRandomness();
   end;
 end;
 
@@ -665,80 +473,6 @@ begin
 end;
 
 
-function TLogic.CopySeedToClipboard(): Boolean;
-begin
-  Result := not Memory.GameModes.SeedChanging;
-  Result := Result and (SDL_SetClipboardText(PChar(Memory.GameModes.SeedData)) = 0);
-
-  Sounds.PlaySound(IfThen(Result, SOUND_COIN, SOUND_HUM));
-end;
-
-
-function TLogic.PasteSeedFromClipboard(): Boolean;
-var
-  SeedData: String;
-begin
-  Result := False;
-
-  if SDL_HasClipboardText() = SDL_FALSE then
-    Sounds.PlaySound(SOUND_HUM)
-  else
-  begin
-    SeedData := Converter.TextToSeed(SDL_GetClipboardText());
-
-    if SeedData = '' then
-      Sounds.PlaySound(SOUND_HUM)
-    else
-    begin
-      Memory.GameModes.SeedData := SeedData;
-      Memory.GameModes.SeedChanging := False;
-
-      Sounds.PlaySound(SOUND_COIN);
-      Result := True;
-    end;
-  end;
-end;
-
-
-function TLogic.PasteTimerFromClipboard(): Boolean;
-var
-  TimerData: String;
-begin
-  Result := False;
-
-  if SDL_HasClipboardText() = SDL_FALSE then
-    Sounds.PlaySound(SOUND_HUM)
-  else
-  begin
-    TimerData := Converter.TextToTimer(SDL_GetClipboardText());
-
-    if TimerData = '' then
-      Sounds.PlaySound(SOUND_HUM)
-    else
-    begin
-      Memory.GameModes.TimerData := TimerData;
-      Memory.GameModes.TimerChanging := False;
-
-      Result := True;
-
-      if TimerData = TIMER_DEFAULT_DATA then
-        Sounds.PlaySound(SOUND_BURN)
-      else
-        Sounds.PlaySound(SOUND_COIN);
-    end;
-  end;
-end;
-
-
-procedure TLogic.PasteRandomSeed();
-begin
-  Memory.GameModes.SeedData := GenerateRandomSeed();
-  Memory.GameModes.SeedChanging := False;
-
-  Sounds.PlaySound(SOUND_COIN);
-end;
-
-
 procedure TLogic.UpdateLegalHang();
 begin
   Memory.Legal.HangTimer += 1;
@@ -777,7 +511,7 @@ begin
   if InputMenuAccepted() then
   begin
     case Memory.Menu.ItemIndex of
-      ITEM_MENU_PLAY:    FScene.Current := SCENE_MODES;
+      ITEM_MENU_PLAY:    FScene.Current := SCENE_LOBBY;
       ITEM_MENU_OPTIONS: FScene.Current := SCENE_OPTIONS;
       ITEM_MENU_QUIT:    FScene.Current := SCENE_QUIT;
     end;
@@ -793,23 +527,114 @@ begin
 end;
 
 
-procedure TLogic.UpdateModesSelection();
+procedure TLogic.UpdateLobbySelection();
 begin
   if InputMenuSetPrev() then
   begin
-    UpdateItemIndex(Memory.Modes.ItemIndex, ITEM_MODES_COUNT, ITEM_PREV);
+    UpdateItemIndex(Memory.Lobby.ItemIndex, ITEM_LOBBY_COUNT, ITEM_PREV);
     Sounds.PlaySound(SOUND_BLIP);
   end;
 
   if InputMenuSetNext() then
   begin
-    UpdateItemIndex(Memory.Modes.ItemIndex, ITEM_MODES_COUNT, ITEM_NEXT);
+    UpdateItemIndex(Memory.Lobby.ItemIndex, ITEM_LOBBY_COUNT, ITEM_NEXT);
     Sounds.PlaySound(SOUND_BLIP);
   end;
 end;
 
 
-procedure TLogic.UpdateModesScene();
+procedure TLogic.UpdateLobbyRegion();
+begin
+  if Memory.Lobby.ItemIndex <> ITEM_LOBBY_REGION then Exit;
+
+  if InputOptionSetPrev() then
+  begin
+    UpdateItemIndex(Memory.Lobby.Region, REGION_COUNT, ITEM_PREV);
+    Sounds.PlaySound(SOUND_SHIFT);
+  end;
+
+  if InputOptionSetNext() then
+  begin
+    UpdateItemIndex(Memory.Lobby.Region, REGION_COUNT, ITEM_NEXT);
+    Sounds.PlaySound(SOUND_SHIFT);
+  end;
+
+  Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.Lobby.Region];
+
+  if Memory.Lobby.Region = REGION_PAL then
+    Memory.Lobby.Level := Min(Memory.Lobby.Level, LEVEL_LAST_FREE_GAME_PAL);
+end;
+
+
+procedure TLogic.UpdateLobbyGenerator();
+begin
+  if Memory.Lobby.ItemIndex <> ITEM_LOBBY_GENERATOR then Exit;
+
+  if InputOptionSetPrev() then
+  begin
+    UpdateItemIndex(Memory.Lobby.Generator, GENERATOR_COUNT, ITEM_PREV);
+    Sounds.PlaySound(SOUND_SHIFT);
+  end;
+
+  if InputOptionSetNext() then
+  begin
+    UpdateItemIndex(Memory.Lobby.Generator, GENERATOR_COUNT, ITEM_NEXT);
+    Sounds.PlaySound(SOUND_SHIFT);
+  end;
+
+  Generators.GeneratorID := Memory.Lobby.Generator;
+end;
+
+
+procedure TLogic.UpdateLobbyLevel();
+begin
+  if Memory.Lobby.ItemIndex <> ITEM_LOBBY_LEVEL then Exit;
+
+  if InputOptionSetPrev() then
+  begin
+    Memory.Lobby.Autorepeat := 0;
+
+    UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT_FREE_GAME[Memory.Lobby.Region], ITEM_PREV);
+    Sounds.PlaySound(SOUND_SHIFT);
+  end
+  else
+    if InputOptionRollPrev() then
+    begin
+      Memory.Lobby.Autorepeat += 1;
+
+      if Memory.Lobby.Autorepeat = AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region] then
+      begin
+        Memory.Lobby.Autorepeat := AUTOSHIFT_FRAMES_PRECHARGE[Memory.Lobby.Region];
+
+        UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT_FREE_GAME[Memory.Lobby.Region], ITEM_PREV);
+        Sounds.PlaySound(SOUND_SHIFT);
+      end;
+    end;
+
+  if InputOptionSetNext() then
+  begin
+    Memory.Lobby.Autorepeat := 0;
+
+    UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT_FREE_GAME[Memory.Lobby.Region], ITEM_NEXT);
+    Sounds.PlaySound(SOUND_SHIFT);
+  end
+  else
+    if InputOptionRollNext() then
+    begin
+      Memory.Lobby.Autorepeat += 1;
+
+      if Memory.Lobby.Autorepeat = AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region] then
+      begin
+        Memory.Lobby.Autorepeat := AUTOSHIFT_FRAMES_PRECHARGE[Memory.Lobby.Region];
+
+        UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT_FREE_GAME[Memory.Lobby.Region], ITEM_NEXT);
+        Sounds.PlaySound(SOUND_SHIFT);
+      end;
+    end;
+end;
+
+
+procedure TLogic.UpdateLobbyScene();
 begin
   FScene.Validate();
 
@@ -819,328 +644,8 @@ begin
     Sounds.PlaySound(SOUND_DROP);
   end;
 
-  if InputMenuAccepted() then
-  begin
-    if Memory.GameModes.QualsActive and (Memory.Modes.ItemIndex <> ITEM_MODES_BACK) then
-    case Memory.Modes.ItemIndex of
-      ITEM_MODES_MARATHON_QUALS:
-        if Memory.GameModes.QualsMode = QUALS_MODE_MARATHON then
-        begin
-          FScene.Current := SCENE_MARATHON_QUALS;
-          Sounds.PlaySound(SOUND_START);
-        end
-        else
-          Sounds.PlaySound(SOUND_HUM);
-      ITEM_MODES_SPEEDRUN_QUALS:
-        if Memory.GameModes.QualsMode = QUALS_MODE_SPEEDRUN then
-        begin
-          FScene.Current := SCENE_SPEEDRUN_QUALS;
-          Sounds.PlaySound(SOUND_START);
-        end
-        else
-          Sounds.PlaySound(SOUND_HUM);
-    otherwise
-      Sounds.PlaySound(SOUND_HUM);
-    end
-    else
-    begin
-      case Memory.Modes.ItemIndex of
-        ITEM_MODES_FREE_MARATHON:  FScene.Current := SCENE_FREE_MARATHON;
-        ITEM_MODES_FREE_SPEEDRUN:  FScene.Current := SCENE_FREE_SPEEDRUN;
-        ITEM_MODES_MARATHON_QUALS: FScene.Current := SCENE_MARATHON_QUALS;
-        ITEM_MODES_MARATHON_MATCH: FScene.Current := SCENE_MARATHON_MATCH;
-        ITEM_MODES_SPEEDRUN_QUALS: FScene.Current := SCENE_SPEEDRUN_QUALS;
-        ITEM_MODES_SPEEDRUN_MATCH: FScene.Current := SCENE_SPEEDRUN_MATCH;
-        ITEM_MODES_BACK:           FScene.Current := SCENE_MENU;
-      end;
-
-      if Memory.Modes.ItemIndex <> ITEM_MODES_BACK then
-        Sounds.PlaySound(SOUND_START)
-      else
-        Sounds.PlaySound(SOUND_DROP);
-    end;
-  end;
-end;
-
-
-procedure TLogic.UpdateMatchSeed();
-var
-  ScanCode: UInt8 = KEYBOARD_SCANCODE_KEY_NOT_MAPPED;
-begin
-  if InputOptionPaste() and PasteSeedFromClipboard() then Exit;
-
-  if InputOptionCopy() then
-  begin
-    CopySeedToClipboard();
-    Exit;
-  end;
-
-  if InputOptionGenerate() then
-  begin
-    PasteRandomSeed();
-    Exit;
-  end;
-
-  if not Memory.GameModes.SeedChanging then Exit;
-
-  if Memory.GameModes.SeedEditor.Length < SEED_LENGTH then
-  begin
-    if Input.Keyboard.CatchedOneHexDigit(ScanCode) then
-    begin
-      Memory.GameModes.SeedEditor += Converter.ScanCodeToChar(ScanCode);
-      Sounds.PlaySound(SOUND_SHIFT);
-    end;
-  end
-  else
-    if Input.Keyboard.CatchedOneHexDigit(ScanCode) then
-      Sounds.PlaySound(SOUND_HUM);
-
-  if Input.Fixed.Accept.JustPressed then
-    if Memory.GameModes.SeedEditor.Length = SEED_LENGTH then
-    begin
-      Input.Fixed.Accept.Validate();
-
-      Memory.GameModes.SeedData := Memory.GameModes.SeedEditor;
-      Memory.GameModes.SeedChanging := False;
-
-      Sounds.PlaySound(SOUND_TETRIS);
-    end
-    else
-      Sounds.PlaySound(SOUND_HUM);
-
-  if Input.Fixed.Clear.JustPressed then
-    if Memory.GameModes.SeedEditor.Length > 0 then
-    begin
-      SetLength(Memory.GameModes.SeedEditor, Memory.GameModes.SeedEditor.Length - 1);
-      Sounds.PlaySound(SOUND_BURN);
-    end
-    else
-      Sounds.PlaySound(SOUND_HUM);
-
-  if Input.Fixed.Cancel.JustPressed then
-  begin
-    Input.Fixed.Cancel.Validate();
-
-    Memory.GameModes.SeedChanging := False;
-    Sounds.PlaySound(SOUND_DROP);
-  end;
-end;
-
-
-procedure TLogic.UpdateQualsTimer();
-var
-  ScanCode: UInt8 = KEYBOARD_SCANCODE_KEY_NOT_MAPPED;
-  DigitNew, DigitMax: Char;
-begin
-  if not Memory.GameModes.QualsActive then
-    if InputOptionPaste() and PasteTimerFromClipboard() then Exit;
-
-  if not Memory.GameModes.TimerChanging then Exit;
-
-  if Memory.GameModes.TimerEditor.Length < TIMER_LENGTH then
-  begin
-    if Input.Keyboard.CatchedOneDigit(ScanCode) then
-    begin
-      DigitNew := Converter.ScanCodeToChar(ScanCode);
-      DigitMax := TIMER_MAX_DIGITS[Memory.GameModes.TimerEditor.Length + 1];
-
-      if DigitNew <= DigitMax then
-      begin
-        Memory.GameModes.TimerEditor += DigitNew;
-        Sounds.PlaySound(SOUND_SHIFT);
-      end
-      else
-        Sounds.PlaySound(SOUND_HUM);
-
-      if Memory.GameModes.TimerEditor.Length < TIMER_LENGTH then
-        if TIMER_PLACEHOLDER[Memory.GameModes.TimerEditor.Length + 1] = TIMER_SEPARATOR then
-          Memory.GameModes.TimerEditor += TIMER_SEPARATOR;
-    end;
-  end
-  else
-    if Input.Keyboard.CatchedOneDigit(ScanCode) then
-      Sounds.PlaySound(SOUND_HUM);
-
-  if Input.Fixed.Accept.JustPressed then
-    if Memory.GameModes.TimerEditor.Length < TIMER_LENGTH then
-      Sounds.PlaySound(SOUND_HUM)
-    else
-    begin
-      Input.Fixed.Accept.Validate();
-
-      if Memory.GameModes.QualsActive then
-      begin
-        if Converter.StringToTimerSeconds(Memory.GameModes.TimerEditor) = 0 then
-        begin
-          Memory.GameModes.TimerData := Memory.GameModes.TimerEditor;
-          Memory.GameModes.TimerChanging := False;
-
-          Memory.GameModes.QualsActive := False;
-          Memory.GameModes.QualsMode := QUALS_MODE_DEFAULT;
-          Memory.GameModes.QualsRemaining := 0;
-
-          BestScores.Quals[Memory.GameModes.IsSpeedrun].Clear();
-
-          Sounds.PlaySound(SOUND_BURN);
-        end
-        else
-          Sounds.PlaySound(SOUND_HUM);
-      end
-      else
-      begin
-        Memory.GameModes.TimerData := Memory.GameModes.TimerEditor;
-        Memory.GameModes.TimerChanging := False;
-
-        if Converter.StringToTimerSeconds(Memory.GameModes.TimerEditor) = 0 then
-          Sounds.PlaySound(SOUND_BURN)
-        else
-          Sounds.PlaySound(SOUND_TETRIS);
-      end;
-    end;
-
-  if Input.Fixed.Clear.JustPressed then
-    if Memory.GameModes.TimerEditor.Length > 0 then
-    begin
-      SetLength(Memory.GameModes.TimerEditor, Memory.GameModes.TimerEditor.Length - 1);
-
-      if Memory.GameModes.TimerEditor.Length > 0 then
-        if TIMER_PLACEHOLDER[Memory.GameModes.TimerEditor.Length + 1] = TIMER_SEPARATOR then
-          SetLength(Memory.GameModes.TimerEditor, Memory.GameModes.TimerEditor.Length - 1);
-
-      Sounds.PlaySound(SOUND_BURN);
-    end
-    else
-      Sounds.PlaySound(SOUND_HUM);
-
-  if Input.Fixed.Cancel.JustPressed then
-  begin
-    Input.Fixed.Cancel.Validate();
-
-    Memory.GameModes.TimerChanging := False;
-    Sounds.PlaySound(SOUND_DROP);
-  end;
-end;
-
-
-procedure TLogic.UpdateFreeMarathonSelection();
-begin
-  if InputMenuSetPrev() then
-  begin
-    UpdateItemIndex(Memory.FreeMarathon.ItemIndex, ITEM_FREE_MARATHON_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_BLIP);
-  end;
-
-  if InputMenuSetNext() then
-  begin
-    UpdateItemIndex(Memory.FreeMarathon.ItemIndex, ITEM_FREE_MARATHON_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_BLIP);
-  end;
-end;
-
-
-procedure TLogic.UpdateFreeMarathonRegion();
-begin
-  if Memory.FreeMarathon.ItemIndex <> ITEM_FREE_MARATHON_REGION then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Region, REGION_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  if InputOptionSetNext() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Region, REGION_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.GameModes.Region];
-
-  if Memory.GameModes.Region = REGION_PAL then
-    Memory.GameModes.Level := Min(Memory.GameModes.Level, LEVEL_LAST_FREE_GAME_PAL);
-end;
-
-
-procedure TLogic.UpdateFreeMarathonGenerator();
-begin
-  if Memory.FreeMarathon.ItemIndex <> ITEM_FREE_MARATHON_GENERATOR then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Generator, GENERATOR_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  if InputOptionSetNext() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Generator, GENERATOR_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  Generators.GeneratorID := Memory.GameModes.Generator;
-end;
-
-
-procedure TLogic.UpdateFreeMarathonLevel();
-begin
-  if Memory.FreeMarathon.ItemIndex <> ITEM_FREE_MARATHON_LEVEL then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    Memory.FreeMarathon.Autorepeat := 0;
-
-    UpdateItemIndex(Memory.GameModes.Level, LEVEL_COUNT_FREE_GAME[Memory.GameModes.Region], ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end
-  else
-    if InputOptionRollPrev() then
-    begin
-      Memory.FreeMarathon.Autorepeat += 1;
-
-      if Memory.FreeMarathon.Autorepeat = AUTOSHIFT_FRAMES_CHARGE[Memory.GameModes.Region] then
-      begin
-        Memory.FreeMarathon.Autorepeat := AUTOSHIFT_FRAMES_PRECHARGE[Memory.GameModes.Region];
-
-        UpdateItemIndex(Memory.GameModes.Level, LEVEL_COUNT_FREE_GAME[Memory.GameModes.Region], ITEM_PREV);
-        Sounds.PlaySound(SOUND_SHIFT);
-      end;
-    end;
-
-  if InputOptionSetNext() then
-  begin
-    Memory.FreeMarathon.Autorepeat := 0;
-
-    UpdateItemIndex(Memory.GameModes.Level, LEVEL_COUNT_FREE_GAME[Memory.GameModes.Region], ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end
-  else
-    if InputOptionRollNext() then
-    begin
-      Memory.FreeMarathon.Autorepeat += 1;
-
-      if Memory.FreeMarathon.Autorepeat = AUTOSHIFT_FRAMES_CHARGE[Memory.GameModes.Region] then
-      begin
-        Memory.FreeMarathon.Autorepeat := AUTOSHIFT_FRAMES_PRECHARGE[Memory.GameModes.Region];
-
-        UpdateItemIndex(Memory.GameModes.Level, LEVEL_COUNT_FREE_GAME[Memory.GameModes.Region], ITEM_NEXT);
-        Sounds.PlaySound(SOUND_SHIFT);
-      end;
-    end;
-end;
-
-
-procedure TLogic.UpdateFreeMarathonScene();
-begin
-  FScene.Validate();
-
-  if InputMenuRejected() then
-  begin
-    FScene.Current := SCENE_MODES;
-    Sounds.PlaySound(SOUND_DROP);
-  end;
-
   if not Input.Device.Connected then
-    if Memory.FreeMarathon.ItemIndex = ITEM_FREE_MARATHON_START then
+    if Memory.Lobby.ItemIndex = ITEM_LOBBY_START then
     begin
       if InputMenuAccepted() then
         Sounds.PlaySound(SOUND_HUM);
@@ -1149,717 +654,15 @@ begin
     end;
 
   if InputMenuAccepted() then
-  case Memory.FreeMarathon.ItemIndex of
-    ITEM_FREE_MARATHON_START:
+  case Memory.Lobby.ItemIndex of
+    ITEM_LOBBY_START:
     begin
       FScene.Current := SCENE_GAME_NORMAL;
       Sounds.PlaySound(SOUND_START);
     end;
-    ITEM_FREE_MARATHON_BACK:
+    ITEM_LOBBY_BACK:
     begin
-      FScene.Current := SCENE_MODES;
-      Sounds.PlaySound(SOUND_DROP);
-    end;
-  end;
-end;
-
-
-procedure TLogic.UpdateFreeSpeedrunSelection();
-begin
-  if InputMenuSetPrev() then
-  begin
-    UpdateItemIndex(Memory.FreeSpeedrun.ItemIndex, ITEM_FREE_SPEEDRUN_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_BLIP);
-  end;
-
-  if InputMenuSetNext() then
-  begin
-    UpdateItemIndex(Memory.FreeSpeedrun.ItemIndex, ITEM_FREE_SPEEDRUN_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_BLIP);
-  end;
-end;
-
-
-procedure TLogic.UpdateFreeSpeedrunRegion();
-begin
-  if Memory.FreeSpeedrun.ItemIndex <> ITEM_FREE_SPEEDRUN_REGION then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Region, REGION_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  if InputOptionSetNext() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Region, REGION_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.GameModes.Region];
-end;
-
-
-procedure TLogic.UpdateFreeSpeedrunGenerator();
-begin
-  if Memory.FreeSpeedrun.ItemIndex <> ITEM_FREE_SPEEDRUN_GENERATOR then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Generator, GENERATOR_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  if InputOptionSetNext() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Generator, GENERATOR_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  Generators.GeneratorID := Memory.GameModes.Generator;
-end;
-
-
-procedure TLogic.UpdateFreeSpeedrunScene();
-begin
-  FScene.Validate();
-
-  if InputMenuRejected() then
-  begin
-    FScene.Current := SCENE_MODES;
-    Sounds.PlaySound(SOUND_DROP);
-  end;
-
-  if not Input.Device.Connected then
-    if Memory.FreeSpeedrun.ItemIndex = ITEM_FREE_SPEEDRUN_START then
-    begin
-      if InputMenuAccepted() then
-        Sounds.PlaySound(SOUND_HUM);
-
-      Exit;
-    end;
-
-  if InputMenuAccepted() then
-  case Memory.FreeSpeedrun.ItemIndex of
-    ITEM_FREE_SPEEDRUN_START:
-    begin
-      FScene.Current := SCENE_SPEEDRUN_NORMAL;
-      Sounds.PlaySound(SOUND_START);
-    end;
-    ITEM_FREE_SPEEDRUN_BACK:
-    begin
-      FScene.Current := SCENE_MODES;
-      Sounds.PlaySound(SOUND_DROP);
-    end;
-  end;
-end;
-
-
-procedure TLogic.UpdateMarathonQualsSelection();
-begin
-  if Memory.GameModes.TimerChanging then Exit;
-
-  if InputMenuSetPrev() then
-  begin
-    UpdateItemIndex(Memory.MarathonQuals.ItemIndex, ITEM_MARATHON_QUALS_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_BLIP);
-  end;
-
-  if InputMenuSetNext() then
-  begin
-    UpdateItemIndex(Memory.MarathonQuals.ItemIndex, ITEM_MARATHON_QUALS_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_BLIP);
-  end;
-
-  if (Memory.MarathonQuals.ItemIndex = ITEM_MARATHON_QUALS_START) and InputOptionSetNext() then
-  begin
-    Memory.GameModes.TimerChanging := True;
-    Memory.GameModes.TimerEditor := TIMER_DEFAULT_EDITOR;
-
-    Sounds.PlaySound(SOUND_START);
-  end;
-end;
-
-
-procedure TLogic.UpdateMarathonQualsRegion();
-begin
-  if Memory.MarathonQuals.ItemIndex <> ITEM_MARATHON_QUALS_REGION then Exit;
-
-  if InputOptionSetPrev() then
-    if Memory.GameModes.QualsActive then
-      Sounds.PlaySound(SOUND_HUM)
-    else
-    begin
-      UpdateItemIndex(Memory.GameModes.Region, REGION_COUNT, ITEM_PREV);
-      Sounds.PlaySound(SOUND_SHIFT);
-    end;
-
-  if InputOptionSetNext() then
-    if Memory.GameModes.QualsActive then
-      Sounds.PlaySound(SOUND_HUM)
-    else
-    begin
-      UpdateItemIndex(Memory.GameModes.Region, REGION_COUNT, ITEM_NEXT);
-      Sounds.PlaySound(SOUND_SHIFT);
-    end;
-
-  Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.GameModes.Region];
-end;
-
-
-procedure TLogic.UpdateMarathonQualsGenerator();
-begin
-  if Memory.MarathonQuals.ItemIndex <> ITEM_MARATHON_QUALS_GENERATOR then Exit;
-
-  if InputOptionSetPrev() then
-    if Memory.GameModes.QualsActive then
-      Sounds.PlaySound(SOUND_HUM)
-    else
-    begin
-      UpdateItemIndex(Memory.GameModes.Generator, GENERATOR_COUNT, ITEM_PREV);
-      Sounds.PlaySound(SOUND_SHIFT);
-    end;
-
-  if InputOptionSetNext() then
-    if Memory.GameModes.QualsActive then
-      Sounds.PlaySound(SOUND_HUM)
-    else
-    begin
-      UpdateItemIndex(Memory.GameModes.Generator, GENERATOR_COUNT, ITEM_NEXT);
-      Sounds.PlaySound(SOUND_SHIFT);
-    end;
-
-  Generators.GeneratorID := Memory.GameModes.Generator;
-end;
-
-
-procedure TLogic.UpdateMarathonQualsLevel();
-begin
-  if Memory.MarathonQuals.ItemIndex <> ITEM_MARATHON_QUALS_LEVEL then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    Memory.MarathonQuals.Autorepeat := 0;
-
-    UpdateItemIndex(Memory.GameModes.Level, LEVEL_COUNT_QUALS[Memory.GameModes.Region], ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end
-  else
-    if InputOptionRollPrev() then
-    begin
-      Memory.MarathonQuals.Autorepeat += 1;
-
-      if Memory.MarathonQuals.Autorepeat = AUTOSHIFT_FRAMES_CHARGE[Memory.GameModes.Region] then
-      begin
-        Memory.MarathonQuals.Autorepeat := AUTOSHIFT_FRAMES_PRECHARGE[Memory.GameModes.Region];
-
-        UpdateItemIndex(Memory.GameModes.Level, LEVEL_COUNT_QUALS[Memory.GameModes.Region], ITEM_PREV);
-        Sounds.PlaySound(SOUND_SHIFT);
-      end;
-    end;
-
-  if InputOptionSetNext() then
-  begin
-    Memory.MarathonQuals.Autorepeat := 0;
-
-    UpdateItemIndex(Memory.GameModes.Level, LEVEL_COUNT_QUALS[Memory.GameModes.Region], ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end
-  else
-    if InputOptionRollNext() then
-    begin
-      Memory.MarathonQuals.Autorepeat += 1;
-
-      if Memory.MarathonQuals.Autorepeat = AUTOSHIFT_FRAMES_CHARGE[Memory.GameModes.Region] then
-      begin
-        Memory.MarathonQuals.Autorepeat := AUTOSHIFT_FRAMES_PRECHARGE[Memory.GameModes.Region];
-
-        UpdateItemIndex(Memory.GameModes.Level, LEVEL_COUNT_QUALS[Memory.GameModes.Region], ITEM_NEXT);
-        Sounds.PlaySound(SOUND_SHIFT);
-      end;
-    end;
-end;
-
-
-procedure TLogic.UpdateMarathonQualsTimer();
-begin
-  UpdateQualsTimer();
-end;
-
-
-procedure TLogic.UpdateMarathonQualsScene();
-begin
-  FScene.Validate();
-
-  if not Memory.GameModes.TimerChanging then
-    if InputMenuRejected() then
-    begin
-      FScene.Current := SCENE_MODES;
-      Sounds.PlaySound(SOUND_DROP);
-    end;
-
-  if not Input.Device.Connected then
-    if Memory.MarathonQuals.ItemIndex = ITEM_MARATHON_QUALS_START then
-    begin
-      if InputMenuAccepted() then
-        Sounds.PlaySound(SOUND_HUM);
-
-      Exit;
-    end;
-
-  if Memory.GameModes.TimerChanging then Exit;
-
-  if InputMenuRejected() then
-  begin
-    FScene.Current := SCENE_MODES;
-    Sounds.PlaySound(SOUND_DROP);
-  end;
-
-  if InputMenuAccepted() then
-  case Memory.MarathonQuals.ItemIndex of
-    ITEM_MARATHON_QUALS_START:
-      if Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA then
-      begin
-        if not Memory.GameModes.QualsActive then
-        begin
-          Memory.GameModes.QualsActive := True;
-          Memory.GameModes.QualsMode := QUALS_MODE_MARATHON;
-          Memory.GameModes.QualsRemaining := Converter.StringToTimerFrames(Memory.GameModes.TimerData);
-
-          BestScores.Quals[False].Clear();
-        end;
-
-        FScene.Current := SCENE_GAME_NORMAL;
-        Sounds.PlaySound(SOUND_START);
-      end
-      else
-        Sounds.PlaySound(SOUND_HUM);
-    ITEM_MARATHON_QUALS_BACK:
-    begin
-      FScene.Current := SCENE_MODES;
-      Sounds.PlaySound(SOUND_DROP);
-    end;
-  end;
-end;
-
-
-procedure TLogic.UpdateMarathonMatchSelection();
-begin
-  if Memory.GameModes.SeedChanging then Exit;
-
-  if InputMenuSetPrev() then
-  begin
-    UpdateItemIndex(Memory.MarathonMatch.ItemIndex, ITEM_MARATHON_MATCH_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_BLIP);
-  end;
-
-  if InputMenuSetNext() then
-  begin
-    UpdateItemIndex(Memory.MarathonMatch.ItemIndex, ITEM_MARATHON_MATCH_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_BLIP);
-  end;
-
-  if (Memory.MarathonMatch.ItemIndex = ITEM_MARATHON_MATCH_START) and InputOptionSetNext() then
-  begin
-    Memory.GameModes.SeedChanging := True;
-    Memory.GameModes.SeedEditor := SEED_DEFAULT_EDITOR;
-
-    Sounds.PlaySound(SOUND_START);
-  end;
-end;
-
-
-procedure TLogic.UpdateMarathonMatchRegion();
-begin
-  if Memory.MarathonMatch.ItemIndex <> ITEM_MARATHON_MATCH_REGION then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Region, REGION_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  if InputOptionSetNext() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Region, REGION_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.GameModes.Region];
-
-  if Memory.GameModes.Region = REGION_PAL then
-    Memory.GameModes.Level := Min(Memory.GameModes.Level, LEVEL_LAST_FREE_GAME_PAL);
-end;
-
-
-procedure TLogic.UpdateMarathonMatchGenerator();
-begin
-  if Memory.MarathonMatch.ItemIndex <> ITEM_MARATHON_MATCH_GENERATOR then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Generator, GENERATOR_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  if InputOptionSetNext() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Generator, GENERATOR_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  Generators.GeneratorID := Memory.GameModes.Generator;
-end;
-
-
-procedure TLogic.UpdateMarathonMatchLevel();
-begin
-  if Memory.MarathonMatch.ItemIndex <> ITEM_MARATHON_MATCH_LEVEL then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    Memory.MarathonMatch.Autorepeat := 0;
-
-    UpdateItemIndex(Memory.GameModes.Level, LEVEL_COUNT_FREE_GAME[Memory.GameModes.Region], ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end
-  else
-    if InputOptionRollPrev() then
-    begin
-      Memory.MarathonMatch.Autorepeat += 1;
-
-      if Memory.MarathonMatch.Autorepeat = AUTOSHIFT_FRAMES_CHARGE[Memory.GameModes.Region] then
-      begin
-        Memory.MarathonMatch.Autorepeat := AUTOSHIFT_FRAMES_PRECHARGE[Memory.GameModes.Region];
-
-        UpdateItemIndex(Memory.GameModes.Level, LEVEL_COUNT_FREE_GAME[Memory.GameModes.Region], ITEM_PREV);
-        Sounds.PlaySound(SOUND_SHIFT);
-      end;
-    end;
-
-  if InputOptionSetNext() then
-  begin
-    Memory.MarathonMatch.Autorepeat := 0;
-
-    UpdateItemIndex(Memory.GameModes.Level, LEVEL_COUNT_FREE_GAME[Memory.GameModes.Region], ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end
-  else
-    if InputOptionRollNext() then
-    begin
-      Memory.MarathonMatch.Autorepeat += 1;
-
-      if Memory.MarathonMatch.Autorepeat = AUTOSHIFT_FRAMES_CHARGE[Memory.GameModes.Region] then
-      begin
-        Memory.MarathonMatch.Autorepeat := AUTOSHIFT_FRAMES_PRECHARGE[Memory.GameModes.Region];
-
-        UpdateItemIndex(Memory.GameModes.Level, LEVEL_COUNT_FREE_GAME[Memory.GameModes.Region], ITEM_NEXT);
-        Sounds.PlaySound(SOUND_SHIFT);
-      end;
-    end;
-end;
-
-
-procedure TLogic.UpdateMarathonMatchSeed();
-begin
-  UpdateMatchSeed();
-end;
-
-
-procedure TLogic.UpdateMarathonMatchScene();
-begin
-  FScene.Validate();
-
-  if not Memory.GameModes.SeedChanging then
-    if InputMenuRejected() then
-    begin
-      FScene.Current := SCENE_MODES;
-      Sounds.PlaySound(SOUND_DROP);
-    end;
-
-  if not Input.Device.Connected then
-    if Memory.MarathonMatch.ItemIndex = ITEM_MARATHON_MATCH_START then
-    begin
-      if InputMenuAccepted() then
-        Sounds.PlaySound(SOUND_HUM);
-
-      Exit;
-    end;
-
-  if Memory.GameModes.SeedChanging then Exit;
-
-  if InputMenuRejected() then
-  begin
-    FScene.Current := SCENE_MODES;
-    Sounds.PlaySound(SOUND_DROP);
-  end;
-
-  if InputMenuAccepted() then
-  case Memory.MarathonMatch.ItemIndex of
-    ITEM_MARATHON_MATCH_START:
-    begin
-      FScene.Current := SCENE_GAME_NORMAL;
-      Sounds.PlaySound(SOUND_START);
-    end;
-    ITEM_MARATHON_MATCH_BACK:
-    begin
-      FScene.Current := SCENE_MODES;
-      Sounds.PlaySound(SOUND_DROP);
-    end;
-  end;
-end;
-
-
-procedure TLogic.UpdateSpeedrunQualsSelection();
-begin
-  if Memory.GameModes.TimerChanging then Exit;
-
-  if InputMenuSetPrev() then
-  begin
-    UpdateItemIndex(Memory.SpeedrunQuals.ItemIndex, ITEM_SPEEDRUN_QUALS_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_BLIP);
-  end;
-
-  if InputMenuSetNext() then
-  begin
-    UpdateItemIndex(Memory.SpeedrunQuals.ItemIndex, ITEM_SPEEDRUN_QUALS_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_BLIP);
-  end;
-
-  if (Memory.SpeedrunQuals.ItemIndex = ITEM_SPEEDRUN_QUALS_START) and InputOptionSetNext() then
-  begin
-    Memory.GameModes.TimerChanging := True;
-    Memory.GameModes.TimerEditor := TIMER_DEFAULT_EDITOR;
-
-    Sounds.PlaySound(SOUND_START);
-  end;
-end;
-
-
-procedure TLogic.UpdateSpeedrunQualsRegion();
-begin
-  if Memory.SpeedrunQuals.ItemIndex <> ITEM_SPEEDRUN_QUALS_REGION then Exit;
-
-  if InputOptionSetPrev() then
-    if Memory.GameModes.QualsActive then
-      Sounds.PlaySound(SOUND_HUM)
-    else
-    begin
-      UpdateItemIndex(Memory.GameModes.Region, REGION_COUNT, ITEM_PREV);
-      Sounds.PlaySound(SOUND_SHIFT);
-    end;
-
-  if InputOptionSetNext() then
-    if Memory.GameModes.QualsActive then
-      Sounds.PlaySound(SOUND_HUM)
-    else
-    begin
-      UpdateItemIndex(Memory.GameModes.Region, REGION_COUNT, ITEM_NEXT);
-      Sounds.PlaySound(SOUND_SHIFT);
-    end;
-
-  Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.GameModes.Region];
-end;
-
-
-procedure TLogic.UpdateSpeedrunQualsGenerator();
-begin
-  if Memory.SpeedrunQuals.ItemIndex <> ITEM_SPEEDRUN_QUALS_GENERATOR then Exit;
-
-  if InputOptionSetPrev() then
-    if Memory.GameModes.QualsActive then
-      Sounds.PlaySound(SOUND_HUM)
-    else
-    begin
-      UpdateItemIndex(Memory.GameModes.Generator, GENERATOR_COUNT, ITEM_PREV);
-      Sounds.PlaySound(SOUND_SHIFT);
-    end;
-
-  if InputOptionSetNext() then
-    if Memory.GameModes.QualsActive then
-      Sounds.PlaySound(SOUND_HUM)
-    else
-    begin
-      UpdateItemIndex(Memory.GameModes.Generator, GENERATOR_COUNT, ITEM_NEXT);
-      Sounds.PlaySound(SOUND_SHIFT);
-    end;
-
-  Generators.GeneratorID := Memory.GameModes.Generator;
-end;
-
-
-procedure TLogic.UpdateSpeedrunQualsTimer();
-begin
-  UpdateQualsTimer();
-end;
-
-
-procedure TLogic.UpdateSpeedrunQualsScene();
-begin
-  FScene.Validate();
-
-  if not Memory.GameModes.TimerChanging then
-    if InputMenuRejected() then
-    begin
-      FScene.Current := SCENE_MODES;
-      Sounds.PlaySound(SOUND_DROP);
-    end;
-
-  if not Input.Device.Connected then
-    if Memory.SpeedrunQuals.ItemIndex = ITEM_SPEEDRUN_QUALS_START then
-    begin
-      if InputMenuAccepted() then
-        Sounds.PlaySound(SOUND_HUM);
-
-      Exit;
-    end;
-
-  if Memory.GameModes.TimerChanging then Exit;
-
-  if InputMenuRejected() then
-  begin
-    FScene.Current := SCENE_MODES;
-    Sounds.PlaySound(SOUND_DROP);
-  end;
-
-  if InputMenuAccepted() then
-  case Memory.SpeedrunQuals.ItemIndex of
-    ITEM_SPEEDRUN_QUALS_START:
-      if Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA then
-      begin
-        if not Memory.GameModes.QualsActive then
-        begin
-          Memory.GameModes.QualsActive := True;
-          Memory.GameModes.QualsMode := QUALS_MODE_SPEEDRUN;
-          Memory.GameModes.QualsRemaining := Converter.StringToTimerFrames(Memory.GameModes.TimerData);
-
-          BestScores.Quals[True].Clear();
-        end;
-
-        FScene.Current := SCENE_SPEEDRUN_NORMAL;
-        Sounds.PlaySound(SOUND_START);
-      end
-      else
-        Sounds.PlaySound(SOUND_HUM);
-    ITEM_SPEEDRUN_QUALS_BACK:
-    begin
-      FScene.Current := SCENE_MODES;
-      Sounds.PlaySound(SOUND_DROP);
-    end;
-  end;
-end;
-
-
-procedure TLogic.UpdateSpeedrunMatchSelection();
-begin
-  if Memory.GameModes.SeedChanging then Exit;
-
-  if InputMenuSetPrev() then
-  begin
-    UpdateItemIndex(Memory.SpeedrunMatch.ItemIndex, ITEM_SPEEDRUN_MATCH_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_BLIP);
-  end;
-
-  if InputMenuSetNext() then
-  begin
-    UpdateItemIndex(Memory.SpeedrunMatch.ItemIndex, ITEM_SPEEDRUN_MATCH_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_BLIP);
-  end;
-
-  if (Memory.SpeedrunMatch.ItemIndex = ITEM_SPEEDRUN_MATCH_START) and InputOptionSetNext() then
-  begin
-    Memory.GameModes.SeedChanging := True;
-    Memory.GameModes.SeedEditor := SEED_DEFAULT_EDITOR;
-
-    Sounds.PlaySound(SOUND_START);
-  end;
-end;
-
-
-procedure TLogic.UpdateSpeedrunMatchRegion();
-begin
-  if Memory.SpeedrunMatch.ItemIndex <> ITEM_SPEEDRUN_MATCH_REGION then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Region, REGION_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  if InputOptionSetNext() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Region, REGION_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.GameModes.Region];
-end;
-
-
-procedure TLogic.UpdateSpeedrunMatchGenerator();
-begin
-  if Memory.SpeedrunMatch.ItemIndex <> ITEM_SPEEDRUN_MATCH_GENERATOR then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Generator, GENERATOR_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  if InputOptionSetNext() then
-  begin
-    UpdateItemIndex(Memory.GameModes.Generator, GENERATOR_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  Generators.GeneratorID := Memory.GameModes.Generator;
-end;
-
-
-procedure TLogic.UpdateSpeedrunMatchSeed();
-begin
-  UpdateMatchSeed();
-end;
-
-
-procedure TLogic.UpdateSpeedrunMatchScene();
-begin
-  FScene.Validate();
-
-  if not Memory.GameModes.SeedChanging then
-    if InputMenuRejected() then
-    begin
-      FScene.Current := SCENE_MODES;
-      Sounds.PlaySound(SOUND_DROP);
-    end;
-
-  if not Input.Device.Connected then
-    if Memory.SpeedrunMatch.ItemIndex = ITEM_SPEEDRUN_MATCH_START then
-    begin
-      if InputMenuAccepted() then
-        Sounds.PlaySound(SOUND_HUM);
-
-      Exit;
-    end;
-
-  if Memory.GameModes.SeedChanging then Exit;
-
-  if InputMenuRejected() then
-  begin
-    FScene.Current := SCENE_MODES;
-    Sounds.PlaySound(SOUND_DROP);
-  end;
-
-  if InputMenuAccepted() then
-  case Memory.SpeedrunMatch.ItemIndex of
-    ITEM_SPEEDRUN_MATCH_START:
-    begin
-      FScene.Current := SCENE_SPEEDRUN_NORMAL;
-      Sounds.PlaySound(SOUND_START);
-    end;
-    ITEM_SPEEDRUN_MATCH_BACK:
-    begin
-      FScene.Current := SCENE_MODES;
+      FScene.Current := SCENE_MENU;
       Sounds.PlaySound(SOUND_DROP);
     end;
   end;
@@ -1877,12 +680,7 @@ end;
 
 procedure TLogic.UpdateGameScene();
 begin
-  FScene.Current := IfThen(
-    Memory.GameModes.IsSpeedrun,
-    IfThen(Memory.Game.Flashing, SCENE_SPEEDRUN_FLASH, SCENE_SPEEDRUN_NORMAL),
-    IfThen(Memory.Game.Flashing, SCENE_GAME_FLASH, SCENE_GAME_NORMAL)
-  );
-
+  FScene.Current := IfThen(Memory.Game.Flashing, SCENE_GAME_FLASH, SCENE_GAME_NORMAL);
   FScene.Validate();
 
   if Memory.Game.State = STATE_UPDATE_TOP_OUT then
@@ -1892,14 +690,10 @@ begin
   end
   else
     if not Input.Device.Connected or Input.Device.Start.JustPressed then
-      if not Memory.GameModes.IsMatch then
-      begin
-        FScene.Current := SCENE_PAUSE;
-        Sounds.PlaySound(SOUND_PAUSE, True);
-      end
-      else
-        if Input.Device.Connected then
-          Sounds.PlaySound(SOUND_HUM);
+    begin
+      FScene.Current := SCENE_PAUSE;
+      Sounds.PlaySound(SOUND_PAUSE, True);
+    end;
 end;
 
 
@@ -1941,20 +735,14 @@ begin
   if InputMenuAccepted() or Input.Device.Start.JustPressed or Input.Keyboard.Start.JustPressed then
   case Memory.Pause.ItemIndex of
     ITEM_PAUSE_RESUME:
-      if not Memory.GameModes.IsQuals then
-        FScene.Current := Memory.Pause.FromScene
-      else
-        Sounds.PlaySound(SOUND_HUM);
+      FScene.Current := Memory.Pause.FromScene;
     ITEM_PAUSE_RESTART:
-      if (not Memory.GameModes.IsQuals) or (Memory.GameModes.QualsRemaining > 0) then
-      begin
-        FScene.Current := Memory.Game.FromScene;
-        FScene.Current := SCENE_GAME_NORMAL;
+    begin
+      FScene.Current := Memory.Game.FromScene;
+      FScene.Current := SCENE_GAME_NORMAL;
 
-        Sounds.PlaySound(SOUND_START);
-      end
-      else
-        Sounds.PlaySound(SOUND_HUM);
+      Sounds.PlaySound(SOUND_START);
+    end;
   end;
 
   if InputMenuAccepted() then
@@ -1967,8 +755,6 @@ begin
     ITEM_PAUSE_BACK:
     begin
       FScene.Current := Memory.Game.FromScene;
-
-      Generators.Generator.UnlockRandomness();
       Sounds.PlaySound(SOUND_DROP);
     end;
   end;
@@ -2012,15 +798,12 @@ begin
 
   if InputMenuAccepted() or Input.Device.Start.JustPressed or Input.Keyboard.Start.JustPressed then
     if Memory.TopOut.ItemIndex = ITEM_TOP_OUT_PLAY then
-      if (not Memory.GameModes.IsQuals) or (Memory.GameModes.QualsRemaining > 0) then
-      begin
-        Memory.Game.Reset();
+    begin
+      Memory.Game.Reset();
 
-        FScene.Current := SCENE_GAME_NORMAL;
-        Sounds.PlaySound(SOUND_START);
-      end
-      else
-        Sounds.PlaySound(SOUND_HUM);
+      FScene.Current := SCENE_GAME_NORMAL;
+      Sounds.PlaySound(SOUND_START);
+    end;
 
   if InputMenuAccepted() then
     if Memory.TopOut.ItemIndex = ITEM_TOP_OUT_BACK then
@@ -2510,21 +1293,6 @@ begin
 
   if not Memory.Game.Started then
     Generators.Shuffle();
-
-  if Memory.GameModes.QualsActive then
-    if Memory.GameModes.QualsRemaining > 0 then
-    begin
-      Memory.GameModes.QualsRemaining -= 1;
-
-      if Memory.GameModes.QualsRemaining = 0 then
-      begin
-        Memory.GameModes.QualsActive := False;
-        Memory.GameModes.QualsMode := QUALS_MODE_DEFAULT;
-        Memory.GameModes.TimerData := TIMER_DEFAULT_DATA;
-
-        Sounds.PlaySound(SOUND_COIN);
-      end;
-    end;
 end;
 
 
@@ -2542,85 +1310,15 @@ begin
 end;
 
 
-procedure TLogic.UpdateModes();
+procedure TLogic.UpdateLobby();
 begin
-  PrepareModes();
+  PrepareLobby();
 
-  UpdateModesSelection();
-  UpdateModesScene();
-end;
-
-
-procedure TLogic.UpdateFreeMarathon();
-begin
-  PrepareFreeMarathon();
-
-  UpdateFreeMarathonSelection();
-  UpdateFreeMarathonRegion();
-  UpdateFreeMarathonGenerator();
-  UpdateFreeMarathonLevel();
-  UpdateFreeMarathonScene();
-end;
-
-
-procedure TLogic.UpdateFreeSpeedrun();
-begin
-  PrepareFreeSpeedrun();
-
-  UpdateFreeSpeedrunSelection();
-  UpdateFreeSpeedrunRegion();
-  UpdateFreeSpeedrunGenerator();
-  UpdateFreeSpeedrunScene();
-end;
-
-
-procedure TLogic.UpdateMarathonQuals();
-begin
-  PrepareMarathonQuals();
-
-  UpdateMarathonQualsSelection();
-  UpdateMarathonQualsRegion();
-  UpdateMarathonQualsGenerator();
-  UpdateMarathonQualsLevel();
-  UpdateMarathonQualsTimer();
-  UpdateMarathonQualsScene();
-end;
-
-
-procedure TLogic.UpdateMarathonMatch();
-begin
-  PrepareMarathonMatch();
-
-  UpdateMarathonMatchSelection();
-  UpdateMarathonMatchRegion();
-  UpdateMarathonMatchGenerator();
-  UpdateMarathonMatchLevel();
-  UpdateMarathonMatchSeed();
-  UpdateMarathonMatchScene();
-end;
-
-
-procedure TLogic.UpdateSpeedrunQuals();
-begin
-  PrepareSpeedrunQuals();
-
-  UpdateSpeedrunQualsSelection();
-  UpdateSpeedrunQualsRegion();
-  UpdateSpeedrunQualsGenerator();
-  UpdateSpeedrunQualsTimer();
-  UpdateSpeedrunQualsScene();
-end;
-
-
-procedure TLogic.UpdateSpeedrunMatch();
-begin
-  PrepareSpeedrunMatch();
-
-  UpdateSpeedrunMatchSelection();
-  UpdateSpeedrunMatchRegion();
-  UpdateSpeedrunMatchGenerator();
-  UpdateSpeedrunMatchSeed();
-  UpdateSpeedrunMatchScene();
+  UpdateLobbySelection();
+  UpdateLobbyRegion();
+  UpdateLobbyGenerator();
+  UpdateLobbyLevel();
+  UpdateLobbyScene();
 end;
 
 
@@ -2698,25 +1396,17 @@ begin
   UpdateCommon();
 
   case FScene.Current of
-    SCENE_LEGAL:           UpdateLegal();
-    SCENE_MENU:            UpdateMenu();
-    SCENE_MODES:           UpdateModes();
-    SCENE_FREE_MARATHON:   UpdateFreeMarathon();
-    SCENE_FREE_SPEEDRUN:   UpdateFreeSpeedrun();
-    SCENE_MARATHON_QUALS:  UpdateMarathonQuals();
-    SCENE_MARATHON_MATCH:  UpdateMarathonMatch();
-    SCENE_SPEEDRUN_QUALS:  UpdateSpeedrunQuals();
-    SCENE_SPEEDRUN_MATCH:  UpdateSpeedrunMatch();
-    SCENE_GAME_NORMAL:     UpdateGame();
-    SCENE_GAME_FLASH:      UpdateGame();
-    SCENE_SPEEDRUN_NORMAL: UpdateGame();
-    SCENE_SPEEDRUN_FLASH:  UpdateGame();
-    SCENE_PAUSE:           UpdatePause();
-    SCENE_TOP_OUT:         UpdateTopOut();
-    SCENE_OPTIONS:         UpdateOptions();
-    SCENE_KEYBOARD:        UpdateKeyboard();
-    SCENE_CONTROLLER:      UpdateController();
-    SCENE_QUIT:            UpdateQuit();
+    SCENE_LEGAL:       UpdateLegal();
+    SCENE_MENU:        UpdateMenu();
+    SCENE_LOBBY:       UpdateLobby();
+    SCENE_GAME_NORMAL: UpdateGame();
+    SCENE_GAME_FLASH:  UpdateGame();
+    SCENE_PAUSE:       UpdatePause();
+    SCENE_TOP_OUT:     UpdateTopOut();
+    SCENE_OPTIONS:     UpdateOptions();
+    SCENE_KEYBOARD:    UpdateKeyboard();
+    SCENE_CONTROLLER:  UpdateController();
+    SCENE_QUIT:        UpdateQuit();
   end;
 end;
 

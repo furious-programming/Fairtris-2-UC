@@ -33,55 +33,56 @@ type
   TRenderer = class(TObject)
   private
     function CharToIndex(AChar: Char): Integer;
-  protected
+  private
     function MarathonEntryToString(AEntry: TScoreEntry = nil): String;
     function SpeedrunEntryToString(AEntry: TScoreEntry = nil): String;
-  protected
+  private
     procedure RenderSprite(ASprite: PSDL_Texture; ABufferRect, ASpriteRect: TSDL_Rect);
     procedure RenderText(AX, AY: Integer; const AText: String; AColor: Integer = COLOR_WHITE; AAlign: Integer = ALIGN_LEFT);
     procedure RenderNext(AX, AY, APiece, ALevel: Integer);
     procedure RenderBrick(AX, AY, ABrick, ALevel: Integer);
-  protected
+    procedure RenderButton(AX, AY, AButton: Integer);
+  private
     procedure RenderGround(ASceneID: Integer);
-  protected
+  private
     procedure RenderMenuSelection();
-  protected
+  private
     procedure RenderModesSelection();
     procedure RenderModesItems();
-  protected
+  private
     procedure RenderGameModeSeed();
     procedure RenderGameModeTimer();
-  protected
+  private
     procedure RenderFreeMarathonSelection();
     procedure RenderFreeMarathonItems();
     procedure RenderFreeMarathonParameters();
     procedure RenderFreeMarathonBestScores();
-  protected
+  private
     procedure RenderFreeSpeedrunSelection();
     procedure RenderFreeSpeedrunItems();
     procedure RenderFreeSpeedrunParameters();
     procedure RenderFreeSpeedrunBestScores();
-  protected
+  private
     procedure RenderMarathonQualsSelection();
     procedure RenderMarathonQualsItems();
     procedure RenderMarathonQualsParameters();
     procedure RenderMarathonQualsBestScores();
-  protected
+  private
     procedure RenderMarathonMatchSelection();
     procedure RenderMarathonMatchItems();
     procedure RenderMarathonMatchParameters();
     procedure RenderMarathonMatchBestScores();
-  protected
+  private
     procedure RenderSpeedrunQualsSelection();
     procedure RenderSpeedrunQualsItems();
     procedure RenderSpeedrunQualsParameters();
     procedure RenderSpeedrunQualsBestScores();
-  protected
+  private
     procedure RenderSpeedrunMatchSelection();
     procedure RenderSpeedrunMatchItems();
     procedure RenderSpeedrunMatchParameters();
     procedure RenderSpeedrunMatchBestScores();
-  protected
+  private
     procedure RenderGameBestTitle();
     procedure RenderGameBest();
     procedure RenderGameScore();
@@ -91,10 +92,14 @@ type
     procedure RenderGameTime();
     procedure RenderGameStack();
     procedure RenderGamePiece();
-  protected
+    procedure RenderGameBurned();
+    procedure RenderGameTetrises();
+    procedure RenderGameGain();
+    procedure RenderGameInput();
+  private
     procedure RenderPauseSelection();
     procedure RenderPauseItems();
-  protected
+  private
     procedure RenderTopOutResultScore();
     procedure RenderTopOutResultTotalTime();
     procedure RenderTopOutResultTransition();
@@ -102,39 +107,24 @@ type
     procedure RenderTopOutResultLinesBurned();
     procedure RenderTopOutResultTetrisRate();
     procedure RenderTopOutResultQualsEndIn();
-  protected
+  private
     procedure RenderTopOutSelection();
     procedure RenderTopOutItems();
     procedure RenderTopOutResult();
-  protected
+  private
     procedure RenderOptionsSelection();
     procedure RenderOptionsItems();
     procedure RenderOptionsParameters();
-  protected
+  private
     procedure RenderKeyboardItemSelection();
     procedure RenderKeyboardItems();
     procedure RenderKeyboardKeySelection();
     procedure RenderKeyboardKeyScanCodes();
-  protected
+  private
     procedure RenderControllerItemSelection();
     procedure RenderControllerItems();
     procedure RenderControllerButtonSelection();
     procedure RenderControllerButtonScanCodes();
-  protected
-    procedure RenderBegin();
-    procedure RenderEnd();
-  end;
-
-
-type
-  TModernRenderer = class(TRenderer)
-  private
-    procedure RenderButton(AX, AY, AButton: Integer);
-  private
-    procedure RenderGameBurned();
-    procedure RenderGameTetrises();
-    procedure RenderGameGain();
-    procedure RenderGameInput();
   private
     procedure RenderLegal();
     procedure RenderMenu();
@@ -152,6 +142,9 @@ type
     procedure RenderKeyboard();
     procedure RenderController();
     procedure RenderQuit();
+  private
+    procedure RenderBegin();
+    procedure RenderEnd();
   public
     procedure RenderScene(ASceneID: Integer);
   end;
@@ -311,6 +304,26 @@ begin
       )
     );
   end;
+end;
+
+
+procedure TRenderer.RenderButton(AX, AY, AButton: Integer);
+begin
+  RenderSprite(
+    Sprites.Controller,
+    SDL_Rect(
+      AX,
+      AY,
+      THUMBNAIL_BUTTON_WIDTH[AButton],
+      THUMBNAIL_BUTTON_HEIGHT[AButton]
+    ),
+    SDL_Rect(
+      THUMBNAIL_BUTTON_X[AButton],
+      THUMBNAIL_BUTTON_Y[AButton],
+      THUMBNAIL_BUTTON_WIDTH[AButton],
+      THUMBNAIL_BUTTON_HEIGHT[AButton]
+    )
+  );
 end;
 
 
@@ -1407,6 +1420,57 @@ begin
 end;
 
 
+procedure TRenderer.RenderGameBurned();
+begin
+  RenderText(
+    BURNED_X,
+    BURNED_Y,
+    Converter.BurnedToString(Memory.Game.Burned),
+    COLOR_WHITE,
+    ALIGN_RIGHT
+  );
+end;
+
+
+procedure TRenderer.RenderGameTetrises();
+begin
+  RenderText(
+    TETRISES_X,
+    TETRISES_Y,
+    Converter.TetrisesToString(Memory.Game.TetrisRate),
+    COLOR_WHITE,
+    ALIGN_RIGHT
+  );
+end;
+
+
+procedure TRenderer.RenderGameGain();
+begin
+  if Memory.Game.GainTimer > 0 then
+    RenderText(
+      GAIN_X,
+      GAIN_Y,
+      Converter.GainToString(Memory.Game.Gain),
+      COLOR_WHITE,
+      ALIGN_RIGHT
+    );
+end;
+
+
+procedure TRenderer.RenderGameInput();
+var
+  Index: Integer;
+begin
+  for Index := DEVICE_FIRST to DEVICE_LAST do
+    if Input.Device.Switch[Index].Pressed then
+      RenderButton(
+        CONTROLLER_X + THUMBNAIL_BUTTON_X[Index],
+        CONTROLLER_Y + THUMBNAIL_BUTTON_Y[Index],
+        Index
+      );
+end;
+
+
 procedure TRenderer.RenderPauseSelection();
 begin
   RenderText(
@@ -2067,109 +2131,26 @@ begin
 end;
 
 
-procedure TRenderer.RenderBegin();
-begin
-  SDL_SetRenderTarget(Window.Renderer, Buffers.Native);
-end;
-
-
-procedure TRenderer.RenderEnd();
-begin
-  SDL_SetRenderTarget(Window.Renderer, nil);
-end;
-
-
-procedure TModernRenderer.RenderButton(AX, AY, AButton: Integer);
-begin
-  RenderSprite(
-    Sprites.Controller,
-    SDL_Rect(
-      AX,
-      AY,
-      THUMBNAIL_BUTTON_WIDTH[AButton],
-      THUMBNAIL_BUTTON_HEIGHT[AButton]
-    ),
-    SDL_Rect(
-      THUMBNAIL_BUTTON_X[AButton],
-      THUMBNAIL_BUTTON_Y[AButton],
-      THUMBNAIL_BUTTON_WIDTH[AButton],
-      THUMBNAIL_BUTTON_HEIGHT[AButton]
-    )
-  );
-end;
-
-
-procedure TModernRenderer.RenderGameBurned();
-begin
-  RenderText(
-    BURNED_X,
-    BURNED_Y,
-    Converter.BurnedToString(Memory.Game.Burned),
-    COLOR_WHITE,
-    ALIGN_RIGHT
-  );
-end;
-
-
-procedure TModernRenderer.RenderGameTetrises();
-begin
-  RenderText(
-    TETRISES_X,
-    TETRISES_Y,
-    Converter.TetrisesToString(Memory.Game.TetrisRate),
-    COLOR_WHITE,
-    ALIGN_RIGHT
-  );
-end;
-
-
-procedure TModernRenderer.RenderGameGain();
-begin
-  if Memory.Game.GainTimer > 0 then
-    RenderText(
-      GAIN_X,
-      GAIN_Y,
-      Converter.GainToString(Memory.Game.Gain),
-      COLOR_WHITE,
-      ALIGN_RIGHT
-    );
-end;
-
-
-procedure TModernRenderer.RenderGameInput();
-var
-  Index: Integer;
-begin
-  for Index := DEVICE_FIRST to DEVICE_LAST do
-    if Input.Device.Switch[Index].Pressed then
-      RenderButton(
-        CONTROLLER_X + THUMBNAIL_BUTTON_X[Index],
-        CONTROLLER_Y + THUMBNAIL_BUTTON_Y[Index],
-        Index
-      );
-end;
-
-
-procedure TModernRenderer.RenderLegal();
+procedure TRenderer.RenderLegal();
 begin
 
 end;
 
 
-procedure TModernRenderer.RenderMenu();
+procedure TRenderer.RenderMenu();
 begin
   RenderMenuSelection();
 end;
 
 
-procedure TModernRenderer.RenderModes();
+procedure TRenderer.RenderModes();
 begin
   RenderModesSelection();
   RenderModesItems();
 end;
 
 
-procedure TModernRenderer.RenderFreeMarathon();
+procedure TRenderer.RenderFreeMarathon();
 begin
   RenderFreeMarathonSelection();
   RenderFreeMarathonItems();
@@ -2178,7 +2159,7 @@ begin
 end;
 
 
-procedure TModernRenderer.RenderFreeSpeedrun();
+procedure TRenderer.RenderFreeSpeedrun();
 begin
   RenderFreeSpeedrunSelection();
   RenderFreeSpeedrunItems();
@@ -2187,7 +2168,7 @@ begin
 end;
 
 
-procedure TModernRenderer.RenderMarathonQuals();
+procedure TRenderer.RenderMarathonQuals();
 begin
   RenderMarathonQualsSelection();
   RenderMarathonQualsItems();
@@ -2196,7 +2177,7 @@ begin
 end;
 
 
-procedure TModernRenderer.RenderMarathonMatch();
+procedure TRenderer.RenderMarathonMatch();
 begin
   RenderMarathonMatchSelection();
   RenderMarathonMatchItems();
@@ -2205,7 +2186,7 @@ begin
 end;
 
 
-procedure TModernRenderer.RenderSpeedrunQuals();
+procedure TRenderer.RenderSpeedrunQuals();
 begin
   RenderSpeedrunQualsSelection();
   RenderSpeedrunQualsItems();
@@ -2214,7 +2195,7 @@ begin
 end;
 
 
-procedure TModernRenderer.RenderSpeedrunMatch();
+procedure TRenderer.RenderSpeedrunMatch();
 begin
   RenderSpeedrunMatchSelection();
   RenderSpeedrunMatchItems();
@@ -2223,7 +2204,7 @@ begin
 end;
 
 
-procedure TModernRenderer.RenderGame();
+procedure TRenderer.RenderGame();
 begin
   RenderGameBestTitle();
   RenderGameBest();
@@ -2242,14 +2223,14 @@ begin
 end;
 
 
-procedure TModernRenderer.RenderPause();
+procedure TRenderer.RenderPause();
 begin
   RenderPauseSelection();
   RenderPauseItems();
 end;
 
 
-procedure TModernRenderer.RenderTopOut();
+procedure TRenderer.RenderTopOut();
 begin
   RenderTopOutSelection();
   RenderTopOutItems();
@@ -2257,7 +2238,7 @@ begin
 end;
 
 
-procedure TModernRenderer.RenderOptions();
+procedure TRenderer.RenderOptions();
 begin
   RenderOptionsSelection();
   RenderOptionsItems();
@@ -2265,7 +2246,7 @@ begin
 end;
 
 
-procedure TModernRenderer.RenderKeyboard();
+procedure TRenderer.RenderKeyboard();
 begin
   RenderKeyboardItemSelection();
   RenderKeyboardItems();
@@ -2274,7 +2255,7 @@ begin
 end;
 
 
-procedure TModernRenderer.RenderController();
+procedure TRenderer.RenderController();
 begin
   RenderControllerItemSelection();
   RenderControllerItems();
@@ -2283,13 +2264,25 @@ begin
 end;
 
 
-procedure TModernRenderer.RenderQuit();
+procedure TRenderer.RenderQuit();
 begin
 
 end;
 
 
-procedure TModernRenderer.RenderScene(ASceneID: Integer);
+procedure TRenderer.RenderBegin();
+begin
+  SDL_SetRenderTarget(Window.Renderer, Buffers.Native);
+end;
+
+
+procedure TRenderer.RenderEnd();
+begin
+  SDL_SetRenderTarget(Window.Renderer, nil);
+end;
+
+
+procedure TRenderer.RenderScene(ASceneID: Integer);
 begin
   RenderBegin();
   RenderGround(ASceneID);

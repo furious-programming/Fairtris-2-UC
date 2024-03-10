@@ -30,7 +30,7 @@ uses
 
 
 type
-  TRenderer = class(TInterfacedObject)
+  TRenderer = class(TObject)
   private
     function CharToIndex(AChar: Char): Integer;
   protected
@@ -127,7 +127,7 @@ type
 
 
 type
-  TModernRenderer = class(TRenderer, IRenderable)
+  TModernRenderer = class(TRenderer)
   private
     procedure RenderButton(AX, AY, AButton: Integer);
   private

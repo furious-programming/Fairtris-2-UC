@@ -46,111 +46,16 @@ type
 
 
 type
-  TModesMemory = class(TObject)
-  public
-    procedure Initialize();
-  public
-    ItemIndex: Integer;
-  end;
-
-
-type
-  TFreeMarathonMemory = class(TObject)
+  TLobbyMemory = class(TObject)
   public
     procedure Initialize();
   public
     ItemIndex: Integer;
     Autorepeat: Integer;
-  end;
-
-
-type
-  TFreeSpeedrunMemory = class(TObject)
   public
-    procedure Initialize();
-  public
-    ItemIndex: Integer;
-    Autorepeat: Integer;
-  end;
-
-
-type
-  TMarathonQualsMemory = class(TObject)
-  public
-    procedure Initialize();
-  public
-    ItemIndex: Integer;
-    Autorepeat: Integer;
-  end;
-
-
-type
-  TMarathonMatchMemory = class(TObject)
-  public
-    procedure Initialize();
-  public
-    ItemIndex: Integer;
-    Autorepeat: Integer;
-  end;
-
-
-type
-  TSpeedrunQualsMemory = class(TObject)
-  public
-    procedure Initialize();
-  public
-    ItemIndex: Integer;
-    Autorepeat: Integer;
-  end;
-
-
-type
-  TSpeedrunMatchMemory = class(TObject)
-  public
-    procedure Initialize();
-  public
-    ItemIndex: Integer;
-    Autorepeat: Integer;
-  end;
-
-
-type
-  TGameModesMemory = class(TObject)
-  private
-    function GetIsFreeGame(): Boolean;
-    function GetIsQuals(): Boolean;
-    function GetIsMatch(): Boolean;
-    function GetIsMarathon(): Boolean;
-    function GetIsSpeedrun(): Boolean;
-  private
-    function GetHasHardKillScreen(): Boolean;
-  public      
-    procedure Initialize();
-  public
-    Mode: Integer;
     Region: Integer;
     Generator: Integer;
     Level: Integer;
-  public
-    SeedData: String;
-    SeedEditor: String;
-    SeedChanging: Boolean;
-  public
-    TimerData: String;
-    TimerEditor: String;
-    TimerChanging: Boolean;
-  public
-    QualsMode: Integer;
-    QualsActive: Boolean;
-    QualsRemaining: Integer;
-  public
-    property IsFreeGame: Boolean read GetIsFreeGame;
-    property IsQuals: Boolean read GetIsQuals;
-    property IsMatch: Boolean read GetIsMatch;
-    property IsMarathon: Boolean read GetIsMarathon;
-    property IsSpeedrun: Boolean read GetIsSpeedrun;
-  public
-    property HasHardKillScreen: Boolean read GetHasHardKillScreen;
   end;
 
 
@@ -203,7 +108,6 @@ type
   public
     AfterTransition: Boolean;
     AfterKillScreen: Boolean;
-    AfterHardKillScreen: Boolean;
   public
     LowerTimer: Integer;
     TopOutTimer: Integer;
@@ -326,14 +230,7 @@ type
   private
     FLegal: TLegalMemory;
     FMenu: TMenuMemory;
-    FModes: TModesMemory;
-    FFreeMarathon: TFreeMarathonMemory;
-    FFreeSpeedrun: TFreeSpeedrunMemory;
-    FMarathonQuals: TMarathonQualsMemory;
-    FMarathonMatch: TMarathonMatchMemory;
-    FSpeedrunQuals: TSpeedrunQualsMemory;
-    FSpeedrunMatch: TSpeedrunMatchMemory;
-    FGameModes: TGameModesMemory;
+    FLobby: TLobbyMemory;
     FGame: TGameMemory;
     FPause: TPauseMemory;
     FTopOut: TTopOutMemory;
@@ -349,14 +246,7 @@ type
   public
     property Legal: TLegalMemory read FLegal;
     property Menu: TMenuMemory read FMenu;
-    property Modes: TModesMemory read FModes;
-    property FreeMarathon: TFreeMarathonMemory read FFreeMarathon;
-    property FreeSpeedrun: TFreeSpeedrunMemory read FFreeSpeedrun;
-    property MarathonQuals: TMarathonQualsMemory read FMarathonQuals;
-    property MarathonMatch: TMarathonMatchMemory read FMarathonMatch;
-    property SpeedrunQuals: TSpeedrunQualsMemory read FSpeedrunQuals;
-    property SpeedrunMatch: TSpeedrunMatchMemory read FSpeedrunMatch;
-    property GameModes: TGameModesMemory read FGameModes;
+    property Lobby: TLobbyMemory read FLobby;
     property Game: TGameMemory read FGame;
     property Pause: TPauseMemory read FPause;
     property TopOut: TTopOutMemory read FTopOut;
@@ -393,109 +283,14 @@ begin
 end;
 
 
-procedure TModesMemory.Initialize();
+procedure TLobbyMemory.Initialize();
 begin
-  ItemIndex := ITEM_MODES_FIRST;
-end;
-
-
-procedure TFreeMarathonMemory.Initialize();
-begin
-  ItemIndex := ITEM_FREE_MARATHON_START;
+  ItemIndex := ITEM_LOBBY_START;
   Autorepeat := 0;
-end;
-
-
-procedure TFreeSpeedrunMemory.Initialize();
-begin
-  ItemIndex := ITEM_FREE_SPEEDRUN_START;
-  Autorepeat := 0;
-end;
-
-
-procedure TMarathonQualsMemory.Initialize();
-begin
-  ItemIndex := ITEM_MARATHON_QUALS_START;
-  Autorepeat := 0;
-end;
-
-
-procedure TMarathonMatchMemory.Initialize();
-begin
-  ItemIndex := ITEM_MARATHON_MATCH_START;
-  Autorepeat := 0;
-end;
-
-
-procedure TSpeedrunQualsMemory.Initialize();
-begin
-  ItemIndex := ITEM_SPEEDRUN_QUALS_START;
-  Autorepeat := 0;
-end;
-
-
-procedure TSpeedrunMatchMemory.Initialize();
-begin
-  ItemIndex := ITEM_SPEEDRUN_MATCH_START;
-  Autorepeat := 0;
-end;
-
-
-function TGameModesMemory.GetIsFreeGame(): Boolean;
-begin
-  Result := Mode in [MODE_FREE_MARATHON, MODE_FREE_SPEEDRUN];
-end;
-
-
-function TGameModesMemory.GetIsQuals(): Boolean;
-begin
-  Result := Mode in [MODE_MARATHON_QUALS, MODE_SPEEDRUN_QUALS];
-end;
-
-
-function TGameModesMemory.GetIsMatch(): Boolean;
-begin
-  Result := Mode in [MODE_MARATHON_MATCH, MODE_SPEEDRUN_MATCH];
-end;
-
-
-function TGameModesMemory.GetIsMarathon(): Boolean;
-begin
-  Result := Mode in [MODE_FREE_MARATHON, MODE_MARATHON_QUALS, MODE_MARATHON_MATCH];
-end;
-
-
-function TGameModesMemory.GetIsSpeedrun(): Boolean;
-begin
-  Result := Mode in [MODE_FREE_SPEEDRUN, MODE_SPEEDRUN_QUALS, MODE_SPEEDRUN_MATCH];
-end;
-
-
-function TGameModesMemory.GetHasHardKillScreen(): Boolean;
-begin
-  Result := Mode in [MODE_FREE_SPEEDRUN, MODE_MARATHON_MATCH, MODE_SPEEDRUN_QUALS, MODE_SPEEDRUN_MATCH];
-end;
-
-
-procedure TGameModesMemory.Initialize();
-begin
-  Mode := MODE_DEFAULT;
 
   Region := Settings.General.Region;
   Generator := Settings.General.Generator;
   Level := Settings.General.Level;
-
-  SeedData := SEED_DEFAULT_DATA;
-  SeedEditor := SEED_DEFAULT_EDITOR;
-  SeedChanging := False;
-
-  TimerData := TIMER_DEFAULT_DATA;
-  TimerEditor := TIMER_DEFAULT_EDITOR;
-  TimerChanging := False;
-
-  QualsMode := QUALS_MODE_DEFAULT;
-  QualsActive := False;
-  QualsRemaining := 0;
 end;
 
 
@@ -541,7 +336,6 @@ begin
 
   AfterTransition := False;
   AfterKillScreen := False;
-  AfterHardKillScreen := False;
 
   LowerTimer := 0;
   TopOutTimer := 0;
@@ -672,14 +466,7 @@ constructor TMemory.Create();
 begin
   FLegal := TLegalMemory.Create();
   FMenu := TMenuMemory.Create();
-  FModes := TModesMemory.Create();
-  FFreeMarathon := TFreeMarathonMemory.Create();
-  FFreeSpeedrun := TFreeSpeedrunMemory.Create();
-  FMarathonQuals := TMarathonQualsMemory.Create();
-  FMarathonMatch := TMarathonMatchMemory.Create();
-  FSpeedrunQuals := TSpeedrunQualsMemory.Create();
-  FSpeedrunMatch := TSpeedrunMatchMemory.Create();
-  FGameModes := TGameModesMemory.Create();
+  FLobby := TLobbyMemory.Create();
   FGame := TGameMemory.Create();
   FPause := TPauseMemory.Create();
   FTopOut := TTopOutMemory.Create();
@@ -694,14 +481,7 @@ destructor TMemory.Destroy();
 begin
   FLegal.Free();
   FMenu.Free();
-  FModes.Free();
-  FFreeMarathon.Free();
-  FFreeSpeedrun.Free();
-  FMarathonQuals.Free();
-  FMarathonMatch.Free();
-  FSpeedrunQuals.Free();
-  FSpeedrunMatch.Free();
-  FGameModes.Free();
+  FLobby.Free();
   FGame.Free();
   FPause.Free();
   FTopOut.Free();
@@ -718,14 +498,7 @@ procedure TMemory.Initialize();
 begin
   FLegal.Initialize();
   FMenu.Initialize();
-  FModes.Initialize();
-  FFreeMarathon.Initialize();
-  FFreeSpeedrun.Initialize();
-  FMarathonQuals.Initialize();
-  FMarathonMatch.Initialize();
-  FSpeedrunQuals.Initialize();
-  FSpeedrunMatch.Initialize();
-  FGameModes.Initialize();
+  FLobby.Initialize();
   FPause.Initialize();
   FOptions.Initialize();
   FKeyboard.Initialize();

@@ -153,7 +153,7 @@ begin
     FWindowBounds := FVideoBounds
   else
   case FWindowSizeID of
-    SIZE_NATIVE, SIZE_ZOOM_2X, SIZE_ZOOM_3X, SIZE_ZOOM_4X:
+    SIZE_NATIVE, SIZE_ZOOM_2X, SIZE_ZOOM_3X:
     begin
       NewWidth := Ord(FWindowSizeID) * BUFFER_WIDTH + BUFFER_WIDTH;
       NewWidth := Round(NewWidth * PIXEL_RATIO);

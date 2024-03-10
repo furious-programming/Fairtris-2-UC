@@ -57,7 +57,6 @@ type
   private
     FInput: Integer;
     FSize: Integer;
-    FControls: Integer;
     FSounds: Integer;
   private
     FRegion: Integer;
@@ -83,7 +82,6 @@ type
   public
     property Input: Integer read FInput;
     property Size: Integer read FSize;
-    property Controls: Integer read FControls;
     property Sounds: Integer read FSounds;
   public
     property Region: Integer read FRegion;
@@ -255,10 +253,9 @@ begin
   FLeft := CorrectLeft(FLeft);
   FTop := CorrectTop(FTop);
 
-  FInput    := CorrectRange(FInput,    INPUT_FIRST,    INPUT_LAST,    INPUT_DEFAULT);
-  FSize     := CorrectRange(FSize,     SIZE_FIRST,     SIZE_LAST,     SIZE_DEFAULT);
-  FControls := CorrectRange(FControls, CONTROLS_FIRST, CONTROLS_LAST, CONTROLS_DEFAULT);
-  FSounds   := CorrectRange(FSounds,   SOUNDS_FIRST,   SOUNDS_LAST,   SOUNDS_DEFAULT);
+  FInput    := CorrectRange(FInput,  INPUT_FIRST,  INPUT_LAST,  INPUT_DEFAULT);
+  FSize     := CorrectRange(FSize,   SIZE_FIRST,   SIZE_LAST,   SIZE_DEFAULT);
+  FSounds   := CorrectRange(FSounds, SOUNDS_FIRST, SOUNDS_LAST, SOUNDS_DEFAULT);
 
   FRegion    := CorrectRange(FRegion,    REGION_FIRST,    REGION_LAST,    REGION_DEFAULT);
   FGenerator := CorrectRange(FGenerator, GENERATOR_FIRST, GENERATOR_LAST, GENERATOR_DEFAULT);
@@ -274,7 +271,6 @@ begin
   FTop := Placement.WindowBounds.Y;
 
   FInput := Memory.Options.Input;
-  FControls := Memory.Options.Controls;
   FSounds := Memory.Options.Sounds;
 
   FRegion := Memory.GameModes.Region;
@@ -289,10 +285,9 @@ begin
   FLeft    := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_LEFT,    SETTINGS_VALUE_GENERAL_LEFT);
   FTop     := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_TOP,     SETTINGS_VALUE_GENERAL_TOP);
 
-  FInput    := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_INPUT,    SETTINGS_VALUE_GENERAL_INPUT);
-  FSize     := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_SIZE,     SETTINGS_VALUE_GENERAL_SIZE);
-  FSounds   := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_SOUNDS,   SETTINGS_VALUE_GENERAL_SOUNDS);
-  FControls := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_CONTROLS, SETTINGS_VALUE_GENERAL_CONTROLS);
+  FInput  := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_INPUT,  SETTINGS_VALUE_GENERAL_INPUT);
+  FSize   := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_SIZE,   SETTINGS_VALUE_GENERAL_SIZE);
+  FSounds := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_SOUNDS, SETTINGS_VALUE_GENERAL_SOUNDS);
 
   FRegion    := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_REGION,    SETTINGS_VALUE_GENERAL_REGION);
   FGenerator := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_GENERATOR, SETTINGS_VALUE_GENERAL_GENERATOR);
@@ -308,10 +303,9 @@ begin
   AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_LEFT,    FLeft);
   AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_TOP,     FTop);
 
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_INPUT,    FInput);
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_SIZE,     FSize);
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_CONTROLS, FControls);
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_SOUNDS,   FSounds);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_INPUT,  FInput);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_SIZE,   FSize);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_SOUNDS, FSounds);
 
   AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_REGION,    FRegion);
   AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_GENERATOR, FGenerator);

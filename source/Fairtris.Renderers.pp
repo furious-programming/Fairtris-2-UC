@@ -151,7 +151,7 @@ type
 
 
 var
-  Renderers: TRenderers;
+  Renderer: TRenderer;
 
 
 implementation

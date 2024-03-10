@@ -50,29 +50,6 @@ type
 
 
 type
-  IRenderable = interface(IInterface)
-    procedure RenderLegal();
-    procedure RenderMenu();
-    procedure RenderModes();
-    procedure RenderFreeMarathon();
-    procedure RenderFreeSpeedrun();
-    procedure RenderMarathonQuals();
-    procedure RenderMarathonMatch();
-    procedure RenderSpeedrunQuals();
-    procedure RenderSpeedrunMatch();
-    procedure RenderGame();
-    procedure RenderPause();
-    procedure RenderTopOut();
-    procedure RenderOptions();
-    procedure RenderKeyboard();
-    procedure RenderController();
-    procedure RenderQuit();
-
-    procedure RenderScene(ASceneID: Integer);
-  end;
-
-
-type
   IGenerable = interface(IInterface)
     procedure Initialize();
     procedure UnlockRandomness();

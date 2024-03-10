@@ -114,11 +114,10 @@ const
   SOUND_TETRIS     = 7;
   SOUND_TRANSITION = 8;
   SOUND_TOP_OUT    = 9;
-  SOUND_SUCCESS    = 10;
-  SOUND_PAUSE      = 11;
-  SOUND_HUM        = 12;
-  SOUND_COIN       = 13;
-  SOUND_GLASS      = 14;
+  SOUND_PAUSE      = 10;
+  SOUND_HUM        = 11;
+  SOUND_COIN       = 12;
+  SOUND_GLASS      = 13;
 
   SOUND_FIRST = SOUND_BLIP;
   SOUND_LAST  = SOUND_GLASS;

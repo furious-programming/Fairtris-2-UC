@@ -16,7 +16,7 @@
   be included with this distribution. If not, check the repository.
 }
 
-unit Fairtris.Renderers;
+unit Fairtris.Renderer;
 
 {$MODE OBJFPC}{$LONGSTRINGS ON}
 

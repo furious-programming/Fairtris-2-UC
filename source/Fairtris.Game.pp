@@ -65,7 +65,7 @@ uses
   Fairtris.Input,
   Fairtris.Memory,
   Fairtris.Placement,
-  Fairtris.Renderers,
+  Fairtris.Renderer,
   Fairtris.Sounds,
   Fairtris.Grounds,
   Fairtris.Sprites,

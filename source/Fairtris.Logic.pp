@@ -228,7 +228,7 @@ uses
   Fairtris.Memory,
   Fairtris.Placement,
   Fairtris.Converter,
-  Fairtris.Renderers,
+  Fairtris.Renderer,
   Fairtris.Grounds,
   Fairtris.Sounds,
   Fairtris.BestScores,

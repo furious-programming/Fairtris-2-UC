@@ -231,12 +231,8 @@ begin
   Result := AValue;
 
   case Result of
-    REGION_NTSC .. REGION_JPN_EXTENDED, REGION_EUR .. REGION_EUR_EXTENDED:
-      if (Result < LEVEL_FIRST_NTSC) or (Result > LEVEL_LAST_FREE_GAME_NTSC) then
-        Result := LEVEL_DEFAULT;
-    REGION_PAL .. REGION_PAL_EXTENDED:
-      if (Result < LEVEL_FIRST_PAL) or (Result > LEVEL_LAST_FREE_GAME_PAL) then
-        Result := LEVEL_DEFAULT;
+    REGION_NTSC: if (Result < LEVEL_FIRST_NTSC) or (Result > LEVEL_LAST_FREE_GAME_NTSC) then Result := LEVEL_DEFAULT;
+    REGION_PAL:  if (Result < LEVEL_FIRST_PAL)  or (Result > LEVEL_LAST_FREE_GAME_PAL)  then Result := LEVEL_DEFAULT;
   end;
 end;
 

@@ -843,15 +843,9 @@ const
 
 
 const
-  TOP_OUT_FRAMES: array [Boolean, REGION_FIRST .. REGION_LAST] of Integer = (
-    (
-      CLOCK_FRAMERATE_NTSC,
-      CLOCK_FRAMERATE_PAL
-    ),
-    (
-      Trunc(CLOCK_FRAMERATE_NTSC * 2.3),
-      Trunc(CLOCK_FRAMERATE_PAL  * 2.3)
-    )
+  TOP_OUT_FRAMES: array [REGION_FIRST .. REGION_LAST] of Integer = (
+    CLOCK_FRAMERATE_NTSC,
+    CLOCK_FRAMERATE_PAL
   );
 
 

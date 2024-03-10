@@ -526,7 +526,7 @@ begin
   else
   begin
     Memory.Game.State := STATE_UPDATE_TOP_OUT;
-    Memory.Game.TopOutTimer := TOP_OUT_FRAMES[False, Memory.Lobby.Region];
+    Memory.Game.TopOutTimer := TOP_OUT_FRAMES[Memory.Lobby.Region];
 
     Sounds.PlaySound(SOUND_TOP_OUT, True);
   end;

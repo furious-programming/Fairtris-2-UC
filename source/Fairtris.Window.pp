@@ -85,6 +85,7 @@ begin
   if FRenderer = nil then
     raise SDLException.CreateFmt(ERROR_MESSAGE_SDL, [ERROR_MESSAGE[ERROR_SDL_CREATE_RENDERER], SDL_GetError()]);
 
+  SDL_SetRenderDrawBlendMode(FRenderer, SDL_BLENDMODE_BLEND);
   SDL_Version(SysInfo.Version);
 
   if SDL_GetWindowWMInfo(FWindow, @SysInfo) = SDL_TRUE then

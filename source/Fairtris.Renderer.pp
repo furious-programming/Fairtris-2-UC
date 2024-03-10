@@ -1200,6 +1200,8 @@ end;
 procedure TRenderer.RenderBegin();
 begin
   SDL_SetRenderTarget(Window.Renderer, Buffers.Native);
+  SDL_SetRenderDrawColor(Window.Renderer, 0, 0, 0, 255);
+  SDL_RenderClear(Window.Renderer);
 end;
 
 

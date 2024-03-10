@@ -258,6 +258,8 @@ end;
 
 procedure TGame.UpdateWindow();
 begin
+  SDL_SetRenderDrawColor(Window.Renderer, 0, 0, 0, 255);
+  SDL_RenderClear(Window.Renderer);
   SDL_RenderCopy(Window.Renderer, Buffers.Native, nil, @Buffers.Client);
   SDL_RenderPresent(Window.Renderer);
 end;

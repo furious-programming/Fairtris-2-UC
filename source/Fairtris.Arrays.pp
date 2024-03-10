@@ -127,10 +127,7 @@ const
   );
 
 const
-  GROUND_PATH: array [THEME_FIRST .. THEME_LAST] of String = (
-    'grounds\modern\',
-    'grounds\classic\'
-  );
+  GROUND_PATH = 'grounds\';
 
 
 const

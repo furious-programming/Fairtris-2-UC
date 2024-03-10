@@ -79,13 +79,13 @@ var
 begin
   for Index := Low(FGrounds) to High(FGrounds) do
   begin
-    FGrounds[Index] := Img_LoadTexture(Window.Renderer, PChar(FGroundsPath + GROUND_FILENAME[Index]));
+    FGrounds[Index] := Img_LoadTexture(Window.Renderer, PChar(GROUND_PATH + GROUND_FILENAME[Index]));
 
     if FGrounds[Index] = nil then
       raise SDLException.CreateFmt(
         ERROR_MESSAGE_SDL,
         [
-          ERROR_MESSAGE[ERROR_SDL_LOAD_GROUND].Format([FGroundsPath + GROUND_FILENAME[Index]]),
+          ERROR_MESSAGE[ERROR_SDL_LOAD_GROUND].Format([GROUND_PATH + GROUND_FILENAME[Index]]),
           Img_GetError()
         ]
       );

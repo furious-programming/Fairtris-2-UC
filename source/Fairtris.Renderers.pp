@@ -157,32 +157,6 @@ type
   end;
 
 
-type
-  TRenderers = class(TObject)
-  private
-    FTheme: IRenderable;
-    FThemeID: Integer;
-  private
-    FModern: IRenderable;
-    FClassic: IRenderable;
-  private
-    procedure SetThemeID(AThemeID: Integer);
-  private
-    function GetModern(): TModernRenderer;
-    function GetClassic(): TClassicRenderer;
-  public
-    constructor Create();
-  public
-    procedure Initialize();
-  public
-    property Theme: IRenderable read FTheme;
-    property ThemeID: Integer read FThemeID write SetThemeID;
-  public
-    property Modern: TModernRenderer read GetModern;
-    property Classic: TClassicRenderer read GetClassic;
-  end;
-
-
 var
   Renderers: TRenderers;
 
@@ -2343,45 +2317,6 @@ begin
   end;
 
   RenderEnd();
-end;
-
-
-constructor TRenderers.Create();
-begin
-  FModern := TModernRenderer.Create();
-  FClassic := TClassicRenderer.Create();
-
-  FTheme := FModern;
-  FThemeID := THEME_MODERN;
-end;
-
-
-procedure TRenderers.SetThemeID(AThemeID: Integer);
-begin
-  FThemeID := AThemeID;
-
-  case FThemeID of
-    THEME_MODERN:  FTheme := FModern;
-    THEME_CLASSIC: FTheme := FClassic;
-  end;
-end;
-
-
-function TRenderers.GetModern(): TModernRenderer;
-begin
-  Result := FModern as TModernRenderer;
-end;
-
-
-function TRenderers.GetClassic(): TClassicRenderer;
-begin
-  Result := FClassic as TClassicRenderer;
-end;
-
-
-procedure TRenderers.Initialize();
-begin
-  SetThemeID(Settings.General.Theme);
 end;
 
 

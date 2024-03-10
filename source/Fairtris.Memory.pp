@@ -158,8 +158,6 @@ type
   TGameMemory = class(TObject)
   private type
     TStack = array [0 .. 9, -2 .. 19] of Integer;
-    TStats = array [PIECE_FIRST .. PIECE_LAST] of Integer;
-  private type
     TLineClears = array [LINES_FIRST .. LINES_LAST] of Integer;
     TLineClearPermits = array [-2 .. 1] of Boolean;
     TLineClearIndexes = array [-2 .. 1] of Integer;
@@ -213,7 +211,6 @@ type
     Flashing: Boolean;
   public
     Stack: TStack;
-    Stats: TStats;
     LineClears: TLineClears;
   public
     Best: Integer;
@@ -553,7 +550,6 @@ begin
   Flashing := False;
 
   Stack := Default(TStack);
-  Stats := Default(TStats);
   LineClears := Default(TLineClears);
 
   Best := 0;

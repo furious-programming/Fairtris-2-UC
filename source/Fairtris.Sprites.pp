@@ -45,7 +45,6 @@ type
     property Charset: PSDL_Texture index SPRITE_CHARSET read GetCollection;
     property Bricks: PSDL_Texture index SPRITE_BRICKS read GetCollection;
     property Pieces: PSDL_Texture index SPRITE_PIECES read GetCollection;
-    property Miniatures: PSDL_Texture index SPRITE_MINIATURES read GetCollection;
     property Controller: PSDL_Texture index SPRITE_CONTROLLER read GetCollection;
   end;
 

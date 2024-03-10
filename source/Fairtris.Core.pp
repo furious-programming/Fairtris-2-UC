@@ -216,7 +216,6 @@ begin
   Memory.Game.PieceOrientation := PIECE_ORIENTATION_SPAWN;
 
   Memory.Game.Next := Generators.Generator.Pick();
-  Memory.Game.Stats[Memory.Game.PieceID] += 1;
 
   Memory.Game.PieceX := PIECE_SPAWN_X;
   Memory.Game.PieceY := PIECE_SPAWN_Y;
@@ -853,7 +852,6 @@ begin
     Memory.GameModes.Level := 0;
 
   Memory.Game.Level := Memory.GameModes.Level;
-  Memory.Game.Stats[Memory.Game.PieceID] += 1;
 
   if Memory.GameModes.IsQuals then
     Memory.Game.Best := BestScores.Quals

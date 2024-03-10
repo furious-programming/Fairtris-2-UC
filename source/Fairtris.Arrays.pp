@@ -133,7 +133,6 @@ const
     'charset.bmp',
     'bricks.bmp',
     'pieces.bmp',
-    'miniatures.bmp',
     'controller.bmp'
   );
 
@@ -770,50 +769,6 @@ const
     'H0 LEFT', 'H0 RGHT', 'H0 UP'  , 'H0 DOWN', 'H1 LEFT', 'H1 RGHT', 'H1 UP'  , 'H1 DOWN',
 
     ''
-  );
-
-
-const
-  MINIATURE_X: array [PIECE_FIRST .. PIECE_LAST] of Integer = (
-    MINIATURE_X_T,
-    MINIATURE_X_J,
-    MINIATURE_X_Z,
-    MINIATURE_X_O,
-    MINIATURE_X_S,
-    MINIATURE_X_L,
-    MINIATURE_X_I
-  );
-
-  MINIATURE_Y: array [PIECE_FIRST .. PIECE_LAST] of Integer = (
-    MINIATURE_Y_T,
-    MINIATURE_Y_J,
-    MINIATURE_Y_Z,
-    MINIATURE_Y_O,
-    MINIATURE_Y_S,
-    MINIATURE_Y_L,
-    MINIATURE_Y_I
-  );
-
-
-const
-  STATISTIC_X: array [PIECE_FIRST .. PIECE_LAST] of Integer = (
-    STATISTIC_X_T,
-    STATISTIC_X_J,
-    STATISTIC_X_Z,
-    STATISTIC_X_O,
-    STATISTIC_X_S,
-    STATISTIC_X_L,
-    STATISTIC_X_I
-  );
-
-  STATISTIC_Y: array [PIECE_FIRST .. PIECE_LAST] of Integer = (
-    STATISTIC_Y_T,
-    STATISTIC_Y_J,
-    STATISTIC_Y_Z,
-    STATISTIC_Y_O,
-    STATISTIC_Y_S,
-    STATISTIC_Y_L,
-    STATISTIC_Y_I
   );
 
 

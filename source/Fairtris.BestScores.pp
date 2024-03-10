@@ -143,7 +143,7 @@ procedure TScoreEntry.Validate();
 begin
   FValid := InRange(FLinesCleared, 0, 999);
 
-  FValid := FValid and InRange(FLevelBegin, LEVEL_FIRST, LEVEL_KILLSCREEN[FRegionID]);
+  FValid := FValid and InRange(FLevelBegin, LEVEL_FIRST, LEVEL_LAST);
   FValid := FValid and InRange(FLevelEnd,   LEVEL_FIRST, 99);
 
   FValid := FValid and (FLevelBegin <= FLevelEnd);

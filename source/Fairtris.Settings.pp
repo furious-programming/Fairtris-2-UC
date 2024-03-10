@@ -228,12 +228,10 @@ end;
 
 function TGeneralSettings.CorrectLevel(AValue: Integer): Integer;
 begin
-  Result := AValue;
+  if AValue < LEVEL_FIRST then Exit(LEVEL_FIRST);
+  if AValue > LEVEL_LAST  then Exit(LEVEL_LAST);
 
-  case Result of
-    REGION_NTSC: if (Result < LEVEL_FIRST_NTSC) or (Result > LEVEL_LAST_FREE_GAME_NTSC) then Result := LEVEL_DEFAULT;
-    REGION_PAL:  if (Result < LEVEL_FIRST_PAL)  or (Result > LEVEL_LAST_FREE_GAME_PAL)  then Result := LEVEL_DEFAULT;
-  end;
+  Result := AValue;
 end;
 
 

@@ -562,7 +562,7 @@ begin
   Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.Lobby.Region];
 
   if Memory.Lobby.Region = REGION_PAL then
-    Memory.Lobby.Level := Min(Memory.Lobby.Level, LEVEL_LAST_FREE_GAME_PAL);
+    Memory.Lobby.Level := Min(Memory.Lobby.Level, LEVEL_LAST);
 end;
 
 
@@ -594,7 +594,7 @@ begin
   begin
     Memory.Lobby.Autorepeat := 0;
 
-    UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT_FREE_GAME[Memory.Lobby.Region], ITEM_PREV);
+    UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT, ITEM_PREV);
     Sounds.PlaySound(SOUND_SHIFT);
   end
   else
@@ -606,7 +606,7 @@ begin
       begin
         Memory.Lobby.Autorepeat := AUTOSHIFT_FRAMES_PRECHARGE[Memory.Lobby.Region];
 
-        UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT_FREE_GAME[Memory.Lobby.Region], ITEM_PREV);
+        UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT, ITEM_PREV);
         Sounds.PlaySound(SOUND_SHIFT);
       end;
     end;
@@ -615,7 +615,7 @@ begin
   begin
     Memory.Lobby.Autorepeat := 0;
 
-    UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT_FREE_GAME[Memory.Lobby.Region], ITEM_NEXT);
+    UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT, ITEM_NEXT);
     Sounds.PlaySound(SOUND_SHIFT);
   end
   else
@@ -627,7 +627,7 @@ begin
       begin
         Memory.Lobby.Autorepeat := AUTOSHIFT_FRAMES_PRECHARGE[Memory.Lobby.Region];
 
-        UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT_FREE_GAME[Memory.Lobby.Region], ITEM_NEXT);
+        UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT, ITEM_NEXT);
         Sounds.PlaySound(SOUND_SHIFT);
       end;
     end;

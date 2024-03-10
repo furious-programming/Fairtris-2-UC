@@ -252,7 +252,7 @@ end;
 
 procedure TGame.UpdateBuffer();
 begin
-  Renderer.RenderScene(Logic.Scene.Current);
+  Renderer.RenderScene();
 end;
 
 

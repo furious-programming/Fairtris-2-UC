@@ -42,7 +42,7 @@ type
     procedure RenderBrick(AX, AY, ABrick, ALevel: Integer);
     procedure RenderButton(AX, AY, AButton: Integer);
   private
-    procedure RenderGround(ASceneID: Integer);
+    procedure RenderGround();
   private
     procedure RenderMenuSelection();
   private
@@ -51,17 +51,17 @@ type
     procedure RenderLobbyParameters();
     procedure RenderLobbyBestScores();
   private
-    procedure RenderGameBest();
+    procedure RenderGameTop();
+    procedure RenderGameBurned();
+    procedure RenderGameTetrises();
+    procedure RenderGameGain();
+    procedure RenderGameController();
+    procedure RenderGameStack();
     procedure RenderGameScore();
     procedure RenderGameLines();
     procedure RenderGameLevel();
     procedure RenderGameNext();
-    procedure RenderGameStack();
     procedure RenderGamePiece();
-    procedure RenderGameBurned();
-    procedure RenderGameTetrises();
-    procedure RenderGameGain();
-    procedure RenderGameInput();
   private
     procedure RenderPauseSelection();
     procedure RenderPauseItems();
@@ -104,7 +104,7 @@ type
     procedure RenderBegin();
     procedure RenderEnd();
   public
-    procedure RenderScene(ASceneID: Integer);
+    procedure RenderScene();
   end;
 
 
@@ -123,6 +123,7 @@ uses
   Fairtris.Input,
   Fairtris.Buffers,
   Fairtris.Memory,
+  Fairtris.Logic,
   Fairtris.Placement,
   Fairtris.Converter,
   Fairtris.Grounds,
@@ -272,12 +273,12 @@ begin
 end;
 
 
-procedure TRenderer.RenderGround(ASceneID: Integer);
+procedure TRenderer.RenderGround();
 begin
-  if ASceneID = SCENE_QUIT then
+  if Logic.Scene.Current = SCENE_QUIT then
     SDL_RenderCopy(Window.Renderer, Memory.Quit.Buffer, nil, nil)
   else
-    SDL_RenderCopy(Window.Renderer, Grounds[ASceneID], nil, nil);
+    SDL_RenderCopy(Window.Renderer, Grounds[Logic.Scene.Current], nil, nil);
 end;
 
 
@@ -400,56 +401,97 @@ begin
 end;
 
 
-procedure TRenderer.RenderGameBest();
+procedure TRenderer.RenderGameTop();
 begin
+  if Logic.Scene.Current = SCENE_GAME_NORMAL then
+    RenderText(
+      GAME_TOP_TITLE_X,
+      GAME_TOP_TITLE_Y,
+      GAME_TOP_TITLE,
+      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+    );
+
   RenderText(
-    TOP_X,
-    TOP_Y,
+    GAME_TOP_X,
+    GAME_TOP_Y,
     Converter.ScoreToString(Memory.Game.Best),
     COLOR_WHITE
   );
 end;
 
 
-procedure TRenderer.RenderGameScore();
+procedure TRenderer.RenderGameBurned();
 begin
-  RenderText(
-    SCORES_X,
-    SCORES_Y,
-    Converter.ScoreToString(Memory.Game.Score)
-  );
-end;
-
-
-procedure TRenderer.RenderGameLines();
-begin
-  RenderText(
-    LINES_X,
-    LINES_Y,
-    Converter.LinesToString(Memory.Game.Lines)
-  );
-end;
-
-
-procedure TRenderer.RenderGameLevel();
-begin
-  RenderText(
-    LEVEL_X,
-    LEVEL_Y,
-    Converter.LevelToString(Memory.Game.Level)
-  );
-end;
-
-
-procedure TRenderer.RenderGameNext();
-begin
-  if Memory.Game.NextVisible then
-    RenderNext(
-      NEXT_X,
-      NEXT_Y,
-      Memory.Game.Next,
-      Memory.Game.Level
+  if Logic.Scene.Current = SCENE_GAME_NORMAL then
+    RenderText(
+      GAME_BURNED_TITLE_X,
+      GAME_BURNED_TITLE_Y,
+      GAME_BURNED_TITLE,
+      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
     );
+
+  RenderText(
+    GAME_BURNED_X,
+    GAME_BURNED_Y,
+    Converter.BurnedToString(Memory.Game.Burned),
+    COLOR_WHITE,
+    ALIGN_RIGHT
+  );
+end;
+
+
+procedure TRenderer.RenderGameTetrises();
+begin
+  if Logic.Scene.Current = SCENE_GAME_NORMAL then
+    RenderText(
+      GAME_TETRISES_TITLE_X,
+      GAME_TETRISES_TITLE_Y,
+      GAME_TETRISES_TITLE,
+      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+    );
+
+  RenderText(
+    GAME_TETRISES_X,
+    GAME_TETRISES_Y,
+    Converter.TetrisesToString(Memory.Game.TetrisRate),
+    COLOR_WHITE,
+    ALIGN_RIGHT
+  );
+end;
+
+
+procedure TRenderer.RenderGameGain();
+begin
+  if Logic.Scene.Current = SCENE_GAME_NORMAL then
+    RenderText(
+      GAME_GAIN_TITLE_X,
+      GAME_GAIN_TITLE_Y,
+      GAME_GAIN_TITLE,
+      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+    );
+
+  if Memory.Game.GainTimer > 0 then
+    RenderText(
+      GAME_GAIN_X,
+      GAME_GAIN_Y,
+      Converter.GainToString(Memory.Game.Gain),
+      COLOR_WHITE,
+      ALIGN_RIGHT
+    );
+end;
+
+
+procedure TRenderer.RenderGameController();
+var
+  Index: Integer;
+begin
+  for Index := DEVICE_FIRST to DEVICE_LAST do
+    if Input.Device.Switch[Index].Pressed then
+      RenderButton(
+        GAME_CONTROLLER_X + THUMBNAIL_BUTTON_X[Index],
+        GAME_CONTROLLER_Y + THUMBNAIL_BUTTON_Y[Index],
+        Index
+      );
 end;
 
 
@@ -457,12 +499,12 @@ procedure TRenderer.RenderGameStack();
 var
   OffsetX, OffsetY, BrickX, BrickY: Integer;
 begin
-  OffsetY := STACK_Y;
+  OffsetY := GAME_STACK_Y;
   BrickY := 0;
 
   while BrickY <= 19 do
   begin
-    OffsetX := STACK_X;
+    OffsetX := GAME_STACK_X;
     BrickX := 0;
 
     while BrickX <= 9 do
@@ -485,6 +527,72 @@ begin
 end;
 
 
+procedure TRenderer.RenderGameScore();
+begin
+  if Logic.Scene.Current = SCENE_GAME_NORMAL then
+    RenderText(
+      GAME_SCORE_TITLE_X,
+      GAME_SCORE_TITLE_Y,
+      GAME_SCORE_TITLE,
+      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+    );
+
+  RenderText(
+    GAME_SCORE_X,
+    GAME_SCORE_Y,
+    Converter.ScoreToString(Memory.Game.Score)
+  );
+end;
+
+
+procedure TRenderer.RenderGameLines();
+begin
+  if Logic.Scene.Current = SCENE_GAME_NORMAL then
+    RenderText(
+      GAME_LINES_TITLE_X,
+      GAME_LINES_TITLE_Y,
+      GAME_LINES_TITLE,
+      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+    );
+
+  RenderText(
+    GAME_LINES_X,
+    GAME_LINES_Y,
+    Converter.LinesToString(Memory.Game.Lines)
+  );
+end;
+
+
+procedure TRenderer.RenderGameLevel();
+begin
+  if Logic.Scene.Current = SCENE_GAME_NORMAL then
+    RenderText(
+      GAME_LEVEL_TITLE_X,
+      GAME_LEVEL_TITLE_Y,
+      GAME_LEVEL_TITLE,
+      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+    );
+
+  RenderText(
+    GAME_LEVEL_X,
+    GAME_LEVEL_Y,
+    Converter.LevelToString(Memory.Game.Level)
+  );
+end;
+
+
+procedure TRenderer.RenderGameNext();
+begin
+  if Memory.Game.NextVisible then
+    RenderNext(
+      GAME_NEXT_X,
+      GAME_NEXT_Y,
+      Memory.Game.Next,
+      Memory.Game.Level
+    );
+end;
+
+
 procedure TRenderer.RenderGamePiece();
 var
   OffsetX, OffsetY, BrickX, BrickY, BrickXMin, BrickXMax, BrickYMin, BrickYMax: Integer;
@@ -499,12 +607,12 @@ begin
 
   for BrickY := BrickYMin to BrickYMax do
   begin
-    OffsetY := STACK_Y;
+    OffsetY := GAME_STACK_Y;
     OffsetY += BrickY * BRICK_CELL_HEIGHT;
 
     for BrickX := BrickXMin to BrickXMax do
     begin
-      OffsetX := STACK_X;
+      OffsetX := GAME_STACK_X;
       OffsetX += BrickX * BRICK_CELL_WIDTH;
 
       RenderBrick(
@@ -520,57 +628,6 @@ begin
       );
     end;
   end;
-end;
-
-
-procedure TRenderer.RenderGameBurned();
-begin
-  RenderText(
-    BURNED_X,
-    BURNED_Y,
-    Converter.BurnedToString(Memory.Game.Burned),
-    COLOR_WHITE,
-    ALIGN_RIGHT
-  );
-end;
-
-
-procedure TRenderer.RenderGameTetrises();
-begin
-  RenderText(
-    TETRISES_X,
-    TETRISES_Y,
-    Converter.TetrisesToString(Memory.Game.TetrisRate),
-    COLOR_WHITE,
-    ALIGN_RIGHT
-  );
-end;
-
-
-procedure TRenderer.RenderGameGain();
-begin
-  if Memory.Game.GainTimer > 0 then
-    RenderText(
-      GAIN_X,
-      GAIN_Y,
-      Converter.GainToString(Memory.Game.Gain),
-      COLOR_WHITE,
-      ALIGN_RIGHT
-    );
-end;
-
-
-procedure TRenderer.RenderGameInput();
-var
-  Index: Integer;
-begin
-  for Index := DEVICE_FIRST to DEVICE_LAST do
-    if Input.Device.Switch[Index].Pressed then
-      RenderButton(
-        CONTROLLER_X + THUMBNAIL_BUTTON_X[Index],
-        CONTROLLER_Y + THUMBNAIL_BUTTON_Y[Index],
-        Index
-      );
 end;
 
 
@@ -1135,18 +1192,19 @@ end;
 
 procedure TRenderer.RenderGame();
 begin
-  RenderGameBest();
+  RenderGameTop();
+  RenderGameBurned();
+  RenderGameTetrises();
+  RenderGameGain();
+  RenderGameController();
+
+  RenderGameStack();
+
   RenderGameScore();
   RenderGameLines();
   RenderGameLevel();
   RenderGameNext();
-  RenderGameStack();
   RenderGamePiece();
-
-  RenderGameBurned();
-  RenderGameTetrises();
-  RenderGameGain();
-  RenderGameInput();
 end;
 
 
@@ -1211,12 +1269,12 @@ begin
 end;
 
 
-procedure TRenderer.RenderScene(ASceneID: Integer);
+procedure TRenderer.RenderScene();
 begin
   RenderBegin();
-  RenderGround(ASceneID);
+  RenderGround();
 
-  case ASceneID of
+  case Logic.Scene.Current of
     SCENE_LEGAL:       RenderLegal();
     SCENE_MENU:        RenderMenu();
     SCENE_LOBBY:       RenderLobby();

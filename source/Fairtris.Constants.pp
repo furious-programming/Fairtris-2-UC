@@ -852,23 +852,6 @@ const
 
 
 const
-  BURNED_X = 112;
-  BURNED_Y = 82;
-
-const
-  TETRISES_X = 112;
-  TETRISES_Y = 106;
-
-const
-  GAIN_X = 112;
-  GAIN_Y = 138;
-
-const
-  CONTROLLER_X = 55;
-  CONTROLLER_Y = 176;
-
-
-const
   BRICK_UNKNOWN = 0;
   BRICK_EMPTY   = 0;
   BRICK_A       = 1;

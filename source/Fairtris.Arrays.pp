@@ -490,10 +490,6 @@ const
 
 
 const
-  TOP_TITLE_X = 112;
-  TOP_TITLE_Y = 40;
-
-const
   TOP_X = 56;
   TOP_Y = 50;
 

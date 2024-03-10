@@ -28,16 +28,12 @@ uses
 
 
 type
-  TThemeGrounds = class(TObject)
-  private type
-    TGrounds = array [SCENE_FIRST .. SCENE_LAST] of PSDL_Texture;
+  TGrounds = class(TObject)
   private
-    FGrounds: TGrounds;
-    FGroundsPath: String;
+    FGrounds: array [SCENE_FIRST .. SCENE_LAST] of PSDL_Texture;
   private
     function GetGround(ASceneID: Integer): PSDL_Texture;
   public
-    constructor Create(const APath: String);
     destructor Destroy(); override;
   public
     procedure Load();
@@ -60,13 +56,7 @@ uses
   Fairtris.Arrays;
 
 
-constructor TThemeGrounds.Create(const APath: String);
-begin
-  FGroundsPath := APath;
-end;
-
-
-destructor TThemeGrounds.Destroy();
+destructor TGrounds.Destroy();
 var
   Index: Integer;
 begin
@@ -77,13 +67,13 @@ begin
 end;
 
 
-function TThemeGrounds.GetGround(ASceneID: Integer): PSDL_Texture;
+function TGrounds.GetGround(ASceneID: Integer): PSDL_Texture;
 begin
   Result := FGrounds[ASceneID];
 end;
 
 
-procedure TThemeGrounds.Load();
+procedure TGrounds.Load();
 var
   Index: Integer;
 begin

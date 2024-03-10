@@ -57,7 +57,6 @@ type
   private
     FInput: Integer;
     FSize: Integer;
-    FTheme: Integer;
     FControls: Integer;
     FSounds: Integer;
   private
@@ -84,7 +83,6 @@ type
   public
     property Input: Integer read FInput;
     property Size: Integer read FSize;
-    property Theme: Integer read FTheme;
     property Controls: Integer read FControls;
     property Sounds: Integer read FSounds;
   public
@@ -259,7 +257,6 @@ begin
 
   FInput    := CorrectRange(FInput,    INPUT_FIRST,    INPUT_LAST,    INPUT_DEFAULT);
   FSize     := CorrectRange(FSize,     SIZE_FIRST,     SIZE_LAST,     SIZE_DEFAULT);
-  FTheme    := CorrectRange(FTheme,    THEME_FIRST,    THEME_LAST,    THEME_DEFAULT);
   FControls := CorrectRange(FControls, CONTROLS_FIRST, CONTROLS_LAST, CONTROLS_DEFAULT);
   FSounds   := CorrectRange(FSounds,   SOUNDS_FIRST,   SOUNDS_LAST,   SOUNDS_DEFAULT);
 
@@ -277,7 +274,6 @@ begin
   FTop := Placement.WindowBounds.Y;
 
   FInput := Memory.Options.Input;
-  FTheme := Memory.Options.Theme;
   FControls := Memory.Options.Controls;
   FSounds := Memory.Options.Sounds;
 
@@ -295,7 +291,6 @@ begin
 
   FInput    := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_INPUT,    SETTINGS_VALUE_GENERAL_INPUT);
   FSize     := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_SIZE,     SETTINGS_VALUE_GENERAL_SIZE);
-  FTheme    := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_THEME,    SETTINGS_VALUE_GENERAL_THEME);
   FSounds   := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_SOUNDS,   SETTINGS_VALUE_GENERAL_SOUNDS);
   FControls := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_CONTROLS, SETTINGS_VALUE_GENERAL_CONTROLS);
 
@@ -315,7 +310,6 @@ begin
 
   AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_INPUT,    FInput);
   AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_SIZE,     FSize);
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_THEME,    FTheme);
   AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_CONTROLS, FControls);
   AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_SOUNDS,   FSounds);
 

@@ -302,7 +302,7 @@ begin
   CatchedScanCode := KEYBOARD_SCANCODE_KEY_NOT_MAPPED;
 
   for Index := KEYBOARD_SCANCODE_KEY_FIRST to KEYBOARD_SCANCODE_KEY_LAST do
-    if not (Index in KEYBOARD_KEY_LOCKED) then
+    if not (Index in KEYBOARD_KEY_RESERVED) then
       if FDevice[Index].JustPressed then
         if not Catched then
         begin

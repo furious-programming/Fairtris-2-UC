@@ -53,7 +53,7 @@ type
     property Clear: TSwitch index KEYBOARD_KEY_FIXED_CLEAR read GetKey;
   public
     property Help: TSwitch index KEYBOARD_KEY_FIXED_HELP read GetKey;
-    property ToggleVideo: TSwitch index KEYBOARD_KEY_FIXED_TOGGLE_VIDEO read GetKey;
+    property Video: TSwitch index KEYBOARD_KEY_FIXED_TOGGLE_VIDEO read GetKey;
   end;
 
 
@@ -107,7 +107,7 @@ begin
   FKeys[KEYBOARD_KEY_FIXED_CLEAR].Pressed  := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_CLEAR].Pressed;
 
   FKeys[KEYBOARD_KEY_FIXED_HELP].Pressed := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_HELP].Pressed;
-  FKeys[KEYBOARD_KEY_FIXED_TOGGLE_VIDEO].Pressed := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_TOGGLE_VIDEO].Pressed;
+  FKeys[KEYBOARD_KEY_FIXED_TOGGLE_VIDEO].Pressed := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_VIDEO].Pressed;
 end;
 
 

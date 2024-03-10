@@ -1289,7 +1289,7 @@ end;
 procedure TLogic.UpdateCommon();
 begin
   if Input.Fixed.Help.JustPressed then OpenHelp();
-  if Input.Fixed.ToggleVideo.JustPressed then Placement.ToggleVideoMode();
+  if Input.Fixed.Video.JustPressed then Placement.ToggleVideoMode();
 
   if not Memory.Game.Started then
     Generators.Shuffle();

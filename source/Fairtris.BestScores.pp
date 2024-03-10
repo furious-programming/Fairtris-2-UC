@@ -31,22 +31,18 @@ uses
 type
   TScoreEntry = class(TObject)
   private
-    FIsSpeedrun: Boolean;
     FRegionID: Integer;
-  private
     FLinesCleared: Integer;
     FLevelBegin: Integer;
     FLevelEnd: Integer;
     FTetrisRate: Integer;
     FTotalScore: Integer;
-    FTotalTime: Integer;
-    FCompleted: Boolean;
   private
     FValid: Boolean;
   private
     procedure Validate();
   public
-    constructor Create(AIsSpeedrun: Boolean; ARegionID: Integer; AValid: Boolean = False);
+    constructor Create(ARegionID: Integer; AValid: Boolean = False);
   public
     procedure Load(AFile: TIniFile; const ASection: String);
     procedure Save(AFile: TIniFile; const ASection: String);
@@ -58,8 +54,6 @@ type
     property LevelEnd: Integer read FLevelEnd write FLevelEnd;
     property TetrisRate: Integer read FTetrisRate write FTetrisRate;
     property TotalScore: Integer read FTotalScore write FTotalScore;
-    property TotalTime: Integer read FTotalTime write FTotalTime;
-    property Completed: Boolean read FCompleted write FCompleted;
   public
     property Valid: Boolean read FValid;
   end;
@@ -73,18 +67,13 @@ type
   private
     FScoresFile: TMemIniFile;
     FEntries: TScoreEntries;
-  private
-    FIsSpeedrun: Boolean;
     FRegion: Integer;
   private
     function GetEntry(AIndex: Integer): TScoreEntry;
     function GetCount(): Integer;
     function GetBestResult(): Integer;
-  private
-    procedure AddMarathonEntry(AEntry: TScoreEntry);
-    procedure AddSpeedrunEntry(AEntry: TScoreEntry);
   public
-    constructor Create(const AFileName: String; AIsSpeedrun: Boolean; ARegionID: Integer);
+    constructor Create(const AFileName: String; ARegionID: Integer);
     destructor Destroy(); override;
   public
     procedure Load();
@@ -104,11 +93,10 @@ type
   TRegionEntries = class(TObject)
   private
     FGenerators: array [GENERATOR_FIRST .. GENERATOR_LAST] of TGeneratorEntries;
-    FIsSpeedrun: Boolean;
   private
     function GetGenerator(AGeneratorID: Integer): TGeneratorEntries;
   public
-    constructor Create(const APath: String; AIsSpeedrun: Boolean; ARegionID: Integer);
+    constructor Create(const APath: String; ARegionID: Integer);
     destructor Destroy(); override;
   public
     procedure Load();
@@ -121,14 +109,13 @@ type
 
 
 type
-  TModeEntries = class(TObject)
+  TBestScores = class(TObject)
   private
     FRegions: array [REGION_FIRST .. REGION_LAST] of TRegionEntries;
-    FIsSpeedrun: Boolean;
   private
     function GetRegion(ARegionID: Integer): TRegionEntries;
   public
-    constructor Create(AIsSpeedrun: Boolean);
+    constructor Create();
     destructor Destroy(); override;
   public
     procedure Load();
@@ -137,31 +124,6 @@ type
     procedure Clear();
   public
     property Region[ARegionID: Integer]: TRegionEntries read GetRegion; default;
-  end;
-
-
-type
-  TBestScores = class(TObject)
-  private
-    FStorable: array [Boolean] of TModeEntries;
-  private
-    FQuals: array [Boolean] of TModeEntries;
-    FMatch: array [Boolean] of TModeEntries;
-  private
-    function GetStorableMode(AIsSpeedrun: Boolean): TModeEntries;
-    function GetQualsMode(AIsSpeedrun: Boolean): TModeEntries;
-    function GetMatchMode(AIsSpeedrun: Boolean): TModeEntries;
-  public
-    constructor Create();
-    destructor Destroy(); override;
-  public
-    procedure Load();
-    procedure Save();
-  public
-    property Storable[AIsSpeedrun: Boolean]: TModeEntries read GetStorableMode; default;
-  public
-    property Quals[AIsSpeedrun: Boolean]: TModeEntries read GetQualsMode;
-    property Match[AIsSpeedrun: Boolean]: TModeEntries read GetMatchMode;
   end;
 
 
@@ -188,17 +150,12 @@ begin
 
   FValid := FValid and InRange(FTetrisRate, 0, 100);
   FValid := FValid and InRange(FTotalScore, 0, 9999999);
-
-  if FIsSpeedrun then
-    FValid := FValid and InRange(FTotalTime, 0, 10 * 60 * CLOCK_FRAMERATE_LIMIT[FRegionID] - 1);
 end;
 
 
-constructor TScoreEntry.Create(AIsSpeedrun: Boolean; ARegionID: Integer; AValid: Boolean);
+constructor TScoreEntry.Create(ARegionID: Integer; AValid: Boolean);
 begin
-  FIsSpeedrun := AIsSpeedrun;
   FRegionID := ARegionID;
-
   FValid := AValid;
 end;
 
@@ -213,9 +170,6 @@ begin
   FTetrisRate := AFile.ReadInteger(ASection, BEST_SCORES_KEY_SCORE_TETRIS_RATE, -1);
   FTotalScore := AFile.ReadInteger(ASection, BEST_SCORES_KEY_SCORE_TOTAL_SCORE, -1);
 
-  if FIsSpeedrun then
-    FTotalTime := AFile.ReadInteger(ASection, BEST_SCORES_KEY_SCORE_TOTAL_TIME, -1);
-
   Validate();
 end;
 
@@ -229,37 +183,27 @@ begin
 
   AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_TETRIS_RATE, FTetrisRate);
   AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_TOTAL_SCORE, FTotalScore);
-
-  if FIsSpeedrun then
-    AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_TOTAL_TIME, FTotalTime);
 end;
 
 
 function TScoreEntry.Clone(): TScoreEntry;
 begin
-  Result := TScoreEntry.Create(FIsSpeedrun, FRegionID);
+  Result := TScoreEntry.Create(FRegionID);
 
-  Result.FIsSpeedrun := FIsSpeedrun;
   Result.FRegionID := FRegionID;
-
   Result.FLinesCleared := FLinesCleared;
   Result.FLevelBegin := FLevelBegin;
   Result.FLevelEnd := FLevelEnd;
   Result.FTetrisRate := FTetrisRate;
   Result.FTotalScore := FTotalScore;
-  Result.FTotalTime := FTotalTime;
-  Result.FCompleted := FCompleted;
-
   Result.FValid := FValid;
 end;
 
 
-constructor TGeneratorEntries.Create(const AFileName: String; AIsSpeedrun: Boolean; ARegionID: Integer);
+constructor TGeneratorEntries.Create(const AFileName: String; ARegionID: Integer);
 begin
   FScoresFile := TMemIniFile.Create(AFileName);
   FEntries := TScoreEntries.Create();
-
-  FIsSpeedrun := AIsSpeedrun;
   FRegion := ARegionID;
 end;
 
@@ -290,45 +234,7 @@ begin
   if FEntries.Count = 0 then
     Result := 0
   else
-    if FIsSpeedrun then
-      Result := FEntries.First.TotalTime
-    else
-      Result := FEntries.First.TotalScore;
-end;
-
-
-procedure TGeneratorEntries.AddMarathonEntry(AEntry: TScoreEntry);
-var
-  Index: Integer;
-begin
-  for Index := 0 to FEntries.Count - 1 do
-    if AEntry.TotalScore > FEntries[Index].TotalScore then
-    begin
-      FEntries.Insert(Index, AEntry);
-      Exit;
-    end;
-
-  FEntries.Add(AEntry);
-end;
-
-
-procedure TGeneratorEntries.AddSpeedrunEntry(AEntry: TScoreEntry);
-var
-  Index: Integer;
-begin
-  if not AEntry.Completed then
-    AEntry.Free()
-  else
-  begin
-    for Index := 0 to FEntries.Count - 1 do
-      if AEntry.TotalTime < FEntries[Index].TotalTime then
-      begin
-        FEntries.Insert(Index, AEntry);
-        Exit;
-      end;
-
-    FEntries.Add(AEntry);
-  end;
+    Result := FEntries.First.TotalScore;
 end;
 
 
@@ -342,7 +248,7 @@ begin
 
   for Index := 0 to EntriesCount - 1 do
   begin
-    NewEntry := TScoreEntry.Create(FIsSpeedrun, FRegion);
+    NewEntry := TScoreEntry.Create(FRegion);
     NewEntry.Load(FScoresFile, BEST_SCORES_SECTION_SCORE.Format([Index]));
 
     if NewEntry.Valid then
@@ -366,11 +272,17 @@ end;
 
 
 procedure TGeneratorEntries.Add(AEntry: TScoreEntry);
+var
+  Index: Integer;
 begin
-  if FIsSpeedrun then
-    AddSpeedrunEntry(AEntry)
-  else
-    AddMarathonEntry(AEntry);
+  for Index := 0 to FEntries.Count - 1 do
+    if AEntry.TotalScore > FEntries[Index].TotalScore then
+    begin
+      FEntries.Insert(Index, AEntry);
+      Exit;
+    end;
+
+  FEntries.Add(AEntry);
 end;
 
 
@@ -380,14 +292,12 @@ begin
 end;
 
 
-constructor TRegionEntries.Create(const APath: String; AIsSpeedrun: Boolean; ARegionID: Integer);
+constructor TRegionEntries.Create(const APath: String; ARegionID: Integer);
 var
   Index: Integer;
 begin
-  FIsSpeedrun := AIsSpeedrun;
-
   for Index := Low(FGenerators) to High(FGenerators) do
-    FGenerators[Index] := TGeneratorEntries.Create(APath + BEST_SCORES_FILENAME[Index], FIsSpeedrun, ARegionID);
+    FGenerators[Index] := TGeneratorEntries.Create(APath + BEST_SCORES_FILENAME[Index], ARegionID);
 end;
 
 
@@ -435,18 +345,16 @@ begin
 end;
 
 
-constructor TModeEntries.Create(AIsSpeedrun: Boolean);
+constructor TBestScores.Create();
 var
   Index: Integer;
 begin
-  FIsSpeedrun := AIsSpeedrun;
-
   for Index := Low(FRegions) to High(FRegions) do
-    FRegions[Index] := TRegionEntries.Create(BEST_SCORES_PATH[FIsSpeedrun, Index], FIsSpeedrun, Index);
+    FRegions[Index] := TRegionEntries.Create(BEST_SCORES_PATH[Index], Index);
 end;
 
 
-destructor TModeEntries.Destroy();
+destructor TBestScores.Destroy();
 var
   Index: Integer;
 begin
@@ -457,13 +365,13 @@ begin
 end;
 
 
-function TModeEntries.GetRegion(ARegionID: Integer): TRegionEntries;
+function TBestScores.GetRegion(ARegionID: Integer): TRegionEntries;
 begin
   Result := FRegions[ARegionID];
 end;
 
 
-procedure TModeEntries.Load();
+procedure TBestScores.Load();
 var
   Index: Integer;
 begin
@@ -472,7 +380,7 @@ begin
 end;
 
 
-procedure TModeEntries.Save();
+procedure TBestScores.Save();
 var
   Index: Integer;
 begin
@@ -481,78 +389,12 @@ begin
 end;
 
 
-procedure TModeEntries.Clear();
+procedure TBestScores.Clear();
 var
   Index: Integer;
 begin
   for Index := Low(FRegions) to High(FRegions) do
     FRegions[Index].Clear();
-end;
-
-
-constructor TBestScores.Create();
-var
-  Index: Boolean;
-begin
-  for Index := Low(FStorable) to High(FStorable) do
-  begin
-    FStorable[Index] := TModeEntries.Create(Index);
-
-    FQuals[Index] := TModeEntries.Create(Index);
-    FMatch[Index] := TModeEntries.Create(Index);
-  end;
-end;
-
-
-destructor TBestScores.Destroy();
-var
-  Index: Boolean;
-begin
-  for Index := Low(FStorable) to High(FStorable) do
-  begin
-    FStorable[Index].Free();
-
-    FQuals[Index].Free();
-    FMatch[Index].Free();
-  end;
-
-  inherited Destroy();
-end;
-
-
-function TBestScores.GetStorableMode(AIsSpeedrun: Boolean): TModeEntries;
-begin
-  Result := FStorable[AIsSpeedrun];
-end;
-
-
-function TBestScores.GetQualsMode(AIsSpeedrun: Boolean): TModeEntries;
-begin
-  Result := FQuals[AIsSpeedrun];
-end;
-
-
-function TBestScores.GetMatchMode(AIsSpeedrun: Boolean): TModeEntries;
-begin
-  Result := FMatch[AIsSpeedrun];
-end;
-
-
-procedure TBestScores.Load();
-var
-  Index: Boolean;
-begin
-  for Index := Low(FStorable) to High(FStorable) do
-    FStorable[Index].Load();
-end;
-
-
-procedure TBestScores.Save();
-var
-  Index: Boolean;
-begin
-  for Index := Low(FStorable) to High(FStorable) do
-    FStorable[Index].Save();
 end;
 
 

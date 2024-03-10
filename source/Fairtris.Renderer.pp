@@ -35,7 +35,6 @@ type
     function CharToIndex(AChar: Char): Integer;
   private
     function MarathonEntryToString(AEntry: TScoreEntry = nil): String;
-    function SpeedrunEntryToString(AEntry: TScoreEntry = nil): String;
   private
     procedure RenderSprite(ASprite: PSDL_Texture; ABufferRect, ASpriteRect: TSDL_Rect);
     procedure RenderText(AX, AY: Integer; const AText: String; AColor: Integer = COLOR_WHITE; AAlign: Integer = ALIGN_LEFT);
@@ -47,49 +46,16 @@ type
   private
     procedure RenderMenuSelection();
   private
-    procedure RenderModesSelection();
-    procedure RenderModesItems();
+    procedure RenderLobbySelection();
+    procedure RenderLobbyItems();
+    procedure RenderLobbyParameters();
+    procedure RenderLobbyBestScores();
   private
-    procedure RenderGameModeSeed();
-    procedure RenderGameModeTimer();
-  private
-    procedure RenderFreeMarathonSelection();
-    procedure RenderFreeMarathonItems();
-    procedure RenderFreeMarathonParameters();
-    procedure RenderFreeMarathonBestScores();
-  private
-    procedure RenderFreeSpeedrunSelection();
-    procedure RenderFreeSpeedrunItems();
-    procedure RenderFreeSpeedrunParameters();
-    procedure RenderFreeSpeedrunBestScores();
-  private
-    procedure RenderMarathonQualsSelection();
-    procedure RenderMarathonQualsItems();
-    procedure RenderMarathonQualsParameters();
-    procedure RenderMarathonQualsBestScores();
-  private
-    procedure RenderMarathonMatchSelection();
-    procedure RenderMarathonMatchItems();
-    procedure RenderMarathonMatchParameters();
-    procedure RenderMarathonMatchBestScores();
-  private
-    procedure RenderSpeedrunQualsSelection();
-    procedure RenderSpeedrunQualsItems();
-    procedure RenderSpeedrunQualsParameters();
-    procedure RenderSpeedrunQualsBestScores();
-  private
-    procedure RenderSpeedrunMatchSelection();
-    procedure RenderSpeedrunMatchItems();
-    procedure RenderSpeedrunMatchParameters();
-    procedure RenderSpeedrunMatchBestScores();
-  private
-    procedure RenderGameBestTitle();
     procedure RenderGameBest();
     procedure RenderGameScore();
     procedure RenderGameLines();
     procedure RenderGameLevel();
     procedure RenderGameNext();
-    procedure RenderGameTime();
     procedure RenderGameStack();
     procedure RenderGamePiece();
     procedure RenderGameBurned();
@@ -101,12 +67,10 @@ type
     procedure RenderPauseItems();
   private
     procedure RenderTopOutResultScore();
-    procedure RenderTopOutResultTotalTime();
     procedure RenderTopOutResultTransition();
     procedure RenderTopOutResultLinesCleared();
     procedure RenderTopOutResultLinesBurned();
     procedure RenderTopOutResultTetrisRate();
-    procedure RenderTopOutResultQualsEndIn();
   private
     procedure RenderTopOutSelection();
     procedure RenderTopOutItems();
@@ -128,13 +92,7 @@ type
   private
     procedure RenderLegal();
     procedure RenderMenu();
-    procedure RenderModes();
-    procedure RenderFreeMarathon();
-    procedure RenderFreeSpeedrun();
-    procedure RenderMarathonQuals();
-    procedure RenderMarathonMatch();
-    procedure RenderSpeedrunQuals();
-    procedure RenderSpeedrunMatch();
+    procedure RenderLobby();
     procedure RenderGame();
     procedure RenderPause();
     procedure RenderTopOut();
@@ -207,19 +165,6 @@ begin
   end
   else
     Result := '-    -        -        -';
-end;
-
-
-function TRenderer.SpeedrunEntryToString(AEntry: TScoreEntry): String;
-begin
-  if AEntry <> nil then
-  begin
-    Result := Converter.FramesToTimeString(AEntry.TotalTime, True);
-    Result += '%.3d'.Format([AEntry.LinesCleared]).PadLeft(6);
-    Result += Converter.ScoreToString(AEntry.TotalScore).PadLeft(10);
-  end
-  else
-    Result := '-          -           -';
 end;
 
 
@@ -352,182 +297,20 @@ begin
 end;
 
 
-procedure TRenderer.RenderModesSelection();
+procedure TRenderer.RenderLobbySelection();
 begin
   RenderText(
-    ITEM_X_MODES[Memory.Modes.ItemIndex],
-    ITEM_Y_MODES[Memory.Modes.ItemIndex],
-    ITEM_TEXT_MODES[Memory.Modes.ItemIndex]
+    ITEM_X_LOBBY[Memory.Lobby.ItemIndex],
+    ITEM_Y_LOBBY[Memory.Lobby.ItemIndex],
+    ITEM_TEXT_LOBBY[Memory.Lobby.ItemIndex]
   );
 
   RenderText(
-    ITEM_X_MODES[Memory.Modes.ItemIndex] - ITEM_X_MARKER,
-    ITEM_Y_MODES[Memory.Modes.ItemIndex],
+    ITEM_X_LOBBY[Memory.Lobby.ItemIndex] - ITEM_X_MARKER,
+    ITEM_Y_LOBBY[Memory.Lobby.ItemIndex],
     ITEM_TEXT_MARKER,
     IfThen(
-      Memory.GameModes.QualsActive,
-      IfThen(
-        (Memory.Modes.ItemIndex = ITEM_MODES_MARATHON_QUALS) and (Memory.GameModes.QualsMode = QUALS_MODE_MARATHON),
-        COLOR_WHITE,
-        IfThen(
-          (Memory.Modes.ItemIndex = ITEM_MODES_SPEEDRUN_QUALS) and (Memory.GameModes.QualsMode = QUALS_MODE_SPEEDRUN),
-          COLOR_WHITE,
-          IfThen(Memory.Modes.ItemIndex = ITEM_MODES_BACK, COLOR_WHITE, COLOR_DARK)
-        )
-      ),
-      COLOR_WHITE
-    )
-  );
-end;
-
-
-procedure TRenderer.RenderModesItems();
-begin
-  if not Memory.GameModes.QualsActive then Exit;
-
-  RenderText(
-    ITEM_X_MODES_FREE_MARATHON,
-    ITEM_Y_MODES_FREE_MARATHON,
-    ITEM_TEXT_MODES_FREE_MARATHON,
-    COLOR_DARK
-  );
-
-  RenderText(
-    ITEM_X_MODES_FREE_SPEEDRUN,
-    ITEM_Y_MODES_FREE_SPEEDRUN,
-    ITEM_TEXT_MODES_FREE_SPEEDRUN,
-    COLOR_DARK
-  );
-
-  RenderText(
-    ITEM_X_MODES_MARATHON_MATCH,
-    ITEM_Y_MODES_MARATHON_MATCH,
-    ITEM_TEXT_MODES_MARATHON_MATCH,
-    COLOR_DARK
-  );
-
-  RenderText(
-    ITEM_X_MODES_SPEEDRUN_MATCH,
-    ITEM_Y_MODES_SPEEDRUN_MATCH,
-    ITEM_TEXT_MODES_SPEEDRUN_MATCH,
-    COLOR_DARK
-  );
-
-  if Memory.GameModes.QualsMode = QUALS_MODE_MARATHON then
-    RenderText(
-      ITEM_X_MODES_SPEEDRUN_QUALS,
-      ITEM_Y_MODES_SPEEDRUN_QUALS,
-      ITEM_TEXT_MODES_SPEEDRUN_QUALS,
-      COLOR_DARK
-    )
-  else
-    RenderText(
-      ITEM_X_MODES_MARATHON_QUALS,
-      ITEM_Y_MODES_MARATHON_QUALS,
-      ITEM_TEXT_MODES_MARATHON_QUALS,
-      COLOR_DARK
-    );
-end;
-
-
-procedure TRenderer.RenderGameModeSeed();
-var
-  Digits, Placeholder: String;
-begin
-  if not Memory.GameModes.SeedChanging then
-    RenderText(
-      ITEM_X_GAME_MODE_PARAM,
-      ITEM_Y_GAME_MODE_SEED,
-      Memory.GameModes.SeedData,
-      COLOR_GRAY
-    )
-  else
-  begin
-    Converter.SeedEditorToStrings(Memory.GameModes.SeedEditor, Digits, Placeholder);
-
-    RenderText(
-      ITEM_X_GAME_MODE_PARAM,
-      ITEM_Y_GAME_MODE_SEED,
-      Digits
-    );
-
-    RenderText(
-      ITEM_X_GAME_MODE_PARAM + Digits.Length * CHAR_WIDTH,
-      ITEM_Y_GAME_MODE_SEED,
-      Placeholder,
-      IfThen(Clock.FrameIndexInHalf, COLOR_WHITE, COLOR_DARK)
-    );
-
-    RenderText(
-      ITEM_X_GAME_MODE_PARAM - ITEM_X_MARKER,
-      ITEM_Y_GAME_MODE_SEED,
-      ITEM_TEXT_MARKER,
-      IfThen(Clock.FrameIndexInHalf, COLOR_WHITE, COLOR_DARK)
-    );
-  end;
-end;
-
-
-procedure TRenderer.RenderGameModeTimer();
-var
-  Digits, Placeholder: String;
-begin
-  if not Memory.GameModes.TimerChanging then
-    RenderText(
-      ITEM_X_GAME_MODE_PARAM,
-      ITEM_Y_GAME_MODE_TIMER,
-      IfThen(
-        Memory.GameModes.QualsActive,
-        Converter.FramesToTimerString(Memory.GameModes.QualsRemaining, True),
-        Memory.GameModes.TimerData
-      ),
-      IfThen(
-        Memory.GameModes.TimerData = TIMER_DEFAULT_DATA,
-        COLOR_DARK,
-        COLOR_GRAY
-      )
-    )
-  else
-  begin
-    Converter.TimerEditorToStrings(Memory.GameModes.TimerEditor, Digits, Placeholder);
-
-    RenderText(
-      ITEM_X_GAME_MODE_PARAM,
-      ITEM_Y_GAME_MODE_TIMER,
-      Digits
-    );
-
-    RenderText(
-      ITEM_X_GAME_MODE_PARAM + Digits.Length * CHAR_WIDTH,
-      ITEM_Y_GAME_MODE_TIMER,
-      Placeholder,
-      IfThen(Clock.FrameIndexInHalf, COLOR_WHITE, COLOR_DARK)
-    );
-
-    RenderText(
-      ITEM_X_GAME_MODE_PARAM - ITEM_X_MARKER,
-      ITEM_Y_GAME_MODE_TIMER,
-      ITEM_TEXT_MARKER,
-      IfThen(Clock.FrameIndexInHalf, COLOR_WHITE, COLOR_DARK)
-    );
-  end;
-end;
-
-
-procedure TRenderer.RenderFreeMarathonSelection();
-begin
-  RenderText(
-    ITEM_X_FREE_MARATHON[Memory.FreeMarathon.ItemIndex],
-    ITEM_Y_FREE_MARATHON[Memory.FreeMarathon.ItemIndex],
-    ITEM_TEXT_FREE_MARATHON[Memory.FreeMarathon.ItemIndex]
-  );
-
-  RenderText(
-    ITEM_X_FREE_MARATHON[Memory.FreeMarathon.ItemIndex] - ITEM_X_MARKER,
-    ITEM_Y_FREE_MARATHON[Memory.FreeMarathon.ItemIndex],
-    ITEM_TEXT_MARKER,
-    IfThen(
-      Memory.FreeMarathon.ItemIndex = ITEM_FREE_MARATHON_START,
+      Memory.Lobby.ItemIndex = ITEM_LOBBY_START,
       IfThen(Input.Device.Connected, COLOR_WHITE, COLOR_DARK),
       COLOR_WHITE
     )
@@ -535,16 +318,16 @@ begin
 end;
 
 
-procedure TRenderer.RenderFreeMarathonItems();
+procedure TRenderer.RenderLobbyItems();
 begin
   RenderText(
-    ITEM_X_GAME_MODE_START,
-    ITEM_Y_GAME_MODE_START,
-    ITEM_TEXT_GAME_MODE_START,
+    ITEM_X_LOBBY_START,
+    ITEM_Y_LOBBY_START,
+    ITEM_TEXT_LOBBY_START,
     IfThen(
       Input.Device.Connected,
       IfThen(
-        Memory.FreeMarathon.ItemIndex = ITEM_FREE_MARATHON_START,
+        Memory.Lobby.ItemIndex = ITEM_LOBBY_START,
         COLOR_WHITE,
         COLOR_GRAY
       ),
@@ -554,36 +337,36 @@ begin
 end;
 
 
-procedure TRenderer.RenderFreeMarathonParameters();
+procedure TRenderer.RenderLobbyParameters();
 begin
   RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_REGION,
-    ITEM_TEXT_GAME_MODE_REGION[Memory.GameModes.Region],
+    ITEM_X_LOBBY_PARAM,
+    ITEM_Y_LOBBY_REGION,
+    ITEM_TEXT_LOBBY_REGION[Memory.Lobby.Region],
     IfThen(
-      Memory.FreeMarathon.ItemIndex = ITEM_FREE_MARATHON_REGION,
+      Memory.Lobby.ItemIndex = ITEM_LOBBY_REGION,
       COLOR_WHITE,
       COLOR_GRAY
     )
   );
 
   RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_GENERATOR,
-    ITEM_TEXT_GAME_MODE_GENERATOR[Memory.GameModes.Generator],
+    ITEM_X_LOBBY_PARAM,
+    ITEM_Y_LOBBY_GENERATOR,
+    ITEM_TEXT_LOBBY_GENERATOR[Memory.Lobby.Generator],
     IfThen(
-      Memory.FreeMarathon.ItemIndex = ITEM_FREE_MARATHON_GENERATOR,
+      Memory.Lobby.ItemIndex = ITEM_LOBBY_GENERATOR,
       COLOR_WHITE,
       COLOR_GRAY
     )
   );
 
   RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_LEVEL,
-    Memory.GameModes.Level.ToString(),
+    ITEM_X_LOBBY_PARAM,
+    ITEM_Y_LOBBY_LEVEL,
+    Memory.Lobby.Level.ToString(),
     IfThen(
-      Memory.FreeMarathon.ItemIndex = ITEM_FREE_MARATHON_LEVEL,
+      Memory.Lobby.ItemIndex = ITEM_LOBBY_LEVEL,
       COLOR_WHITE,
       COLOR_GRAY
     )
@@ -591,673 +374,29 @@ begin
 end;
 
 
-procedure TRenderer.RenderFreeMarathonBestScores();
+procedure TRenderer.RenderLobbyBestScores();
 var
   Index: Integer;
 begin
   for Index := BEST_SCORES_FIRST to BEST_SCORES_LAST do
-    if Index < BestScores[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Count then
+    if Index < BestScores[Memory.Lobby.Region][Memory.Lobby.Generator].Count then
       RenderText(
-        ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
+        ITEM_X_LOBBY_BEST_SCORE,
+        ITEM_Y_LOBBY_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         MarathonEntryToString(
           BestScores
-            [Memory.GameModes.IsSpeedrun]
-            [Memory.GameModes.Region]
-            [Memory.GameModes.Generator].Entry[Index]
+            [Memory.Lobby.Region]
+            [Memory.Lobby.Generator].Entry[Index]
         ),
         COLOR_GRAY
       )
     else
       RenderText(
-        ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
+        ITEM_X_LOBBY_BEST_SCORE,
+        ITEM_Y_LOBBY_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
         MarathonEntryToString(),
         COLOR_DARK
       );
-end;
-
-
-procedure TRenderer.RenderFreeSpeedrunSelection();
-begin
-  RenderText(
-    ITEM_X_FREE_SPEEDRUN[Memory.FreeSpeedrun.ItemIndex],
-    ITEM_Y_FREE_SPEEDRUN[Memory.FreeSpeedrun.ItemIndex],
-    ITEM_TEXT_FREE_SPEEDRUN[Memory.FreeSpeedrun.ItemIndex]
-  );
-
-  RenderText(
-    ITEM_X_FREE_SPEEDRUN[Memory.FreeSpeedrun.ItemIndex] - ITEM_X_MARKER,
-    ITEM_Y_FREE_SPEEDRUN[Memory.FreeSpeedrun.ItemIndex],
-    ITEM_TEXT_MARKER,
-    IfThen(
-      Memory.FreeSpeedrun.ItemIndex = ITEM_FREE_SPEEDRUN_START,
-      IfThen(Input.Device.Connected, COLOR_WHITE, COLOR_DARK),
-      COLOR_WHITE
-    )
-  );
-end;
-
-
-procedure TRenderer.RenderFreeSpeedrunItems();
-begin
-  RenderText(
-    ITEM_X_GAME_MODE_START,
-    ITEM_Y_GAME_MODE_START,
-    ITEM_TEXT_GAME_MODE_START,
-    IfThen(
-      Input.Device.Connected,
-      IfThen(
-        Memory.FreeSpeedrun.ItemIndex = ITEM_FREE_SPEEDRUN_START,
-        COLOR_WHITE,
-        COLOR_GRAY
-      ),
-      COLOR_DARK
-    )
-  );
-end;
-
-
-procedure TRenderer.RenderFreeSpeedrunParameters();
-begin
-  RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_REGION,
-    ITEM_TEXT_GAME_MODE_REGION[Memory.GameModes.Region],
-    IfThen(
-      Memory.FreeSpeedrun.ItemIndex = ITEM_FREE_SPEEDRUN_REGION,
-      COLOR_WHITE,
-      COLOR_GRAY
-    )
-  );
-
-  RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_GENERATOR,
-    ITEM_TEXT_GAME_MODE_GENERATOR[Memory.GameModes.Generator],
-    IfThen(
-      Memory.FreeSpeedrun.ItemIndex = ITEM_FREE_SPEEDRUN_GENERATOR,
-      COLOR_WHITE,
-      COLOR_GRAY
-    )
-  );
-end;
-
-
-procedure TRenderer.RenderFreeSpeedrunBestScores();
-var
-  Index: Integer;
-begin
-  for Index := BEST_SCORES_FIRST to BEST_SCORES_LAST do
-    if Index < BestScores[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Count then
-      RenderText(
-        ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
-        SpeedrunEntryToString(
-          BestScores
-            [Memory.GameModes.IsSpeedrun]
-            [Memory.GameModes.Region]
-            [Memory.GameModes.Generator].Entry[Index]
-        ),
-        COLOR_GRAY
-      )
-    else
-      RenderText(
-        ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
-        SpeedrunEntryToString(),
-        COLOR_DARK
-      );
-end;
-
-
-procedure TRenderer.RenderMarathonQualsSelection();
-begin
-  if not Memory.GameModes.TimerChanging then
-    RenderText(
-      ITEM_X_MARATHON_QUALS[Memory.MarathonQuals.ItemIndex],
-      ITEM_Y_MARATHON_QUALS[Memory.MarathonQuals.ItemIndex],
-      ITEM_TEXT_MARATHON_QUALS[Memory.MarathonQuals.ItemIndex]
-    );
-
-
-  RenderText(
-    ITEM_X_MARATHON_QUALS[Memory.MarathonQuals.ItemIndex] - ITEM_X_MARKER,
-    ITEM_Y_MARATHON_QUALS[Memory.MarathonQuals.ItemIndex],
-    ITEM_TEXT_MARKER,
-    IfThen(
-      Memory.MarathonQuals.ItemIndex = ITEM_MARATHON_QUALS_START,
-      IfThen(
-        Input.Device.Connected,
-        IfThen(
-          Memory.GameModes.TimerChanging,
-          IfThen(
-            Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA,
-            COLOR_GRAY,
-            COLOR_DARK
-          ),
-          IfThen(Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA, COLOR_WHITE, COLOR_DARK)
-        ),
-        COLOR_DARK
-      ),
-      IfThen(
-        Memory.GameModes.QualsActive,
-        IfThen(Memory.MarathonQuals.ItemIndex > ITEM_MARATHON_QUALS_GENERATOR, COLOR_WHITE, COLOR_DARK),
-        COLOR_WHITE
-      )
-    )
-  );
-end;
-
-
-procedure TRenderer.RenderMarathonQualsItems();
-begin
-  RenderText(
-    ITEM_X_GAME_MODE_START,
-    ITEM_Y_GAME_MODE_START,
-    ITEM_TEXT_GAME_MODE_START,
-    IfThen(
-      Input.Device.Connected,
-      IfThen(
-        Memory.MarathonQuals.ItemIndex = ITEM_MARATHON_QUALS_START,
-        IfThen(
-          Memory.GameModes.TimerChanging,
-          IfThen(
-            Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA,
-            COLOR_GRAY,
-            COLOR_DARK
-          ),
-          IfThen(Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA, COLOR_WHITE, COLOR_DARK)
-        ),
-        IfThen(
-          Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA,
-          COLOR_GRAY,
-          COLOR_DARK
-        )
-      ),
-      COLOR_DARK
-    )
-  );
-
-  if Memory.GameModes.QualsActive then
-  begin
-    RenderText(
-      ITEM_X_GAME_MODE_REGION,
-      ITEM_Y_GAME_MODE_REGION,
-      ITEM_TEXT_GAME_MODE_REGION_TITLE,
-      COLOR_DARK
-    );
-
-    RenderText(
-      ITEM_X_GAME_MODE_GENERATOR,
-      ITEM_Y_GAME_MODE_GENERATOR,
-      ITEM_TEXT_GAME_MODE_GENERATOR_TITLE,
-      COLOR_DARK
-    );
-  end;
-end;
-
-
-procedure TRenderer.RenderMarathonQualsParameters();
-begin
-  RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_REGION,
-    ITEM_TEXT_GAME_MODE_REGION[Memory.GameModes.Region],
-    IfThen(
-      Memory.GameModes.QualsActive,
-      COLOR_DARK,
-      IfThen(
-        Memory.MarathonQuals.ItemIndex = ITEM_MARATHON_QUALS_REGION,
-        COLOR_WHITE,
-        COLOR_GRAY
-      )
-    )
-  );
-
-  RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_GENERATOR,
-    ITEM_TEXT_GAME_MODE_GENERATOR[Memory.GameModes.Generator],
-    IfThen(
-      Memory.GameModes.QualsActive,
-      COLOR_DARK,
-      IfThen(
-        Memory.MarathonQuals.ItemIndex = ITEM_MARATHON_QUALS_GENERATOR,
-        COLOR_WHITE,
-        COLOR_GRAY
-      )
-    )
-  );
-
-  RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_LEVEL,
-    Memory.GameModes.Level.ToString(),
-    IfThen(
-      Memory.MarathonQuals.ItemIndex = ITEM_MARATHON_QUALS_LEVEL,
-      COLOR_WHITE,
-      COLOR_GRAY
-    )
-  );
-
-  RenderGameModeTimer();
-end;
-
-
-procedure TRenderer.RenderMarathonQualsBestScores();
-var
-  Index: Integer;
-begin
-  for Index := BEST_SCORES_FIRST to BEST_SCORES_LAST do
-    if Index < BestScores.Quals[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Count then
-      RenderText(
-        ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
-        MarathonEntryToString(
-          BestScores.Quals
-            [Memory.GameModes.IsSpeedrun]
-            [Memory.GameModes.Region]
-            [Memory.GameModes.Generator].Entry[Index]
-        ),
-        COLOR_GRAY
-      )
-    else
-      RenderText(
-        ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
-        MarathonEntryToString(),
-        COLOR_DARK
-      );
-end;
-
-
-procedure TRenderer.RenderMarathonMatchSelection();
-begin
-  if not Memory.GameModes.SeedChanging then
-    RenderText(
-      ITEM_X_MARATHON_MATCH[Memory.MarathonMatch.ItemIndex],
-      ITEM_Y_MARATHON_MATCH[Memory.MarathonMatch.ItemIndex],
-      ITEM_TEXT_MARATHON_MATCH[Memory.MarathonMatch.ItemIndex]
-    );
-
-  RenderText(
-    ITEM_X_MARATHON_MATCH[Memory.MarathonMatch.ItemIndex] - ITEM_X_MARKER,
-    ITEM_Y_MARATHON_MATCH[Memory.MarathonMatch.ItemIndex],
-    ITEM_TEXT_MARKER,
-    IfThen(
-      Memory.MarathonMatch.ItemIndex = ITEM_MARATHON_MATCH_START,
-      IfThen(
-        Input.Device.Connected,
-        IfThen(
-          Memory.GameModes.SeedChanging,
-          COLOR_GRAY,
-          COLOR_WHITE
-        ),
-        COLOR_DARK
-      ),
-      COLOR_WHITE
-    )
-  );
-end;
-
-
-procedure TRenderer.RenderMarathonMatchItems();
-begin
-  RenderText(
-    ITEM_X_GAME_MODE_START,
-    ITEM_Y_GAME_MODE_START,
-    ITEM_TEXT_GAME_MODE_START,
-    IfThen(
-      Input.Device.Connected,
-      IfThen(
-        Memory.MarathonMatch.ItemIndex = ITEM_MARATHON_MATCH_START,
-        IfThen(
-          Memory.GameModes.SeedChanging,
-          COLOR_GRAY,
-          COLOR_WHITE
-        ),
-        COLOR_GRAY
-      ),
-      COLOR_DARK
-    )
-  );
-end;
-
-
-procedure TRenderer.RenderMarathonMatchParameters();
-begin
-  RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_REGION,
-    ITEM_TEXT_GAME_MODE_REGION[Memory.GameModes.Region],
-    IfThen(
-      Memory.MarathonMatch.ItemIndex = ITEM_MARATHON_MATCH_REGION,
-      COLOR_WHITE,
-      COLOR_GRAY
-    )
-  );
-
-  RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_GENERATOR,
-    ITEM_TEXT_GAME_MODE_GENERATOR[Memory.GameModes.Generator],
-    IfThen(
-      Memory.MarathonMatch.ItemIndex = ITEM_MARATHON_MATCH_GENERATOR,
-      COLOR_WHITE,
-      COLOR_GRAY
-    )
-  );
-
-  RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_LEVEL,
-    Memory.GameModes.Level.ToString(),
-    IfThen(
-      Memory.MarathonMatch.ItemIndex = ITEM_MARATHON_MATCH_LEVEL,
-      COLOR_WHITE,
-      COLOR_GRAY
-    )
-  );
-
-  RenderGameModeSeed();
-end;
-
-
-procedure TRenderer.RenderMarathonMatchBestScores();
-var
-  Index: Integer;
-begin
-  for Index := BEST_SCORES_FIRST to BEST_SCORES_LAST do
-    if Index < BestScores.Match[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Count then
-      RenderText(
-        ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
-        MarathonEntryToString(
-          BestScores.Match
-            [Memory.GameModes.IsSpeedrun]
-            [Memory.GameModes.Region]
-            [Memory.GameModes.Generator].Entry[Index]
-        ),
-        COLOR_GRAY
-      )
-    else
-      RenderText(
-        ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
-        MarathonEntryToString(),
-        COLOR_DARK
-      );
-end;
-
-
-procedure TRenderer.RenderSpeedrunQualsSelection();
-begin
-  if not Memory.GameModes.TimerChanging then
-    RenderText(
-      ITEM_X_SPEEDRUN_QUALS[Memory.SpeedrunQuals.ItemIndex],
-      ITEM_Y_SPEEDRUN_QUALS[Memory.SpeedrunQuals.ItemIndex],
-      ITEM_TEXT_SPEEDRUN_QUALS[Memory.SpeedrunQuals.ItemIndex]
-    );
-
-  RenderText(
-    ITEM_X_SPEEDRUN_QUALS[Memory.SpeedrunQuals.ItemIndex] - ITEM_X_MARKER,
-    ITEM_Y_SPEEDRUN_QUALS[Memory.SpeedrunQuals.ItemIndex],
-    ITEM_TEXT_MARKER,
-    IfThen(
-      Memory.SpeedrunQuals.ItemIndex = ITEM_SPEEDRUN_QUALS_START,
-      IfThen(
-        Input.Device.Connected,
-        IfThen(
-          Memory.GameModes.TimerChanging,
-          IfThen(
-            Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA,
-            COLOR_GRAY,
-            COLOR_DARK
-          ),
-          IfThen(Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA, COLOR_WHITE, COLOR_DARK)
-        ),
-        COLOR_DARK
-      ),
-      IfThen(
-        Memory.GameModes.QualsActive,
-        IfThen(Memory.SpeedrunQuals.ItemIndex > ITEM_SPEEDRUN_QUALS_GENERATOR, COLOR_WHITE, COLOR_DARK),
-        COLOR_WHITE
-      )
-    )
-  );
-end;
-
-
-procedure TRenderer.RenderSpeedrunQualsItems();
-begin
-  RenderText(
-    ITEM_X_GAME_MODE_START,
-    ITEM_Y_GAME_MODE_START,
-    ITEM_TEXT_GAME_MODE_START,
-    IfThen(
-      Input.Device.Connected,
-      IfThen(
-        Memory.SpeedrunQuals.ItemIndex = ITEM_SPEEDRUN_QUALS_START,
-        IfThen(
-          Memory.GameModes.TimerChanging,
-          IfThen(
-            Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA,
-            COLOR_GRAY,
-            COLOR_DARK
-          ),
-          IfThen(Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA, COLOR_WHITE, COLOR_DARK)
-        ),
-        IfThen(
-          Memory.GameModes.TimerData <> TIMER_DEFAULT_DATA,
-          COLOR_GRAY,
-          COLOR_DARK
-        )
-      ),
-      COLOR_DARK
-    )
-  );
-
-  if Memory.GameModes.QualsActive then
-  begin
-    RenderText(
-      ITEM_X_GAME_MODE_REGION,
-      ITEM_Y_GAME_MODE_REGION,
-      ITEM_TEXT_GAME_MODE_REGION_TITLE,
-      COLOR_DARK
-    );
-
-    RenderText(
-      ITEM_X_GAME_MODE_GENERATOR,
-      ITEM_Y_GAME_MODE_GENERATOR,
-      ITEM_TEXT_GAME_MODE_GENERATOR_TITLE,
-      COLOR_DARK
-    );
-  end;
-end;
-
-
-procedure TRenderer.RenderSpeedrunQualsParameters();
-begin
-  RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_REGION,
-    ITEM_TEXT_GAME_MODE_REGION[Memory.GameModes.Region],
-    IfThen(
-      Memory.GameModes.QualsActive,
-      COLOR_DARK,
-      IfThen(
-        Memory.SpeedrunQuals.ItemIndex = ITEM_SPEEDRUN_QUALS_REGION,
-        COLOR_WHITE,
-        COLOR_GRAY
-      )
-    )
-  );
-
-  RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_GENERATOR,
-    ITEM_TEXT_GAME_MODE_GENERATOR[Memory.GameModes.Generator],
-    IfThen(
-      Memory.GameModes.QualsActive,
-      COLOR_DARK,
-      IfThen(
-        Memory.SpeedrunQuals.ItemIndex = ITEM_SPEEDRUN_QUALS_GENERATOR,
-        COLOR_WHITE,
-        COLOR_GRAY
-      )
-    )
-  );
-
-  RenderGameModeTimer();
-end;
-
-
-procedure TRenderer.RenderSpeedrunQualsBestScores();
-var
-  Index: Integer;
-begin
-  for Index := BEST_SCORES_FIRST to BEST_SCORES_LAST do
-    if Index < BestScores.Quals[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Count then
-      RenderText(
-        ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
-        SpeedrunEntryToString(
-          BestScores.Quals
-            [Memory.GameModes.IsSpeedrun]
-            [Memory.GameModes.Region]
-            [Memory.GameModes.Generator].Entry[Index]
-        ),
-        COLOR_GRAY
-      )
-    else
-      RenderText(
-        ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
-        SpeedrunEntryToString(),
-        COLOR_DARK
-      );
-end;
-
-
-procedure TRenderer.RenderSpeedrunMatchSelection();
-begin
-  if not Memory.GameModes.SeedChanging then
-    RenderText(
-      ITEM_X_SPEEDRUN_MATCH[Memory.SpeedrunMatch.ItemIndex],
-      ITEM_Y_SPEEDRUN_MATCH[Memory.SpeedrunMatch.ItemIndex],
-      ITEM_TEXT_SPEEDRUN_MATCH[Memory.SpeedrunMatch.ItemIndex]
-    );
-
-  RenderText(
-    ITEM_X_SPEEDRUN_MATCH[Memory.SpeedrunMatch.ItemIndex] - ITEM_X_MARKER,
-    ITEM_Y_SPEEDRUN_MATCH[Memory.SpeedrunMatch.ItemIndex],
-    ITEM_TEXT_MARKER,
-    IfThen(
-      Memory.SpeedrunMatch.ItemIndex = ITEM_SPEEDRUN_MATCH_START,
-      IfThen(
-        Input.Device.Connected,
-        IfThen(
-          Memory.GameModes.SeedChanging,
-          COLOR_GRAY,
-          COLOR_WHITE
-        ),
-        COLOR_DARK
-      ),
-      COLOR_WHITE
-    )
-  );
-end;
-
-
-procedure TRenderer.RenderSpeedrunMatchItems();
-begin
-  RenderText(
-    ITEM_X_GAME_MODE_START,
-    ITEM_Y_GAME_MODE_START,
-    ITEM_TEXT_GAME_MODE_START,
-    IfThen(
-      Input.Device.Connected,
-      IfThen(
-        Memory.SpeedrunMatch.ItemIndex = ITEM_SPEEDRUN_MATCH_START,
-        IfThen(
-          Memory.GameModes.SeedChanging,
-          COLOR_GRAY,
-          COLOR_WHITE
-        ),
-        COLOR_GRAY
-      ),
-      COLOR_DARK
-    )
-  );
-end;
-
-
-procedure TRenderer.RenderSpeedrunMatchParameters();
-begin
-  RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_REGION,
-    ITEM_TEXT_GAME_MODE_REGION[Memory.GameModes.Region],
-    IfThen(
-      Memory.SpeedrunMatch.ItemIndex = ITEM_SPEEDRUN_MATCH_REGION,
-      COLOR_WHITE,
-      COLOR_GRAY
-    )
-  );
-
-  RenderText(
-    ITEM_X_GAME_MODE_PARAM,
-    ITEM_Y_GAME_MODE_GENERATOR,
-    ITEM_TEXT_GAME_MODE_GENERATOR[Memory.GameModes.Generator],
-    IfThen(
-      Memory.SpeedrunMatch.ItemIndex = ITEM_SPEEDRUN_MATCH_GENERATOR,
-      COLOR_WHITE,
-      COLOR_GRAY
-    )
-  );
-
-  RenderGameModeSeed();
-end;
-
-
-procedure TRenderer.RenderSpeedrunMatchBestScores();
-var
-  Index: Integer;
-begin
-  for Index := BEST_SCORES_FIRST to BEST_SCORES_LAST do
-    if Index < BestScores.Match[Memory.GameModes.IsSpeedrun][Memory.GameModes.Region][Memory.GameModes.Generator].Count then
-      RenderText(
-        ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
-        SpeedrunEntryToString(
-          BestScores.Match
-            [Memory.GameModes.IsSpeedrun]
-            [Memory.GameModes.Region]
-            [Memory.GameModes.Generator].Entry[Index]
-        ),
-        COLOR_GRAY
-      )
-    else
-      RenderText(
-        ITEM_X_GAME_MODE_BEST_SCORE,
-        ITEM_Y_GAME_MODE_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
-        SpeedrunEntryToString(),
-        COLOR_DARK
-      );
-end;
-
-
-procedure TRenderer.RenderGameBestTitle();
-begin
-  if Memory.GameModes.IsQuals then
-    RenderText(
-      TOP_TITLE_X,
-      TOP_TITLE_Y,
-      ITEM_TEXT_QUALS_LEFT,
-      COLOR_WHITE,
-      ALIGN_RIGHT
-    );
 end;
 
 
@@ -1266,24 +405,8 @@ begin
   RenderText(
     TOP_X,
     TOP_Y,
-    IfThen(
-      Memory.GameModes.IsQuals,
-      Converter.FramesToTimerString(Memory.GameModes.QualsRemaining),
-      IfThen(
-        Memory.GameModes.IsMarathon,
-        Converter.ScoreToString(Memory.Game.Best),
-        Converter.FramesToTimeString(Memory.Game.Best)
-      )
-    ),
-    IfThen(
-      Memory.GameModes.IsQuals,
-      IfThen(
-        Converter.IsTimerRunningOut(Memory.GameModes.QualsRemaining),
-        IfThen(Clock.FrameIndexInHalf, COLOR_DARK, COLOR_WHITE),
-        COLOR_WHITE
-      ),
-      COLOR_WHITE
-    )
+    Converter.ScoreToString(Memory.Game.Best),
+    COLOR_WHITE
   );
 end;
 
@@ -1326,26 +449,6 @@ begin
       NEXT_Y,
       Memory.Game.Next,
       Memory.Game.Level
-    );
-end;
-
-
-procedure TRenderer.RenderGameTime();
-begin
-  if Memory.GameModes.IsSpeedrun then
-    RenderText(
-      TIME_X,
-      TIME_Y,
-      Converter.FramesToTimeString(Memory.Game.SpeedrunTimer),
-      IfThen(
-        Memory.Game.State <> STATE_UPDATE_TOP_OUT,
-        IfThen(
-          Converter.IsTimeRunningOut(Memory.Game.SpeedrunTimer),
-          IfThen(Clock.FrameIndexInHalf, COLOR_DARK, COLOR_WHITE),
-          COLOR_WHITE
-        ),
-        COLOR_WHITE
-      )
     );
 end;
 
@@ -1487,19 +590,7 @@ begin
       Memory.Pause.ItemIndex in [ITEM_PAUSE_RESUME, ITEM_PAUSE_RESTART],
       IfThen(
         Input.Device.Connected,
-        IfThen(
-          Memory.GameModes.IsQuals,
-          IfThen(
-            Memory.Pause.ItemIndex = ITEM_PAUSE_RESUME,
-            COLOR_DARK,
-            IfThen(
-              Memory.Pause.ItemIndex = ITEM_PAUSE_RESTART,
-              IfThen(Memory.GameModes.QualsRemaining > 0, COLOR_WHITE, COLOR_DARK),
-              COLOR_WHITE
-            )
-          ),
-          COLOR_WHITE
-        ),
+        COLOR_WHITE,
         COLOR_DARK
       ),
       COLOR_WHITE
@@ -1517,13 +608,9 @@ begin
     IfThen(
       Input.Device.Connected,
       IfThen(
-        Memory.GameModes.IsQuals,
-        COLOR_DARK,
-        IfThen(
-          Memory.Pause.ItemIndex = ITEM_PAUSE_RESUME,
-          COLOR_WHITE,
-          COLOR_GRAY
-        )
+        Memory.Pause.ItemIndex = ITEM_PAUSE_RESUME,
+        COLOR_WHITE,
+        COLOR_GRAY
       ),
       COLOR_DARK
     )
@@ -1536,21 +623,9 @@ begin
     IfThen(
       Input.Device.Connected,
       IfThen(
-        Memory.GameModes.IsQuals,
-        IfThen(
-          Memory.GameModes.QualsRemaining > 0,
-          IfThen(
-            Memory.Pause.ItemIndex = ITEM_PAUSE_RESTART,
-            COLOR_WHITE,
-            COLOR_GRAY
-          ),
-          COLOR_DARK
-        ),
-        IfThen(
-          Memory.Pause.ItemIndex = ITEM_PAUSE_RESTART,
-          COLOR_WHITE,
-          COLOR_GRAY
-        )
+        Memory.Pause.ItemIndex = ITEM_PAUSE_RESTART,
+        COLOR_WHITE,
+        COLOR_GRAY
       ),
       COLOR_DARK
     )
@@ -1570,35 +645,8 @@ begin
 end;
 
 
-procedure TRenderer.RenderTopOutResultTotalTime();
-begin
-  if not Memory.GameModes.IsSpeedrun then Exit;
-
-  RenderText(
-    ITEM_X_TOP_OUT_RESULT_TOTAL_TIME_TITLE,
-    ITEM_Y_TOP_OUT_RESULT_TOTAL_TIME_TITLE,
-    ITEM_TEXT_TOP_OUT_RESULT_TOTAL_TIME_TITLE,
-    COLOR_ORANGE
-  );
-
-  RenderText(
-    ITEM_X_TOP_OUT_RESULT_TOTAL_TIME,
-    ITEM_Y_TOP_OUT_RESULT_TOTAL_TIME,
-    IfThen(
-      Memory.Game.SpeedrunCompleted,
-      Converter.FramesToTimeString(Memory.Game.SpeedrunTimer, True),
-      '-'
-    ),
-    IfThen(Memory.Game.SpeedrunCompleted, COLOR_WHITE, COLOR_DARK),
-    ALIGN_RIGHT
-  );
-end;
-
-
 procedure TRenderer.RenderTopOutResultTransition();
 begin
-  if Memory.GameModes.IsSpeedrun then Exit;
-
   if Memory.TopOut.Transition > 0 then
     RenderText(
       ITEM_X_TOP_OUT_RESULT_TRANSITION,
@@ -1653,8 +701,6 @@ end;
 
 procedure TRenderer.RenderTopOutResultTetrisRate();
 begin
-  if Memory.GameModes.IsQuals then Exit;
-
   if Memory.TopOut.LinesCleared > 0 then
     RenderText(
       ITEM_X_TOP_OUT_RESULT_TETRIS_RATE,
@@ -1674,31 +720,6 @@ begin
 end;
 
 
-procedure TRenderer.RenderTopOutResultQualsEndIn();
-begin
-  if not Memory.GameModes.IsQuals then Exit;
-
-  RenderText(
-    ITEM_X_TOP_OUT_RESULT_QUALS_END_IN_TITLE,
-    ITEM_Y_TOP_OUT_RESULT_QUALS_END_IN_TITLE,
-    ITEM_TEXT_TOP_OUT_RESULT_QUALS_END_IN_TITLE,
-    COLOR_ORANGE
-  );
-
-  RenderText(
-    ITEM_X_TOP_OUT_RESULT_QUALS_END_IN,
-    ITEM_Y_TOP_OUT_RESULT_QUALS_END_IN,
-    Converter.FramesToTimerString(Memory.GameModes.QualsRemaining, True),
-    IfThen(
-      Converter.IsTimerRunningOut(Memory.GameModes.QualsRemaining),
-      IfThen(Clock.FrameIndexInHalf, COLOR_DARK, COLOR_WHITE),
-      COLOR_WHITE
-    ),
-    ALIGN_RIGHT
-  );
-end;
-
-
 procedure TRenderer.RenderTopOutSelection();
 begin
   RenderText(
@@ -1715,11 +736,7 @@ begin
       Memory.TopOut.ItemIndex = ITEM_TOP_OUT_PLAY,
       IfThen(
         Input.Device.Connected,
-        IfThen(
-          Memory.GameModes.IsQuals,
-          IfThen(Memory.GameModes.QualsRemaining > 0, COLOR_WHITE, COLOR_DARK),
-          COLOR_WHITE
-        ),
+        COLOR_WHITE,
         COLOR_DARK
       ),
       COLOR_WHITE
@@ -1738,20 +755,8 @@ begin
       Input.Device.Connected,
       IfThen(
         Memory.TopOut.ItemIndex = ITEM_TOP_OUT_PLAY,
-        IfThen(
-          Memory.GameModes.IsQuals,
-          IfThen(Memory.GameModes.QualsRemaining > 0, COLOR_WHITE, COLOR_DARK),
-          COLOR_WHITE
-        ),
-        IfThen(
-          Memory.GameModes.IsQuals,
-          IfThen(
-            Memory.GameModes.QualsRemaining > 0,
-            COLOR_GRAY,
-            COLOR_DARK
-          ),
-          COLOR_GRAY
-        )
+        COLOR_WHITE,
+        COLOR_GRAY
       ),
       COLOR_DARK
     )
@@ -1762,12 +767,10 @@ end;
 procedure TRenderer.RenderTopOutResult();
 begin
   RenderTopOutResultScore();
-  RenderTopOutResultTotalTime();
   RenderTopOutResultTransition();
   RenderTopOutResultLinesCleared();
   RenderTopOutResultLinesBurned();
   RenderTopOutResultTetrisRate();
-  RenderTopOutResultQualsEndIn();
 end;
 
 
@@ -2121,76 +1124,22 @@ begin
 end;
 
 
-procedure TRenderer.RenderModes();
+procedure TRenderer.RenderLobby();
 begin
-  RenderModesSelection();
-  RenderModesItems();
-end;
-
-
-procedure TRenderer.RenderFreeMarathon();
-begin
-  RenderFreeMarathonSelection();
-  RenderFreeMarathonItems();
-  RenderFreeMarathonParameters();
-  RenderFreeMarathonBestScores();
-end;
-
-
-procedure TRenderer.RenderFreeSpeedrun();
-begin
-  RenderFreeSpeedrunSelection();
-  RenderFreeSpeedrunItems();
-  RenderFreeSpeedrunParameters();
-  RenderFreeSpeedrunBestScores();
-end;
-
-
-procedure TRenderer.RenderMarathonQuals();
-begin
-  RenderMarathonQualsSelection();
-  RenderMarathonQualsItems();
-  RenderMarathonQualsParameters();
-  RenderMarathonQualsBestScores();
-end;
-
-
-procedure TRenderer.RenderMarathonMatch();
-begin
-  RenderMarathonMatchSelection();
-  RenderMarathonMatchItems();
-  RenderMarathonMatchParameters();
-  RenderMarathonMatchBestScores();
-end;
-
-
-procedure TRenderer.RenderSpeedrunQuals();
-begin
-  RenderSpeedrunQualsSelection();
-  RenderSpeedrunQualsItems();
-  RenderSpeedrunQualsParameters();
-  RenderSpeedrunQualsBestScores();
-end;
-
-
-procedure TRenderer.RenderSpeedrunMatch();
-begin
-  RenderSpeedrunMatchSelection();
-  RenderSpeedrunMatchItems();
-  RenderSpeedrunMatchParameters();
-  RenderSpeedrunMatchBestScores();
+  RenderLobbySelection();
+  RenderLobbyItems();
+  RenderLobbyParameters();
+  RenderLobbyBestScores();
 end;
 
 
 procedure TRenderer.RenderGame();
 begin
-  RenderGameBestTitle();
   RenderGameBest();
   RenderGameScore();
   RenderGameLines();
   RenderGameLevel();
   RenderGameNext();
-  RenderGameTime();
   RenderGameStack();
   RenderGamePiece();
 
@@ -2266,25 +1215,17 @@ begin
   RenderGround(ASceneID);
 
   case ASceneID of
-    SCENE_LEGAL:           RenderLegal();
-    SCENE_MENU:            RenderMenu();
-    SCENE_MODES:           RenderModes();
-    SCENE_FREE_MARATHON:   RenderFreeMarathon();
-    SCENE_FREE_SPEEDRUN:   RenderFreeSpeedrun();
-    SCENE_MARATHON_QUALS:  RenderMarathonQuals();
-    SCENE_MARATHON_MATCH:  RenderMarathonMatch();
-    SCENE_SPEEDRUN_QUALS:  RenderSpeedrunQuals();
-    SCENE_SPEEDRUN_MATCH:  RenderSpeedrunMatch();
-    SCENE_GAME_NORMAL:     RenderGame();
-    SCENE_GAME_FLASH:      RenderGame();
-    SCENE_SPEEDRUN_NORMAL: RenderGame();
-    SCENE_SPEEDRUN_FLASH:  RenderGame();
-    SCENE_PAUSE:           RenderPause();
-    SCENE_TOP_OUT:         RenderTopOut();
-    SCENE_OPTIONS:         RenderOptions();
-    SCENE_KEYBOARD:        RenderKeyboard();
-    SCENE_CONTROLLER:      RenderController();
-    SCENE_QUIT:            RenderQuit();
+    SCENE_LEGAL:       RenderLegal();
+    SCENE_MENU:        RenderMenu();
+    SCENE_LOBBY:       RenderLobby();
+    SCENE_GAME_NORMAL: RenderGame();
+    SCENE_GAME_FLASH:  RenderGame();
+    SCENE_PAUSE:       RenderPause();
+    SCENE_TOP_OUT:     RenderTopOut();
+    SCENE_OPTIONS:     RenderOptions();
+    SCENE_KEYBOARD:    RenderKeyboard();
+    SCENE_CONTROLLER:  RenderController();
+    SCENE_QUIT:        RenderQuit();
   end;
 
   RenderEnd();

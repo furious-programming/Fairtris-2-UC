@@ -34,8 +34,6 @@ uses
   function GetG(AColor: Integer): UInt8;
   function GetB(AColor: Integer): UInt8;
 
-  function GenerateRandomSeed(): String;
-
 
 implementation
 
@@ -74,30 +72,6 @@ end;
 function GetB(AColor: Integer): UInt8;
 begin
   Result := (AColor and $00FF0000) shr 16;
-end;
-
-
-function GenerateRandomSeed(): String;
-const
-  SEED_DIGITS = '0123456789ABCDEF';
-var
-  SeedIsValid: Boolean;
-  Digit: Char;
-begin
-  repeat
-    Result := '';
-    SeedIsValid := True;
-
-    while Result.Length < SEED_LENGTH do
-      Result += SEED_DIGITS.ToCharArray()[Random(SEED_DIGITS.Length)];
-
-    for Digit in Result do
-      if Result.CountChar(Digit) > 3 then
-      begin
-        SeedIsValid := False;
-        Break;
-      end;
-  until SeedIsValid;
 end;
 
 

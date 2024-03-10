@@ -166,7 +166,7 @@ begin
   if ANeedAttention then
     Mix_HaltChannel(-1);
 
-  Mix_PlayChannel(SOUND_CHANNEL[ASoundID], FRegions[SOUND_REGION[Memory.GameModes.Region]][ASoundID], 0);
+  Mix_PlayChannel(SOUND_CHANNEL[ASoundID], FRegions[SOUND_REGION[Memory.Lobby.Region]][ASoundID], 0);
 end;
 
 

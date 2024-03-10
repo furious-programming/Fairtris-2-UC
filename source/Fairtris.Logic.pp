@@ -1056,7 +1056,7 @@ begin
 
   Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.GameModes.Region];
 
-  if Memory.GameModes.Region in [REGION_PAL .. REGION_PAL_EXTENDED] then
+  if Memory.GameModes.Region = REGION_PAL then
     Memory.GameModes.Level := Min(Memory.GameModes.Level, LEVEL_LAST_FREE_GAME_PAL);
 end;
 
@@ -1487,7 +1487,7 @@ begin
 
   Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.GameModes.Region];
 
-  if Memory.GameModes.Region in [REGION_PAL .. REGION_PAL_EXTENDED] then
+  if Memory.GameModes.Region = REGION_PAL then
     Memory.GameModes.Level := Min(Memory.GameModes.Level, LEVEL_LAST_FREE_GAME_PAL);
 end;
 

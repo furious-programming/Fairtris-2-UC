@@ -163,7 +163,6 @@ type
     procedure UpdateOptionsSelection();
     procedure UpdateOptionsInput();
     procedure UpdateOptionsWindow();
-    procedure UpdateOptionsTheme();
     procedure UpdateOptionsControls();
     procedure UpdateOptionsSounds();
     procedure UpdateOptionsScene();
@@ -2097,24 +2096,6 @@ begin
 end;
 
 
-procedure TLogic.UpdateOptionsTheme();
-begin
-  if Memory.Options.ItemIndex <> ITEM_OPTIONS_THEME then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    UpdateItemIndex(Memory.Options.Theme, THEME_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  if InputOptionSetNext() then
-  begin
-    UpdateItemIndex(Memory.Options.Theme, THEME_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-end;
-
-
 procedure TLogic.UpdateOptionsControls();
 begin
   if Memory.Options.ItemIndex <> ITEM_OPTIONS_CONTROLS then Exit;
@@ -2546,11 +2527,6 @@ begin
   if Input.Fixed.Help.JustPressed then OpenHelp();
   if Input.Fixed.ToggleVideo.JustPressed then Placement.ToggleVideoMode();
 
-  if Input.Fixed.ToggleTheme.JustPressed then
-  begin
-    Memory.Options.Theme := WrapAround(Memory.Options.Theme, THEME_COUNT, 1);
-  end;
-
   if not Memory.Game.Started then
     Generators.Shuffle();
 
@@ -2700,7 +2676,6 @@ begin
   UpdateOptionsSelection();
   UpdateOptionsInput();
   UpdateOptionsWindow();
-  UpdateOptionsTheme();
   UpdateOptionsControls();
   UpdateOptionsSounds();
   UpdateOptionsScene();

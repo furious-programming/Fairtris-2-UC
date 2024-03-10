@@ -267,7 +267,6 @@ type
   public
     Input: Integer;
     Size: Integer;
-    Theme: Integer;
     Controls: Integer;
     Sounds: Integer;
   end;
@@ -588,7 +587,6 @@ begin
 
   Input := Settings.General.Input;
   Size := Settings.General.Size;
-  Theme := Settings.General.Theme;
   Controls := Settings.General.Controls;
   Sounds := Settings.General.Sounds;
 end;

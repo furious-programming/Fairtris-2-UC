@@ -373,7 +373,7 @@ begin
   if ASceneID = SCENE_QUIT then
     SDL_RenderCopy(Window.Renderer, Memory.Quit.Buffer, nil, nil)
   else
-    SDL_RenderCopy(Window.Renderer, Grounds[Memory.Options.Theme][ASceneID], nil, nil);
+    SDL_RenderCopy(Window.Renderer, Grounds[ASceneID], nil, nil);
 end;
 
 

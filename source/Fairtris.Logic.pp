@@ -661,7 +661,7 @@ begin
   SDL_SetRenderTarget(Window.Renderer, Memory.Quit.Buffer);
 
   SDL_RenderCopy(Window.Renderer, Buffers.Native, nil, nil);
-  SDL_RenderCopy(Window.Renderer, Grounds[Memory.Options.Theme][SCENE_QUIT], nil, nil);
+  SDL_RenderCopy(Window.Renderer, Grounds[SCENE_QUIT], nil, nil);
 
   SDL_SetRenderTarget(Window.Renderer, OldTarget);
 end;

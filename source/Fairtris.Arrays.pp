@@ -56,17 +56,17 @@ const
 
 const
   GROUND_FILENAME: array [SCENE_FIRST .. SCENE_LAST] of String = (
-    'legal.bmp',
-    'menu.bmp',
-    'lobby.bmp',
-    'game normal.bmp',
-    'game flash.bmp',
-    'pause.bmp',
-    'top out.bmp',
-    'options.bmp',
-    'keyboard.bmp',
-    'controller.bmp',
-    'quit.bmp'
+    'legal.png',
+    'menu.png',
+    'lobby.png',
+    'game normal.png',
+    'game flash.png',
+    'pause.png',
+    'top out.png',
+    'options.png',
+    'keyboard.png',
+    'controller.png',
+    'quit.png'
   );
 
 const
@@ -75,10 +75,10 @@ const
 
 const
   SPRITE_FILENAME: array [SPRITE_FIRST .. SPRITE_LAST] of String = (
-    'charset.bmp',
-    'bricks.bmp',
-    'pieces.bmp',
-    'controller.bmp'
+    'charset.png',
+    'bricks.png',
+    'pieces.png',
+    'controller.png'
   );
 
 const

@@ -163,7 +163,6 @@ type
     procedure UpdateOptionsSelection();
     procedure UpdateOptionsInput();
     procedure UpdateOptionsWindow();
-    procedure UpdateOptionsControls();
     procedure UpdateOptionsSounds();
     procedure UpdateOptionsScene();
   private
@@ -2096,24 +2095,6 @@ begin
 end;
 
 
-procedure TLogic.UpdateOptionsControls();
-begin
-  if Memory.Options.ItemIndex <> ITEM_OPTIONS_CONTROLS then Exit;
-
-  if InputOptionSetPrev() then
-  begin
-    UpdateItemIndex(Memory.Options.Controls, CONTROLS_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  if InputOptionSetNext() then
-  begin
-    UpdateItemIndex(Memory.Options.Controls, CONTROLS_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-end;
-
-
 procedure TLogic.UpdateOptionsSounds();
 begin
   if Memory.Options.ItemIndex <> ITEM_OPTIONS_SOUNDS then Exit;
@@ -2676,7 +2657,6 @@ begin
   UpdateOptionsSelection();
   UpdateOptionsInput();
   UpdateOptionsWindow();
-  UpdateOptionsControls();
   UpdateOptionsSounds();
   UpdateOptionsScene();
 end;

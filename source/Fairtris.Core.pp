@@ -48,7 +48,6 @@ type
   private
     procedure UpdatePieceControlDropControl();
     procedure UpdatePieceControlDropAutorepeat();
-    procedure UpdatePieceControlDropUpPressed();
     procedure UpdatePieceControlDropDownPressed();
     procedure UpdatePieceControlDropMove();
     procedure UpdatePieceControlDropLookupSpeed();
@@ -313,24 +312,6 @@ begin
 end;
 
 
-procedure TCore.UpdatePieceControlDropUpPressed();
-begin
-  Memory.Game.AutorepeatY := 0;
-
-  Memory.Game.FallTimer := 0;
-  Memory.Game.FallPoints := 0;
-
-  while CanDropPiece() do
-  begin
-    UpdatePieceControlDropMove();
-    Memory.Game.FallPoints += 1;
-  end;
-
-  UpdatePieceControlDropMove();
-  Memory.Game.FallSkipped := True;
-end;
-
-
 procedure TCore.UpdatePieceControlDropDownPressed();
 begin
   Memory.Game.AutorepeatY += 1;
@@ -466,13 +447,6 @@ end;
 
 procedure TCore.UpdatePieceControlDrop();
 begin
-  if Input.Device.Left.Released and Input.Device.Right.Released then
-    if Input.Device.Up.JustPressed or (Input.Device.Up.Pressed and (Input.Device.Left.JustReleased or Input.Device.Right.JustReleased)) then
-    begin
-      UpdatePieceControlDropUpPressed();
-      Exit;
-    end;
-
   if Memory.Game.AutorepeatY > 0 then
     UpdatePieceControlDropAutorepeat()
   else

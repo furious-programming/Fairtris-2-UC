@@ -269,9 +269,9 @@ begin
   FInput := Memory.Options.Input;
   FSounds := Memory.Options.Sounds;
 
-  FRegion := Memory.GameModes.Region;
-  FGenerator := Memory.GameModes.Generator;
-  FLevel := Memory.GameModes.Level;
+  FRegion := Memory.Lobby.Region;
+  FGenerator := Memory.Lobby.Generator;
+  FLevel := Memory.Lobby.Level;
 end;
 
 

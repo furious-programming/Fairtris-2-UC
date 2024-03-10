@@ -105,7 +105,7 @@ begin
   Buffers := TBuffers.Create();
   Input := TInput.Create();
   Placement := TPlacement.Create();
-  Renderer := TRenderers.Create();
+  Renderer := TRenderer.Create();
 
   Sounds := TSounds.Create();
   Grounds := TGrounds.Create();
@@ -181,7 +181,6 @@ begin
   Input.Initialize();
   Memory.Initialize();
   Placement.Initialize();
-  Renderer.Initialize();
   Sounds.Initilize();
   Taskbar.Initialize();
 
@@ -253,7 +252,7 @@ end;
 
 procedure TGame.UpdateBuffer();
 begin
-  Renderer.Theme.RenderScene(Logic.Scene.Current);
+  Renderer.RenderScene(Logic.Scene.Current);
 end;
 
 

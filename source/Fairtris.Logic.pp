@@ -2112,8 +2112,6 @@ begin
     UpdateItemIndex(Memory.Options.Theme, THEME_COUNT, ITEM_NEXT);
     Sounds.PlaySound(SOUND_SHIFT);
   end;
-
-  Renderer.ThemeID := Memory.Options.Theme;
 end;
 
 
@@ -2551,7 +2549,6 @@ begin
   if Input.Fixed.ToggleTheme.JustPressed then
   begin
     Memory.Options.Theme := WrapAround(Memory.Options.Theme, THEME_COUNT, 1);
-    Renderer.ThemeID := Memory.Options.Theme;
   end;
 
   if not Memory.Game.Started then

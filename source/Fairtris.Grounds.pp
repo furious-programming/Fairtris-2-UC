@@ -46,24 +46,6 @@ type
   end;
 
 
-type
-  TGrounds = class(TThemeGrounds)
-  private type
-    TThemes = array [THEME_FIRST .. THEME_LAST] of TThemeGrounds;
-  private
-    FThemes: TThemes;
-  private
-    function GetTheme(AThemeID: Integer): TThemeGrounds;
-  public
-    constructor Create();
-    destructor Destroy(); override;
-  public
-    procedure Load();
-  public
-    property Theme[AThemeID: Integer]: TThemeGrounds read GetTheme; default;
-  end;
-
-
 var
   Grounds: TGrounds;
 
@@ -118,41 +100,6 @@ begin
         ]
       );
   end;
-end;
-
-
-constructor TGrounds.Create();
-var
-  Index: Integer;
-begin
-  for Index := Low(FThemes) to High(FThemes) do
-    FThemes[Index] := TThemeGrounds.Create(GROUND_PATH[Index]);
-end;
-
-
-destructor TGrounds.Destroy();
-var
-  Index: Integer;
-begin
-  for Index := Low(FThemes) to High(FThemes) do
-    FThemes[Index].Free();
-
-  inherited Destroy();
-end;
-
-
-function TGrounds.GetTheme(AThemeID: Integer): TThemeGrounds;
-begin
-  Result := FThemes[AThemeID];
-end;
-
-
-procedure TGrounds.Load();
-var
-  Index: Integer;
-begin
-  for Index := Low(FThemes) to High(FThemes) do
-    FThemes[Index].Load();
 end;
 
 

@@ -47,9 +47,6 @@ type
     function InputOptionSetNext(): Boolean;
     function InputOptionRollPrev(): Boolean;
     function InputOptionRollNext(): Boolean;
-    function InputOptionCopy(): Boolean;
-    function InputOptionPaste(): Boolean;
-    function InputOptionGenerate(): Boolean;
   private
     procedure OpenHelp();
   private
@@ -239,28 +236,6 @@ end;
 function TLogic.InputOptionRollNext(): Boolean;
 begin
   Result := Input.Fixed.Right.Pressed or Input.Controller.Right.Pressed;
-end;
-
-
-function TLogic.InputOptionCopy(): Boolean;
-begin
-  Result := Input.Keyboard.Device[SDL_SCANCODE_LCTRL].Pressed and Input.Keyboard.Device[SDL_SCANCODE_C].JustPressed;
-end;
-
-
-function TLogic.InputOptionPaste(): Boolean;
-begin
-  Result := Input.Keyboard.Device[SDL_SCANCODE_INSERT].JustPressed;
-
-  if not Result then
-    Result := Input.Keyboard.Device[SDL_SCANCODE_LCTRL].Pressed and Input.Keyboard.Device[SDL_SCANCODE_V].JustPressed;
-end;
-
-
-function TLogic.InputOptionGenerate(): Boolean;
-begin
-  Result := Input.Keyboard.Device[SDL_SCANCODE_LCTRL].Pressed and Input.Keyboard.Device[SDL_SCANCODE_G].JustPressed;
-  Result := Result or Input.Controller.Select.JustPressed;
 end;
 
 

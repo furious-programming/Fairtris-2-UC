@@ -70,6 +70,10 @@ type
     constructor Create();
   public
     procedure Reset();
+  {$IFDEF MODE_DEBUG}
+  public
+    procedure ClearStack();
+  {$ENDIF}
   public
     FromScene: Integer;
   public
@@ -361,6 +365,16 @@ begin
   Gain := 0;
   GainTimer := 0;
 end;
+
+
+{$IFDEF MODE_DEBUG}
+
+procedure TGameMemory.ClearStack();
+begin
+  Stack := Default(TStack);
+end;
+
+{$ENDIF}
 
 
 procedure TPauseMemory.Initialize();

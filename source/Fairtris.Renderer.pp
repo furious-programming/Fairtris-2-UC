@@ -148,6 +148,7 @@ begin
     '%': Result := 44;
     '>': Result := 45;
     ':': Result := 46;
+    '_': Result := 47;
   otherwise
     Result := 0;
   end;

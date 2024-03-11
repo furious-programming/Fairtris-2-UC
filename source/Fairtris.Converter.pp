@@ -29,7 +29,6 @@ uses
 type
   TConverter = class(TObject)
   public
-    function PiecesToString(APieces: Integer): String;
     function ScoreToString(AScore: Integer): String;
     function LinesToString(ALines: Integer): String;
     function LevelToString(ALevel: Integer): String;
@@ -50,12 +49,6 @@ uses
   Fairtris.Memory,
   Fairtris.Arrays,
   Fairtris.Constants;
-
-
-function TConverter.PiecesToString(APieces: Integer): String;
-begin
-  Result := '%.3d'.Format([APieces]);
-end;
 
 
 function TConverter.ScoreToString(AScore: Integer): String;

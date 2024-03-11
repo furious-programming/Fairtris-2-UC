@@ -171,6 +171,7 @@ type
     FromScene: Integer;
   public
     Input: Integer;
+    Boost: Integer;
     Size: Integer;
     Sounds: Integer;
   end;
@@ -389,6 +390,7 @@ begin
   FromScene := SCENE_MENU;
 
   Input := Settings.General.Input;
+  Boost := Settings.General.Boost;
   Size := Settings.General.Size;
   Sounds := Settings.General.Sounds;
 end;

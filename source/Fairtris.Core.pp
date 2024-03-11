@@ -496,6 +496,11 @@ begin
   if Input.Keyboard.Device.Key[SDL_SCANCODE_END].JustPressed  then Memory.Game.Level := Max(Memory.Game.Level - 50, 0);
 
   if Input.Keyboard.Device.Key[SDL_SCANCODE_DELETE].Pressed then Memory.Game.ClearStack();
+
+  if (Memory.Options.Boost = BOOST_ENABLED) and (Memory.Game.Level >= LEVEL_LAST) then
+    AUTOSHIFT_FRAMES_CHARGE := AUTOSHIFT_FRAMES_CHARGE_BOOST
+  else
+    AUTOSHIFT_FRAMES_CHARGE := AUTOSHIFT_FRAMES_CHARGE_NORMAL;
   {$ENDIF}
 
   UpdateCommonGain();
@@ -655,6 +660,9 @@ begin
     begin
       Memory.Game.Level += 1;
       Sounds.PlaySound(SOUND_TRANSITION, True);
+
+      if (Memory.Options.Boost = BOOST_ENABLED) and (Memory.Lobby.Level >= LEVEL_LAST) then
+        AUTOSHIFT_FRAMES_CHARGE := AUTOSHIFT_FRAMES_CHARGE_BOOST;
     end;
 
     Memory.Game.Lines += Memory.Game.ClearCount;
@@ -728,6 +736,11 @@ begin
   Memory.Game.Level := Memory.Lobby.Level;
   Memory.Game.Best := BestScores[Memory.Lobby.Region][Memory.Lobby.Generator].BestResult;
   Memory.Game.NextVisible := True;
+
+  if (Memory.Options.Boost = BOOST_ENABLED) and (Memory.Lobby.Level >= LEVEL_LAST) then
+    AUTOSHIFT_FRAMES_CHARGE := AUTOSHIFT_FRAMES_CHARGE_BOOST
+  else
+    AUTOSHIFT_FRAMES_CHARGE := AUTOSHIFT_FRAMES_CHARGE_NORMAL;
 end;
 
 

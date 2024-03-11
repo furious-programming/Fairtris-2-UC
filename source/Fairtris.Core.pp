@@ -661,8 +661,7 @@ begin
       Memory.Game.LinesBurned += Memory.Game.ClearCount;
     end;
 
-    if not Memory.Game.AfterKillScreen then
-      Memory.Game.TetrisRate := Round((Memory.Game.LinesCleared - Memory.Game.LinesBurned) / Memory.Game.Lines * 100);
+    Memory.Game.TetrisRate := Round((Memory.Game.LinesCleared - Memory.Game.LinesBurned) / Memory.Game.Lines * 100);
   end;
 
   Gain := Memory.Game.FallPoints;

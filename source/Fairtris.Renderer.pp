@@ -204,13 +204,26 @@ end;
 
 
 procedure TRenderer.RenderNext(AX, AY, APiece, ALevel: Integer);
+var
+  Pieces: PSDL_Texture;
 begin
   if APiece <> PIECE_UNKNOWN then
   begin
-    ALevel := ALevel mod 10;
+    ALevel := ALevel and $FF;
+
+    if ALevel < LEVEL_GLITCHED then
+    begin
+      ALevel := ALevel mod 10;
+      Pieces := Sprites.Pieces;
+    end
+    else
+    begin
+      ALevel -= LEVEL_GLITCHED;
+      Pieces := Sprites.PiecesGlitched;
+    end;
 
     RenderSprite(
-      Sprites.Pieces,
+      Pieces,
       SDL_Rect(
         AX,
         AY,

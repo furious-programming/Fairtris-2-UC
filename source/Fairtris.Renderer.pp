@@ -584,12 +584,22 @@ end;
 procedure TRenderer.RenderGameNext();
 begin
   if Memory.Game.NextVisible then
+  begin
+    if Logic.Scene.Current = SCENE_GAME_NORMAL then
+      RenderText(
+        GAME_NEXT_TITLE_X,
+        GAME_NEXT_TITLE_Y,
+        GAME_NEXT_TITLE,
+        GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+      );
+
     RenderNext(
       GAME_NEXT_X,
       GAME_NEXT_Y,
       Memory.Game.Next,
       Memory.Game.Level
     );
+  end;
 end;
 
 

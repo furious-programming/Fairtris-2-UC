@@ -102,6 +102,7 @@ type
   private
     procedure UpdateOptionsSelection();
     procedure UpdateOptionsInput();
+    procedure UpdateOptionsBoost();
     procedure UpdateOptionsWindow();
     procedure UpdateOptionsSounds();
     procedure UpdateOptionsScene();
@@ -825,6 +826,24 @@ begin
 end;
 
 
+procedure TLogic.UpdateOptionsBoost();
+begin
+  if Memory.Options.ItemIndex <> ITEM_OPTIONS_BOOST then Exit;
+
+  if InputOptionSetPrev() then
+  begin
+    UpdateItemIndex(Memory.Options.Boost, BOOST_COUNT, ITEM_PREV);
+    Sounds.PlaySound(SOUND_SHIFT);
+  end;
+
+  if InputOptionSetNext() then
+  begin
+    UpdateItemIndex(Memory.Options.Boost, BOOST_COUNT, ITEM_NEXT);
+    Sounds.PlaySound(SOUND_SHIFT);
+  end;
+end;
+
+
 procedure TLogic.UpdateOptionsWindow();
 begin
   if Memory.Options.ItemIndex <> ITEM_OPTIONS_SIZE then Exit;
@@ -1329,6 +1348,7 @@ begin
 
   UpdateOptionsSelection();
   UpdateOptionsInput();
+  UpdateOptionsBoost();
   UpdateOptionsWindow();
   UpdateOptionsSounds();
   UpdateOptionsScene();

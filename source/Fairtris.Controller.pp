@@ -157,7 +157,7 @@ end;
 
 procedure TDevice.UpdateAxes();
 const
-  JOYSTICK_AXIS_DEADZONE = 9999;
+  JOYSTICK_AXIS_DEADZONE = Round(High(Int16) * 0.85);
 var
   AxesCount, AxisIndex, AxisValue, ButtonIndex: Integer;
 begin

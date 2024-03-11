@@ -229,13 +229,26 @@ end;
 
 
 procedure TRenderer.RenderBrick(AX, AY, ABrick, ALevel: Integer);
+var
+  Bricks: PSDL_Texture;
 begin
   if ABrick = BRICK_EMPTY then Exit;
   begin
-    ALevel := ALevel mod 10;
+    ALevel := ALevel and $FF;
+
+    if ALevel < LEVEL_GLITCHED then
+    begin
+      ALevel := ALevel mod 10;
+      Bricks := Sprites.Bricks;
+    end
+    else
+    begin
+      ALevel -= LEVEL_GLITCHED;
+      Bricks := Sprites.BricksGlitched;
+    end;
 
     RenderSprite(
-      Sprites.Bricks,
+      Bricks,
       SDL_Rect(
         AX,
         AY,

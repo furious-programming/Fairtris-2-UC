@@ -60,7 +60,7 @@ end;
 
 function TConverter.ScoreToString(AScore: Integer): String;
 begin
-  Result := '%.7d'.Format([AScore])
+  Result := '%.8d'.Format([AScore])
 end;
 
 

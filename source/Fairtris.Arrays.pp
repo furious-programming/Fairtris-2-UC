@@ -77,7 +77,9 @@ const
   SPRITE_FILENAME: array [SPRITE_FIRST .. SPRITE_LAST] of String = (
     'charset.png',
     'bricks.png',
+    'bricks_glitched.png',
     'pieces.png',
+    'pieces_glitched.png',
     'controller.png'
   );
 

@@ -352,7 +352,9 @@ begin
   Memory.Game.FallSpeed := 1;
 
   if Memory.Game.Level < LEVEL_LAST then
-    Memory.Game.FallSpeed := AUTOFALL_FRAMES[Memory.Lobby.Region, Memory.Game.Level];
+    Memory.Game.FallSpeed := AUTOFALL_FRAMES[Memory.Lobby.Region, Memory.Game.Level]
+  else
+    Memory.Game.FallSpeed := AUTOFALL_FRAMES_MAX[Memory.Lobby.Region];
 
   if Memory.Game.FallTimer >= Memory.Game.FallSpeed then
     UpdatePieceControlDropMove();

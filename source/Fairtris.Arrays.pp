@@ -919,7 +919,7 @@ const
 
 const
   AUTOSHIFT_FRAMES_PRECHARGE: array [REGION_FIRST .. REGION_LAST] of Integer = (10, 08);
-  AUTOSHIFT_FRAMES_CHARGE:    array [REGION_FIRST .. REGION_LAST] of Integer = (16, 12);
+  AUTOSHIFT_FRAMES_CHARGE:    array [REGION_FIRST .. REGION_LAST] of Integer = (15, 12);
 
 
 const
@@ -927,6 +927,8 @@ const
     (48, 43, 38, 33, 28, 23, 18, 13, 8, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3, 2),
     (36, 32, 29, 25, 22, 18, 15, 11, 7, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1)
   );
+
+  AUTOFALL_FRAMES_MAX: array [REGION_FIRST .. REGION_LAST] of Integer = (2, 1);
 
 
 const

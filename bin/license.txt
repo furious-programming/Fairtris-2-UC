@@ -1,7 +1,7 @@
-Faritris — a fair implementation of Classic Tetris®
-Copyleft 2021-2022 furious programming. All rights reversed.
+Fairtris 2: The Ultimate Challenge
+Copyleft (ɔ) furious programming 2024. All rights reversed.
 
-for more informations, see <https://github.com/furious-programming/fairtris>
+<https://github.com/furious-programming/fairtris-2-uc>
 
 
 

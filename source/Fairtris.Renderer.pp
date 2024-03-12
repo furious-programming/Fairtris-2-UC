@@ -159,14 +159,14 @@ function TRenderer.MarathonEntryToString(AEntry: TScoreEntry): String;
 begin
   if AEntry <> nil then
   begin
-    Result := '%.3d'.Format([AEntry.LinesCleared]);
-    Result += '%.2d'.Format([AEntry.LevelBegin]).PadLeft(4) + '-' + '%.2d'.Format([AEntry.LevelEnd]);
+    Result := '%.4d'.Format([AEntry.LinesCleared]);
+    Result += '%.2d'.Format([AEntry.LevelBegin]).PadLeft(4) + '-' + '%.3d'.Format([AEntry.LevelEnd]);
 
-    Result += Converter.TetrisesToString(AEntry.TetrisRate).PadLeft(5);
-    Result += Converter.ScoreToString(AEntry.TotalScore).PadLeft(9);
+    Result += Converter.TetrisesToString(AEntry.TetrisRate).PadLeft(6);
+    Result += Converter.ScoreToString(AEntry.TotalScore).PadLeft(10);
   end
   else
-    Result := '-    -        -        -';
+    Result := '-     -          -         -';
 end;
 
 

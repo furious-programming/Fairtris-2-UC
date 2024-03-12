@@ -110,9 +110,6 @@ type
     ClearPermits: TLineClearPermits;
     ClearIndexes: TLineClearIndexes;
   public
-    AfterTransition: Boolean;
-    AfterKillScreen: Boolean;
-  public
     LowerTimer:  Integer;
     TopOutTimer: Integer;
   public
@@ -120,19 +117,19 @@ type
     Stack:      TStack;
     LineClears: TLineClears;
   public
-    Best:         Integer;
-    Score:        Integer;
-    Transition:   Integer;
-    Lines:        Integer;
-    LinesCleared: Integer;
-    LinesBurned:  Integer;
-    Level:        Integer;
-    Next:         Integer;
-    NextVisible:  Boolean;
-    Burned:       Integer;
-    TetrisRate:   Integer;
-    Gain:         Integer;
-    GainTimer:    Integer;
+    Best:          Integer;
+    Score:         Integer;
+    PointsPerLine: Integer;
+    Lines:         Integer;
+    LinesCleared:  Integer;
+    LinesBurned:   Integer;
+    Level:         Integer;
+    Next:          Integer;
+    NextVisible:   Boolean;
+    Burned:        Integer;
+    TetrisRate:    Integer;
+    Gain:          Integer;
+    GainTimer:     Integer;
   end;
 
 
@@ -151,11 +148,11 @@ type
   public
     ItemIndex: Integer;
   public
-    TotalScore:   Integer;
-    Transition:   Integer;
-    LinesCleared: Integer;
-    LinesBurned:  Integer;
-    TetrisRate:   Integer;
+    TotalScore:    Integer;
+    PointsPerLine: Integer;
+    LinesCleared:  Integer;
+    LinesBurned:   Integer;
+    TetrisRate:    Integer;
   end;
 
 
@@ -352,9 +349,6 @@ begin
   ClearPermits      := Default(TLineClearPermits);
   ClearIndexes      := Default(TLineClearIndexes);
 
-  AfterTransition   := False;
-  AfterKillScreen   := False;
-
   LowerTimer        := 0;
   TopOutTimer       := 0;
 
@@ -363,7 +357,7 @@ begin
 
   Best              := 0;
   Score             := 0;
-  Transition        := 0;
+  PointsPerLine     := 0;
   Lines             := 0;
   LinesCleared      := 0;
   LinesBurned       := 0;

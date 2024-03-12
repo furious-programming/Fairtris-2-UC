@@ -293,11 +293,11 @@ end;
 
 procedure TLogic.PrepareTopOutResult();
 begin
-  Memory.TopOut.TotalScore   := Memory.Game.Score;
-  Memory.TopOut.Transition   := Memory.Game.Transition;
-  Memory.TopOut.LinesCleared := Memory.Game.LinesCleared;
-  Memory.TopOut.LinesBurned  := Memory.Game.LinesBurned;
-  Memory.TopOut.TetrisRate   := Memory.Game.TetrisRate;
+  Memory.TopOut.TotalScore    := Memory.Game.Score;
+  Memory.TopOut.PointsPerLine := Memory.Game.PointsPerLine;
+  Memory.TopOut.LinesCleared  := Memory.Game.LinesCleared;
+  Memory.TopOut.LinesBurned   := Memory.Game.LinesBurned;
+  Memory.TopOut.TetrisRate    := Memory.Game.TetrisRate;
 end;
 
 

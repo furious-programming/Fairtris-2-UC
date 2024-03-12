@@ -68,7 +68,7 @@ type
     procedure RenderPauseItems();
   private
     procedure RenderTopOutResultScore();
-    procedure RenderTopOutResultTransition();
+    procedure RenderTopOutResultPointsPerLine();
     procedure RenderTopOutResultLinesCleared();
     procedure RenderTopOutResultLinesBurned();
     procedure RenderTopOutResultTetrisRate();
@@ -769,20 +769,20 @@ begin
 end;
 
 
-procedure TRenderer.RenderTopOutResultTransition();
+procedure TRenderer.RenderTopOutResultPointsPerLine();
 begin
-  if Memory.TopOut.Transition > 0 then
+  if Memory.TopOut.PointsPerLine > 0 then
     RenderText(
-      ITEM_X_TOP_OUT_RESULT_TRANSITION,
-      ITEM_Y_TOP_OUT_RESULT_TRANSITION,
-      Converter.ScoreToString(Memory.TopOut.Transition),
+      ITEM_X_TOP_OUT_RESULT_POINTS_PER_LINE,
+      ITEM_Y_TOP_OUT_RESULT_POINTS_PER_LINE,
+      Converter.PointsPerLineToString(Memory.TopOut.PointsPerLine),
       COLOR_WHITE,
       ALIGN_RIGHT
     )
   else
     RenderText(
-      ITEM_X_TOP_OUT_RESULT_TRANSITION,
-      ITEM_Y_TOP_OUT_RESULT_TRANSITION,
+      ITEM_X_TOP_OUT_RESULT_POINTS_PER_LINE,
+      ITEM_Y_TOP_OUT_RESULT_POINTS_PER_LINE,
       '-',
       COLOR_DARK,
       ALIGN_RIGHT
@@ -891,7 +891,7 @@ end;
 procedure TRenderer.RenderTopOutResult();
 begin
   RenderTopOutResultScore();
-  RenderTopOutResultTransition();
+  RenderTopOutResultPointsPerLine();
   RenderTopOutResultLinesCleared();
   RenderTopOutResultLinesBurned();
   RenderTopOutResultTetrisRate();

@@ -609,34 +609,14 @@ end;
 
 procedure TCore.UpdateCounters();
 var
-  Gain: Integer;
-var
-  HappenedKillScreen:      Boolean = False;
-  HappenedLaterTransition: Boolean = False;
-  HappenedFirstTransition: Boolean = False;
+  Gain:       Integer;
+  Transition: Boolean = False;
 begin
   if Memory.Game.ClearCount > 0 then
   begin
-    if not Memory.Game.AfterTransition then
-      if Memory.Game.Lines + Memory.Game.ClearCount >= TRANSITION_LINES[Memory.Lobby.Region, Memory.Lobby.Level] then
-        HappenedFirstTransition := True;
+    Transition := (Memory.Game.Lines div 10) <> ((Memory.Game.Lines + Memory.Game.ClearCount) div 10);
 
-    if Memory.Game.AfterTransition then
-    begin
-      if (Memory.Game.Lines div 10) <> ((Memory.Game.Lines + Memory.Game.ClearCount) div 10) then
-        HappenedLaterTransition := True;
-
-      if HappenedLaterTransition then
-      begin
-        if Memory.Game.Lines + Memory.Game.ClearCount >= KILLSCREEN_LINES[Memory.Lobby.Region, Memory.Lobby.Level] then
-          HappenedKillScreen := True;
-      end;
-    end;
-
-    if HappenedFirstTransition then
-      Memory.Game.AfterTransition := True;
-
-    if HappenedFirstTransition or HappenedLaterTransition then
+    if Transition then
     begin
       Memory.Game.Level += 1;
       Sounds.PlaySound(SOUND_TRANSITION, True);
@@ -645,9 +625,6 @@ begin
     Memory.Game.Lines                              += Memory.Game.ClearCount;
     Memory.Game.LinesCleared                       := Memory.Game.Lines;
     Memory.Game.LineClears[Memory.Game.ClearCount] += 1;
-
-    if HappenedKillScreen then
-      Memory.Game.AfterKillScreen := True;
 
     if Memory.Game.ClearCount = 4 then
       Memory.Game.Burned := 0
@@ -667,14 +644,11 @@ begin
 
   if Gain > 0 then
   begin
-    Memory.Game.Gain := Gain;
-    Memory.Game.GainTimer := DURATION_HANG_GAIN * Clock.FrameRateLimit;
-  end;
+    if Memory.Game.Lines > 0 then
+      Memory.Game.PointsPerLine := Round(Memory.Game.Score / Memory.Game.Lines);
 
-  if HappenedFirstTransition or HappenedLaterTransition then
-  begin
-    if (Memory.Lobby.Level < 19) and (Memory.Game.Level = 19) then Memory.Game.Transition := Memory.Game.Score;
-    if (Memory.Lobby.Level = 19) and (Memory.Game.Level = 20) then Memory.Game.Transition := Memory.Game.Score;
+    Memory.Game.Gain      := Gain;
+    Memory.Game.GainTimer := DURATION_HANG_GAIN * Clock.FrameRateLimit;
   end;
 
   if Memory.Game.FallSkipped then

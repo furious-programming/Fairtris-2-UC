@@ -27,6 +27,7 @@ type
   TConverter = class(TObject)
   public
     function ScoreToString(AScore: Integer): String;
+    function PointsPerLineToString(APoints: Integer): String;
     function LinesToString(ALines: Integer): String;
     function LevelToString(ALevel: Integer): String;
     function BurnedToString(ABurned: Integer): String;
@@ -49,6 +50,12 @@ uses
 function TConverter.ScoreToString(AScore: Integer): String;
 begin
   Result := '%.8d'.Format([AScore])
+end;
+
+
+function TConverter.PointsPerLineToString(APoints: Integer): String;
+begin
+  Result := APoints.ToString();
 end;
 
 

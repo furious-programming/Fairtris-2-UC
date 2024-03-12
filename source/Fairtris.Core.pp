@@ -692,7 +692,7 @@ begin
   if Memory.Game.TopOutTimer > 0 then
     Memory.Game.TopOutTimer -= 1
   else
-    if Input.Device.Start.JustPressed then
+    if Input.Device.Start.JustPressed or Input.Fixed.Accept.JustPressed or Input.Fixed.Cancel.JustPressed then
     begin
       Memory.Game.Ended := True;
       Sounds.PlaySound(SOUND_START);

@@ -38,6 +38,7 @@ type
   private
     procedure RenderSprite(ASprite: PSDL_Texture; ABufferRect, ASpriteRect: TSDL_Rect);
     procedure RenderText(AX, AY: Integer; const AText: String; AColor: Integer = COLOR_WHITE; AAlign: Integer = ALIGN_LEFT);
+    procedure RenderTextPair(AX, AY: Integer; const ATextA, ATextB: String; AColorA, AColorB: Integer; AAlign: Integer = ALIGN_LEFT);
     procedure RenderBar(AX, AY, AFirst, ALast, AValue, AColorSet, AColorUnset: Integer);
     procedure RenderNext(AX, AY, APiece, ALevel: Integer);
     procedure RenderBrick(AX, AY, ABrick, ALevel: Integer);
@@ -187,7 +188,7 @@ var
 begin
   SDL_SetTextureColorMod(Sprites.Charset, GetR(AColor), GetG(AColor), GetB(AColor));
 
-  CharRect   := SDL_Rect(0, 0, CHAR_WIDTH, CHAR_HEIGHT);
+  CharRect   := SDL_Rect(0,  0,  CHAR_WIDTH, CHAR_HEIGHT);
   BufferRect := SDL_Rect(AX, AY, CHAR_WIDTH, CHAR_HEIGHT);
 
   if AAlign = ALIGN_RIGHT then
@@ -206,13 +207,74 @@ begin
 end;
 
 
-procedure TRenderer.RenderBar(AX, AY, AFirst, ALast, AValue, AColorSet, AColorUnset: Integer);
+procedure TRenderer.RenderTextPair(AX, AY: Integer; const ATextA, ATextB: String; AColorA, AColorB: Integer; AAlign: Integer);
+var
+  Character:  Char;
+  CharIndex:  Integer;
+  BufferRect: TSDL_Rect;
+  CharRect:   TSDL_Rect;
 begin
-  AValue := AValue - AFirst + 1;
-  ALast  := ALast  - AFirst + 1;
+  begin
+    SDL_SetTextureColorMod(Sprites.Charset, GetR(AColorA), GetG(AColorA), GetB(AColorA));
 
-  RenderText(AX, AY, StringOfChar(ITEM_TEXT_BAR_CELL, ALast),  AColorUnset);
-  RenderText(AX, AY, StringOfChar(ITEM_TEXT_BAR_CELL, AValue), AColorSet);
+    CharRect   := SDL_Rect(0,  0,  CHAR_WIDTH, CHAR_HEIGHT);
+    BufferRect := SDL_Rect(AX, AY, CHAR_WIDTH, CHAR_HEIGHT);
+
+    if AAlign = ALIGN_RIGHT then
+      BufferRect.X -= (ATextA.Length + ATextB.Length) * CHAR_WIDTH;
+
+    for Character in ATextA do
+    begin
+      CharIndex  := CharToIndex(UpCase(Character));
+      CharRect.X := CharIndex * CHAR_WIDTH;
+
+      SDL_RenderCopy(Window.Renderer, Sprites.Charset, @CharRect, @BufferRect);
+      BufferRect.X += CHAR_WIDTH;
+    end;
+  end;
+
+  begin
+    SDL_SetTextureColorMod(Sprites.Charset, GetR(AColorB), GetG(AColorB), GetB(AColorB));
+    CharRect := SDL_Rect(0, 0, CHAR_WIDTH, CHAR_HEIGHT);
+
+    if AAlign = ALIGN_LEFT then
+      BufferRect := SDL_Rect(AX + ATextA.Length * CHAR_WIDTH, AY, CHAR_WIDTH, CHAR_HEIGHT)
+    else
+    begin
+      BufferRect   := SDL_Rect(AX, AY, CHAR_WIDTH, CHAR_HEIGHT);
+      BufferRect.X -= ATextB.Length * CHAR_WIDTH;
+    end;
+
+    for Character in ATextB do
+    begin
+      CharIndex  := CharToIndex(UpCase(Character));
+      CharRect.X := CharIndex * CHAR_WIDTH;
+
+      SDL_RenderCopy(Window.Renderer, Sprites.Charset, @CharRect, @BufferRect);
+      BufferRect.X += CHAR_WIDTH;
+    end;
+  end;
+
+  SDL_SetTextureColorMod(Sprites.Charset, 255, 255, 255);
+end;
+
+
+procedure TRenderer.RenderBar(AX, AY, AFirst, ALast, AValue, AColorSet, AColorUnset: Integer);
+var
+  CellsSet:   Integer;
+  CellsUnset: Integer;
+begin
+  CellsSet   := AValue - AFirst + 1;
+  CellsUnset := ALast  - AValue;
+
+  RenderTextPair(
+    AX,
+    AY,
+    StringOfChar(ITEM_TEXT_BAR_CELL, CellsSet),
+    StringOfChar(ITEM_TEXT_BAR_CELL, CellsUnset),
+    AColorSet,
+    AColorUnset
+  );
 end;
 
 
@@ -459,10 +521,12 @@ begin
       GAME_TITLE_COLOR[Memory.Game.Level and $FF]
     );
 
-  RenderText(
+  RenderTextPair(
     GAME_TOP_X,
     GAME_TOP_Y,
-    Converter.ScoreToString(Memory.Game.Best),
+    Converter.ScoreToStringPrefix(Memory.Game.Best),
+    Converter.ScoreToString      (Memory.Game.Best),
+    COLOR_DARK,
     COLOR_WHITE
   );
 end;
@@ -478,10 +542,12 @@ begin
       GAME_TITLE_COLOR[Memory.Game.Level and $FF]
     );
 
-  RenderText(
+  RenderTextPair(
     GAME_BURNED_X,
     GAME_BURNED_Y,
-    Converter.BurnedToString(Memory.Game.Burned),
+    Converter.LinesToStringPrefix(Memory.Game.Burned),
+    Converter.LinesToString      (Memory.Game.Burned),
+    COLOR_DARK,
     COLOR_WHITE,
     ALIGN_RIGHT
   );
@@ -498,10 +564,12 @@ begin
       GAME_TITLE_COLOR[Memory.Game.Level and $FF]
     );
 
-  RenderText(
+  RenderTextPair(
     GAME_TETRISES_X,
     GAME_TETRISES_Y,
-    Converter.TetrisesToString(Memory.Game.TetrisRate),
+    Converter.TetrisesToStringPrefix(Memory.Game.TetrisRate),
+    Converter.TetrisesToString      (Memory.Game.TetrisRate),
+    COLOR_DARK,
     COLOR_WHITE,
     ALIGN_RIGHT
   );
@@ -518,14 +586,15 @@ begin
       GAME_TITLE_COLOR[Memory.Game.Level and $FF]
     );
 
-  if Memory.Game.GainTimer > 0 then
-    RenderText(
-      GAME_GAIN_X,
-      GAME_GAIN_Y,
-      Converter.GainToString(Memory.Game.Gain),
-      COLOR_WHITE,
-      ALIGN_RIGHT
-    );
+  RenderTextPair(
+    GAME_GAIN_X,
+    GAME_GAIN_Y,
+    Converter.GainToStringPrefix(IfThen(Memory.Game.GainTimer > 0, Memory.Game.Gain, 0)),
+    Converter.GainToString      (IfThen(Memory.Game.GainTimer > 0, Memory.Game.Gain, 0)),
+    COLOR_DARK,
+    COLOR_WHITE,
+    ALIGN_RIGHT
+  );
 end;
 
 
@@ -633,10 +702,13 @@ begin
       GAME_TITLE_COLOR[Memory.Game.Level and $FF]
     );
 
-  RenderText(
+  RenderTextPair(
     GAME_SCORE_X,
     GAME_SCORE_Y,
-    Converter.ScoreToString(Memory.Game.Score)
+    Converter.ScoreToStringPrefix(Memory.Game.Score),
+    Converter.ScoreToString      (Memory.Game.Score),
+    COLOR_DARK,
+    COLOR_WHITE
   );
 end;
 
@@ -651,10 +723,13 @@ begin
       GAME_TITLE_COLOR[Memory.Game.Level and $FF]
     );
 
-  RenderText(
+  RenderTextPair(
     GAME_LINES_X,
     GAME_LINES_Y,
-    Converter.LinesToString(Memory.Game.Lines)
+    Converter.LinesToStringPrefix(Memory.Game.Lines),
+    Converter.LinesToString      (Memory.Game.Lines),
+    COLOR_DARK,
+    COLOR_WHITE
   );
 end;
 
@@ -669,10 +744,13 @@ begin
       GAME_TITLE_COLOR[Memory.Game.Level and $FF]
     );
 
-  RenderText(
+  RenderTextPair(
     GAME_LEVEL_X,
     GAME_LEVEL_Y,
-    Converter.LevelToString(Memory.Game.Level)
+    Converter.LevelToStringPrefix(Memory.Game.Level),
+    Converter.LevelToString      (Memory.Game.Level),
+    COLOR_DARK,
+    COLOR_WHITE
   );
 end;
 
@@ -759,10 +837,12 @@ end;
 
 procedure TRenderer.RenderTopOutResultScore();
 begin
-  RenderText(
+  RenderTextPair(
     ITEM_X_TOP_OUT_RESULT_TOTAL_SCORE,
     ITEM_Y_TOP_OUT_RESULT_TOTAL_SCORE,
-    Converter.ScoreToString(Memory.TopOut.TotalScore),
+    Converter.ScoreToStringPrefix(Memory.TopOut.TotalScore),
+    Converter.ScoreToString      (Memory.TopOut.TotalScore),
+    COLOR_DARK,
     COLOR_WHITE,
     ALIGN_RIGHT
   );
@@ -771,31 +851,26 @@ end;
 
 procedure TRenderer.RenderTopOutResultPointsPerLine();
 begin
-  if Memory.TopOut.PointsPerLine > 0 then
-    RenderText(
-      ITEM_X_TOP_OUT_RESULT_POINTS_PER_LINE,
-      ITEM_Y_TOP_OUT_RESULT_POINTS_PER_LINE,
-      Converter.PointsPerLineToString(Memory.TopOut.PointsPerLine),
-      COLOR_WHITE,
-      ALIGN_RIGHT
-    )
-  else
-    RenderText(
-      ITEM_X_TOP_OUT_RESULT_POINTS_PER_LINE,
-      ITEM_Y_TOP_OUT_RESULT_POINTS_PER_LINE,
-      '-',
-      COLOR_DARK,
-      ALIGN_RIGHT
-    );
+  RenderTextPair(
+    ITEM_X_TOP_OUT_RESULT_POINTS_PER_LINE,
+    ITEM_Y_TOP_OUT_RESULT_POINTS_PER_LINE,
+    Converter.PointsPerLineToStringPrefix(Memory.TopOut.PointsPerLine),
+    Converter.PointsPerLineToString      (Memory.TopOut.PointsPerLine),
+    COLOR_DARK,
+    COLOR_WHITE,
+    ALIGN_RIGHT
+  );
 end;
 
 
 procedure TRenderer.RenderTopOutResultLinesCleared();
 begin
-  RenderText(
+  RenderTextPair(
     ITEM_X_TOP_OUT_RESULT_LINES_CLEARED,
     ITEM_Y_TOP_OUT_RESULT_LINES_CLEARED,
-    Converter.LinesToString(Memory.TopOut.LinesCleared),
+    Converter.LinesToStringPrefix(Memory.TopOut.LinesCleared),
+    Converter.LinesToString      (Memory.TopOut.LinesCleared),
+    COLOR_DARK,
     COLOR_WHITE,
     ALIGN_RIGHT
   );
@@ -804,43 +879,29 @@ end;
 
 procedure TRenderer.RenderTopOutResultLinesBurned();
 begin
-  if Memory.TopOut.LinesBurned > 0 then
-    RenderText(
-      ITEM_X_TOP_OUT_RESULT_LINES_BURNED,
-      ITEM_Y_TOP_OUT_RESULT_LINES_BURNED,
-      Converter.LinesToString(Memory.TopOut.LinesBurned),
-      COLOR_WHITE,
-      ALIGN_RIGHT
-    )
-  else
-    RenderText(
-      ITEM_X_TOP_OUT_RESULT_LINES_BURNED,
-      ITEM_Y_TOP_OUT_RESULT_LINES_BURNED,
-      '-',
-      COLOR_DARK,
-      ALIGN_RIGHT
-    );
+  RenderTextPair(
+    ITEM_X_TOP_OUT_RESULT_LINES_BURNED,
+    ITEM_Y_TOP_OUT_RESULT_LINES_BURNED,
+    Converter.LinesToStringPrefix(Memory.TopOut.LinesBurned),
+    Converter.LinesToString      (Memory.TopOut.LinesBurned),
+    COLOR_DARK,
+    COLOR_WHITE,
+    ALIGN_RIGHT
+  );
 end;
 
 
 procedure TRenderer.RenderTopOutResultTetrisRate();
 begin
-  if Memory.TopOut.LinesCleared > 0 then
-    RenderText(
-      ITEM_X_TOP_OUT_RESULT_TETRIS_RATE,
-      ITEM_Y_TOP_OUT_RESULT_TETRIS_RATE,
-      Converter.TetrisesToString(Memory.TopOut.TetrisRate),
-      COLOR_WHITE,
-      ALIGN_RIGHT
-    )
-  else
-    RenderText(
-      ITEM_X_TOP_OUT_RESULT_TETRIS_RATE,
-      ITEM_Y_TOP_OUT_RESULT_TETRIS_RATE,
-      '-',
-      COLOR_DARK,
-      ALIGN_RIGHT
-    );
+  RenderTextPair(
+    ITEM_X_TOP_OUT_RESULT_TETRIS_RATE,
+    ITEM_Y_TOP_OUT_RESULT_TETRIS_RATE,
+    Converter.TetrisesToStringPrefix(Memory.TopOut.TetrisRate),
+    Converter.TetrisesToString      (Memory.TopOut.TetrisRate),
+    COLOR_DARK,
+    COLOR_WHITE,
+    ALIGN_RIGHT
+  );
 end;
 
 

@@ -27,12 +27,22 @@ type
   TConverter = class(TObject)
   public
     function ScoreToString(AScore: Integer): String;
+    function ScoreToStringPrefix(AScore: Integer): String;
+  public
     function PointsPerLineToString(APoints: Integer): String;
+    function PointsPerLineToStringPrefix(APoints: Integer): String;
+  public
     function LinesToString(ALines: Integer): String;
+    function LinesToStringPrefix(ALines: Integer): String;
+  public
     function LevelToString(ALevel: Integer): String;
-    function BurnedToString(ABurned: Integer): String;
+    function LevelToStringPrefix(ALevel: Integer): String;
+  public
     function TetrisesToString(ATetrises: Integer): String;
+    function TetrisesToStringPrefix(ATetrises: Integer): String;
+  public
     function GainToString(AGain: Integer): String;
+    function GainToStringPrefix(AGain: Integer): String;
   end;
 
 
@@ -49,7 +59,13 @@ uses
 
 function TConverter.ScoreToString(AScore: Integer): String;
 begin
-  Result := '%.8d'.Format([AScore])
+  Result := AScore.ToString();
+end;
+
+
+function TConverter.ScoreToStringPrefix(AScore: Integer): String;
+begin
+  Result := StringOfChar('0', 8 - ScoreToString(AScore).Length);
 end;
 
 
@@ -59,9 +75,21 @@ begin
 end;
 
 
+function TConverter.PointsPerLineToStringPrefix(APoints: Integer): String;
+begin
+  Result := StringOfChar('0', 5 - PointsPerLineToString(APoints).Length);
+end;
+
+
 function TConverter.LinesToString(ALines: Integer): String;
 begin
   Result := ALines.ToString();
+end;
+
+
+function TConverter.LinesToStringPrefix(ALines: Integer): String;
+begin
+  Result := StringOfChar('0', 4 - LinesToString(ALines).Length);
 end;
 
 
@@ -71,9 +99,9 @@ begin
 end;
 
 
-function TConverter.BurnedToString(ABurned: Integer): String;
+function TConverter.LevelToStringPrefix(ALevel: Integer): String;
 begin
-  Result := ABurned.ToString();
+  Result := StringOfChar('0', 3 - LevelToString(ALevel).Length);
 end;
 
 
@@ -83,9 +111,24 @@ begin
 end;
 
 
+function TConverter.TetrisesToStringPrefix(ATetrises: Integer): String;
+begin
+  Result := StringOfChar('0', 3 - ATetrises.ToString().Length);
+end;
+
+
 function TConverter.GainToString(AGain: Integer): String;
 begin
-  Result := AGain.ToString();
+  if AGain > 0 then
+    Result := AGain.ToString()
+  else
+    Result := '';
+end;
+
+
+function TConverter.GainToStringPrefix(AGain: Integer): String;
+begin
+  Result := StringOfChar('0', 6 - GainToString(AGain).Length);
 end;
 
 

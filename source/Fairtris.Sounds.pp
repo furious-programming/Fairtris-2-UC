@@ -29,16 +29,14 @@ uses
 
 type
   TRegionSounds = class(TObject)
-  private type
-    TSounds = array [SOUND_FIRST .. SOUND_LAST] of PMix_Chunk;
   private
-    FSounds: TSounds;
+    FSounds:     array [SOUND_FIRST .. SOUND_LAST] of PMix_Chunk;
     FSoundsPath: String;
   private
     function GetSound(ASoundID: Integer): PMix_Chunk;
   public
     constructor Create(const APath: String);
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Load();
   public
@@ -48,14 +46,12 @@ type
 
 type
   TSounds = class(TObject)
-  private type
-    TRegions = array [SOUND_REGION_FIRST .. SOUND_REGION_LAST] of TRegionSounds;
   private
-    FRegions: TRegions;
+    FRegions: array [SOUND_REGION_FIRST .. SOUND_REGION_LAST] of TRegionSounds;
     FEnabled: Integer;
   public
     constructor Create();
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Initilize();
     procedure Load();
@@ -160,7 +156,7 @@ end;
 
 procedure TSounds.PlaySound(ASoundID: Integer; ANeedAttention: Boolean);
 begin
-  if ASoundID = SOUND_UNKNOWN then Exit;
+  if ASoundID = SOUND_UNKNOWN   then Exit;
   if FEnabled = SOUNDS_DISABLED then Exit;
 
   if ANeedAttention then

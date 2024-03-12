@@ -42,12 +42,12 @@ type
   public
     property Collection[ACollectionID: Integer]: PSDL_Texture read GetCollection; default;
   public
-    property Charset: PSDL_Texture index SPRITE_CHARSET read GetCollection;
-    property Bricks: PSDL_Texture index SPRITE_BRICKS read GetCollection;
+    property Charset:        PSDL_Texture index SPRITE_CHARSET         read GetCollection;
+    property Bricks:         PSDL_Texture index SPRITE_BRICKS          read GetCollection;
     property BricksGlitched: PSDL_Texture index SPRITE_BRICKS_GLITCHED read GetCollection;
-    property Pieces: PSDL_Texture index SPRITE_PIECES read GetCollection;
+    property Pieces:         PSDL_Texture index SPRITE_PIECES          read GetCollection;
     property PiecesGlitched: PSDL_Texture index SPRITE_PIECES_GLITCHED read GetCollection;
-    property Controller: PSDL_Texture index SPRITE_CONTROLLER read GetCollection;
+    property Controller:     PSDL_Texture index SPRITE_CONTROLLER      read GetCollection;
   end;
 
 

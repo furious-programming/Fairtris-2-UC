@@ -36,7 +36,7 @@ type
     destructor Destroy(); override;
   public
     property Native: PSDL_Texture read FNative;
-    property Client: TSDL_Rect read FClient write FClient;
+    property Client: TSDL_Rect    read FClient write FClient;
   end;
 
 

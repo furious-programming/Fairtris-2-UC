@@ -32,21 +32,21 @@ uses
 type
   TInput = class(TObject)
   private
-    FDevice: IControllable;
+    FDevice:   IControllable;
     FDeviceID: Integer;
   private
-    FKeyboard: IControllable;
+    FKeyboard:   IControllable;
     FController: IControllable;
     FNavigation: TNavigation;
   private
     procedure SetDeviceID(ADeviceID: Integer);
-    function GetDevices(ADeviceID: Integer): IControllable;
+    function  GetDevices(ADeviceID: Integer): IControllable;
   private
     function GetKeyboard(): TKeyboard;
     function GetController(): TController;
   public
     constructor Create();
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Initialize();
   public
@@ -56,12 +56,12 @@ type
     procedure Validate();
     procedure Invalidate();
   public
-    property Device: IControllable read FDevice;
     property Devices[ADeviceID: Integer]: IControllable read GetDevices; default;
-    property DeviceID: Integer read FDeviceID write SetDeviceID;
+    property Device:   IControllable read FDevice;
+    property DeviceID: Integer       read FDeviceID write SetDeviceID;
   public
-    property Fixed: TNavigation read FNavigation;
-    property Keyboard: TKeyboard read GetKeyboard;
+    property Fixed:      TNavigation read FNavigation;
+    property Keyboard:   TKeyboard   read GetKeyboard;
     property Controller: TController read GetController;
   end;
 
@@ -79,11 +79,11 @@ uses
 
 constructor TInput.Create();
 begin
-  FKeyboard := TKeyboard.Create();
+  FKeyboard   := TKeyboard.Create();
   FController := TController.Create();
   FNavigation := TNavigation.Create();
 
-  FDevice := FKeyboard;
+  FDevice   := FKeyboard;
   FDeviceID := INPUT_KEYBOARD;
 end;
 

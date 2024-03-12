@@ -30,10 +30,10 @@ uses
 type
   TPlacement = class(TObject)
   private
-    FInitialized: Boolean;
+    FInitialized:  Boolean;
     FVideoEnabled: Boolean;
   private
-    FMonitorIndex: Integer;
+    FMonitorIndex:  Integer;
     FMonitorBounds: TSDL_Rect;
   private
     FWindowSizeID: Integer;
@@ -63,9 +63,8 @@ type
   public
     procedure ToggleVideoMode();
   public
-    property VideoEnabled: Boolean read FVideoEnabled;
-  public
-    property WindowSize: Integer read FWindowSizeID write SetWindowSize;
+    property VideoEnabled: Boolean   read FVideoEnabled;
+    property WindowSize:   Integer   read FWindowSizeID write SetWindowSize;
     property WindowBounds: TSDL_Rect read FWindowBounds;
     property WindowClient: TSDL_Rect read FWindowClient;
   end;
@@ -119,11 +118,11 @@ end;
 procedure TPlacement.Initialize();
 begin
   FVideoEnabled := Settings.Video.Enabled;
-
   FMonitorIndex := Settings.General.Monitor;
+
   SDL_GetDisplayBounds(FMonitorIndex, @FMonitorBounds);
 
-  FWindowSizeID := Settings.General.Size;
+  FWindowSizeID   := Settings.General.Size;
   FWindowBounds.X := Settings.General.Left;
   FWindowBounds.Y := Settings.General.Top;
 
@@ -151,18 +150,19 @@ end;
 
 procedure TPlacement.UpdateWindowBounds();
 var
-  NewWidth, NewHeight: Integer;
+  NewWidth:  Integer;
+  NewHeight: Integer;
 begin
   if FVideoEnabled or (FWindowSizeID = SIZE_FULLSCREEN) then
     FWindowBounds := FMonitorBounds
   else
   begin
-    NewWidth  := Round((Ord(FWindowSizeID) + 1) * BUFFER_WIDTH  * BUFFER_PIXEL_RATIO_X);
+    NewWidth  := Round((Ord(FWindowSizeID) + 1) * BUFFER_WIDTH * BUFFER_PIXEL_RATIO_X);
     NewHeight := Round((Ord(FWindowSizeID) + 1) * BUFFER_HEIGHT);
 
     if FInitialized then
     begin
-      FWindowBounds.X := FMonitorBounds.X + (FMonitorBounds.W - NewWidth) div 2;
+      FWindowBounds.X := FMonitorBounds.X + (FMonitorBounds.W - NewWidth)  div 2;
       FWindowBounds.Y := FMonitorBounds.Y + (FMonitorBounds.H - NewHeight) div 2;
     end;
 
@@ -174,23 +174,25 @@ end;
 
 procedure TPlacement.UpdateWindowClient();
 var
-  CurrentWidth, CurrentHeight, NewWidth, NewHeight: Integer;
+  CurrentWidth:  Integer;
+  CurrentHeight: Integer;
+  NewWidth:      Integer;
+  NewHeight:     Integer;
 begin
-  CurrentWidth := IfThen(FVideoEnabled, FMonitorBounds.W, FWindowBounds.W);
+  CurrentWidth  := IfThen(FVideoEnabled, FMonitorBounds.W, FWindowBounds.W);
   CurrentHeight := IfThen(FVideoEnabled, FMonitorBounds.H, FWindowBounds.H);
 
   NewHeight := CurrentHeight;
-  NewWidth := Round(NewHeight * CLIENT_RATIO_LANDSCAPE);
+  NewWidth  := Round(NewHeight * CLIENT_RATIO_LANDSCAPE);
 
   if NewWidth > CurrentWidth then
   begin
-    NewWidth := CurrentWidth;
+    NewWidth  := CurrentWidth;
     NewHeight := Round(NewWidth * CLIENT_RATIO_PORTRAIT);
   end;
 
-  FWindowClient.X := (CurrentWidth - NewWidth) div 2;
+  FWindowClient.X := (CurrentWidth  - NewWidth)  div 2;
   FWindowClient.Y := (CurrentHeight - NewHeight) div 2;
-
   FWindowClient.W := NewWidth;
   FWindowClient.H := NewHeight;
 
@@ -218,7 +220,7 @@ end;
 
 procedure TPlacement.UpdateWindowPlacement();
 begin
-  SDL_SetWindowSize(Window.Window, FWindowBounds.W, FWindowBounds.H);
+  SDL_SetWindowSize    (Window.Window, FWindowBounds.W, FWindowBounds.H);
   SDL_SetWindowPosition(Window.Window, FWindowBounds.X, FWindowBounds.Y);
 end;
 
@@ -256,8 +258,8 @@ begin
     UpdateMonitor();
     UpdateWindowClient();
 
-    SDL_SetWindowSize(Window.Window, FMonitorBounds.W, FMonitorBounds.H);
-    SDL_SetWindowPosition(Window.Window, FMonitorBounds.X, FMonitorBounds.Y);
+    SDL_SetWindowSize      (Window.Window, FMonitorBounds.W, FMonitorBounds.H);
+    SDL_SetWindowPosition  (Window.Window, FMonitorBounds.X, FMonitorBounds.Y);
     SDL_SetWindowFullScreen(Window.Window, SDL_WINDOW_FULLSCREEN);
   end
   else

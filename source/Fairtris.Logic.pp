@@ -33,7 +33,7 @@ type
 type
   TLogic = class(TObject)
   private
-    FScene: TScene;
+    FScene:  TScene;
     FStopped: Boolean;
   private
     procedure UpdateItemIndex(var AItemIndex: Integer; ACount, AStep: Integer);
@@ -145,7 +145,7 @@ type
     procedure Reset();
     procedure Stop();
   public
-    property Scene: TScene read FScene;
+    property Scene:   TScene  read FScene;
     property Stopped: Boolean read FStopped;
   end;
 
@@ -198,49 +198,49 @@ end;
 
 function TLogic.InputMenuSetPrev(): Boolean;
 begin
-  Result := Input.Fixed.Up.JustPressed or Input.Controller.Up.JustPressed;
+  Result := Input.Fixed.Up.Pressed or Input.Controller.Up.Pressed;
 end;
 
 
 function TLogic.InputMenuSetNext(): Boolean;
 begin
-  Result := Input.Fixed.Down.JustPressed or Input.Controller.Down.JustPressed;
+  Result := Input.Fixed.Down.Pressed or Input.Controller.Down.Pressed;
 end;
 
 
 function TLogic.InputMenuAccepted(): Boolean;
 begin
-  Result := Input.Fixed.Accept.JustPressed or Input.Controller.Start.JustPressed or Input.Controller.A.JustPressed;
+  Result := Input.Fixed.Accept.Pressed or Input.Controller.Start.Pressed or Input.Controller.A.Pressed;
 end;
 
 
 function TLogic.InputMenuRejected(): Boolean;
 begin
-  Result := Input.Fixed.Cancel.JustPressed or Input.Controller.B.JustPressed;
+  Result := Input.Fixed.Cancel.Pressed or Input.Controller.B.Pressed;
 end;
 
 
 function TLogic.InputOptionSetPrev(): Boolean;
 begin
-  Result := Input.Fixed.Left.JustPressed or Input.Controller.Left.JustPressed;
+  Result := Input.Fixed.Left.Pressed or Input.Controller.Left.Pressed;
 end;
 
 
 function TLogic.InputOptionSetNext(): Boolean;
 begin
-  Result := Input.Fixed.Right.JustPressed or Input.Controller.Right.JustPressed;
+  Result := Input.Fixed.Right.Pressed or Input.Controller.Right.Pressed;
 end;
 
 
 function TLogic.InputOptionRollPrev(): Boolean;
 begin
-  Result := Input.Fixed.Left.Pressed or Input.Controller.Left.Pressed;
+  Result := Input.Fixed.Left.Down or Input.Controller.Left.Down;
 end;
 
 
 function TLogic.InputOptionRollNext(): Boolean;
 begin
-  Result := Input.Fixed.Right.Pressed or Input.Controller.Right.Pressed;
+  Result := Input.Fixed.Right.Down or Input.Controller.Right.Down;
 end;
 
 
@@ -293,13 +293,11 @@ end;
 
 procedure TLogic.PrepareTopOutResult();
 begin
-  Memory.TopOut.TotalScore := Memory.Game.Score;
-  Memory.TopOut.Transition := Memory.Game.Transition;
-
+  Memory.TopOut.TotalScore   := Memory.Game.Score;
+  Memory.TopOut.Transition   := Memory.Game.Transition;
   Memory.TopOut.LinesCleared := Memory.Game.LinesCleared;
-  Memory.TopOut.LinesBurned := Memory.Game.LinesBurned;
-
-  Memory.TopOut.TetrisRate := Memory.Game.TetrisRate;
+  Memory.TopOut.LinesBurned  := Memory.Game.LinesBurned;
+  Memory.TopOut.TetrisRate   := Memory.Game.TetrisRate;
 end;
 
 
@@ -307,13 +305,12 @@ procedure TLogic.PrepareTopOutBestScore();
 var
   Entry: TScoreEntry;
 begin
-  Entry := TScoreEntry.Create(Memory.Lobby.Region, True);
-
+  Entry              := TScoreEntry.Create(Memory.Lobby.Region, True);
   Entry.LinesCleared := Memory.Game.LinesCleared;
-  Entry.LevelBegin := Memory.Lobby.Level;
-  Entry.LevelEnd := Memory.Game.Level;
-  Entry.TetrisRate := Memory.Game.TetrisRate;
-  Entry.TotalScore := Memory.Game.Score;
+  Entry.LevelBegin   := Memory.Lobby.Level;
+  Entry.LevelEnd     := Memory.Game.Level;
+  Entry.TetrisRate   := Memory.Game.TetrisRate;
+  Entry.TotalScore   := Memory.Game.Score;
 
   BestScores[Memory.Lobby.Region][Memory.Lobby.Generator].Add(Entry);
 end;
@@ -335,7 +332,7 @@ end;
 procedure TLogic.PrepareKeyboardSelection();
 begin
   Memory.Keyboard.ItemIndex := ITEM_KEYBOARD_FIRST;
-  Memory.Keyboard.KeyIndex := ITEM_KEYBOARD_KEY_FIRST;
+  Memory.Keyboard.KeyIndex  := ITEM_KEYBOARD_KEY_FIRST;
 end;
 
 
@@ -350,7 +347,7 @@ end;
 
 procedure TLogic.PrepareControllerSelection();
 begin
-  Memory.Controller.ItemIndex := ITEM_CONTROLLER_FIRST;
+  Memory.Controller.ItemIndex   := ITEM_CONTROLLER_FIRST;
   Memory.Controller.ButtonIndex := ITEM_CONTROLLER_BUTTON_FIRST;
 end;
 
@@ -371,7 +368,7 @@ begin
   if FScene.Previous = SCENE_MENU then
     PrepareLobbySelection();
 
-  Memory.Game.Started := False;
+  Memory.Game.Started   := False;
   Memory.Game.FromScene := SCENE_LOBBY;
 end;
 
@@ -446,9 +443,9 @@ begin
   Memory.BSoD.Reset();
 
   OldTarget := SDL_GetRenderTarget(Window.Renderer);
-  SDL_SetRenderTarget(Window.Renderer, Memory.BSoD.Buffer);
 
-  SDL_RenderCopy(Window.Renderer, Buffers.Native, nil, nil);
+  SDL_SetRenderTarget(Window.Renderer, Memory.BSoD.Buffer);
+  SDL_RenderCopy     (Window.Renderer, Buffers.Native, nil, nil);
   SDL_SetRenderTarget(Window.Renderer, OldTarget);
 end;
 
@@ -460,11 +457,10 @@ begin
   if not FScene.Changed then Exit;
 
   OldTarget := SDL_GetRenderTarget(Window.Renderer);
+
   SDL_SetRenderTarget(Window.Renderer, Memory.Quit.Buffer);
-
-  SDL_RenderCopy(Window.Renderer, Buffers.Native, nil, nil);
-  SDL_RenderCopy(Window.Renderer, Grounds[SCENE_QUIT], nil, nil);
-
+  SDL_RenderCopy     (Window.Renderer, Buffers.Native, nil, nil);
+  SDL_RenderCopy     (Window.Renderer, Grounds[SCENE_QUIT], nil, nil);
   SDL_SetRenderTarget(Window.Renderer, OldTarget);
 end;
 
@@ -688,7 +684,7 @@ begin
         FScene.Current := SCENE_TOP_OUT;
     end
     else
-      if not Input.Device.Connected or Input.Device.Start.JustPressed then
+      if not Input.Device.Connected or Input.Device.Start.Pressed then
       begin
         FScene.Current := SCENE_PAUSE;
         Sounds.PlaySound(SOUND_PAUSE, True);
@@ -731,10 +727,11 @@ begin
       Exit;
     end;
 
-  if InputMenuAccepted() or Input.Device.Start.JustPressed or Input.Keyboard.Start.JustPressed then
+  if InputMenuAccepted() or Input.Device.Start.Pressed or Input.Keyboard.Start.Pressed then
   case Memory.Pause.ItemIndex of
     ITEM_PAUSE_RESUME:
       FScene.Current := Memory.Pause.FromScene;
+
     ITEM_PAUSE_RESTART:
     begin
       FScene.Current := Memory.Game.FromScene;
@@ -751,6 +748,7 @@ begin
       FScene.Current := SCENE_OPTIONS;
       Sounds.PlaySound(SOUND_START);
     end;
+
     ITEM_PAUSE_BACK:
     begin
       FScene.Current := Memory.Game.FromScene;
@@ -795,7 +793,7 @@ begin
     Sounds.PlaySound(SOUND_DROP);
   end;
 
-  if InputMenuAccepted() or Input.Device.Start.JustPressed or Input.Keyboard.Start.JustPressed then
+  if InputMenuAccepted() or Input.Device.Start.Pressed or Input.Keyboard.Start.Pressed then
     if Memory.TopOut.ItemIndex = ITEM_TOP_OUT_PLAY then
     begin
       Memory.Game.Reset();
@@ -979,6 +977,7 @@ begin
           FScene.Current := SCENE_KEYBOARD;
           Sounds.PlaySound(SOUND_START);
         end;
+
       INPUT_CONTROLLER:
         if Input.Controller.Device.Connected then
         begin
@@ -986,6 +985,7 @@ begin
           Sounds.PlaySound(SOUND_START);
         end;
       end;
+
     ITEM_OPTIONS_BACK:
     begin
       FScene.Current := Memory.Options.FromScene;
@@ -1022,6 +1022,7 @@ begin
 
         Sounds.PlaySound(SOUND_START);
       end;
+
     ITEM_KEYBOARD_RESTORE:
       if InputMenuAccepted() then
       begin
@@ -1051,7 +1052,7 @@ begin
   end;
 
   if Memory.Keyboard.KeyIndex < ITEM_KEYBOARD_KEY_LAST then
-    if Input.Fixed.Clear.JustPressed then
+    if Input.Fixed.Clear.Pressed then
       if Memory.Keyboard.ScanCodes[Memory.Keyboard.KeyIndex] <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED then
       begin
         Memory.Keyboard.ScanCodes[Memory.Keyboard.KeyIndex] := KEYBOARD_SCANCODE_KEY_NOT_MAPPED;
@@ -1094,7 +1095,7 @@ var
 begin
   if not Memory.Keyboard.Mapping then Exit;
 
-  if Input.Fixed.Cancel.JustPressed then
+  if Input.Fixed.Cancel.Pressed then
   begin
     Memory.Keyboard.Mapping := False;
     Sounds.PlaySound(SOUND_DROP);
@@ -1120,7 +1121,6 @@ begin
   if Memory.Keyboard.Changing then Exit;
 
   if InputMenuRejected() then
-  begin
     if Memory.Keyboard.MappedCorrectly() then
     begin
       FScene.Current := SCENE_OPTIONS;
@@ -1128,7 +1128,6 @@ begin
     end
     else
       Sounds.PlaySound(SOUND_HUM);
-  end;
 
   if Memory.Keyboard.ItemIndex = ITEM_KEYBOARD_SAVE then
     if InputMenuAccepted() then
@@ -1174,10 +1173,11 @@ begin
         Input.Validate();
 
         Memory.Controller.ButtonIndex := ITEM_CONTROLLER_BUTTON_FIRST;
-        Memory.Controller.Changing := True;
+        Memory.Controller.Changing    := True;
 
         Sounds.PlaySound(SOUND_START);
       end;
+
     ITEM_CONTROLLER_RESTORE:
       if InputMenuAccepted() then
       begin
@@ -1207,7 +1207,7 @@ begin
   end;
 
   if Memory.Controller.ButtonIndex < ITEM_CONTROLLER_BUTTON_LAST then
-    if Input.Fixed.Clear.JustPressed then
+    if Input.Fixed.Clear.Pressed then
       if Memory.Controller.ScanCodes[Memory.Controller.ButtonIndex] <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED then
       begin
         Memory.Controller.ScanCodes[Memory.Controller.ButtonIndex] := CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED;
@@ -1250,7 +1250,7 @@ var
 begin
   if not Memory.Controller.Mapping then Exit;
 
-  if Input.Fixed.Cancel.JustPressed then
+  if Input.Fixed.Cancel.Pressed then
   begin
     Memory.Controller.Mapping := False;
     Sounds.PlaySound(SOUND_DROP);
@@ -1278,7 +1278,7 @@ begin
     FScene.Current := SCENE_OPTIONS;
 
     Memory.Controller.Changing := False;
-    Memory.Controller.Mapping := False;
+    Memory.Controller.Mapping  := False;
 
     Sounds.PlaySound(SOUND_TOP_OUT, True);
     Exit;
@@ -1287,7 +1287,6 @@ begin
   if Memory.Controller.Changing then Exit;
 
   if InputMenuRejected() then
-  begin
     if Memory.Controller.MappedCorrectly() then
     begin
       FScene.Current := SCENE_OPTIONS;
@@ -1295,7 +1294,6 @@ begin
     end
     else
       Sounds.PlaySound(SOUND_HUM);
-  end;
 
   if Memory.Controller.ItemIndex = ITEM_CONTROLLER_SAVE then
     if InputMenuAccepted() then
@@ -1356,7 +1354,7 @@ begin
   FScene.Validate();
 
   if Memory.BSoD.State = BSOD_STATE_CONTROL then
-    if InputMenuAccepted() or Input.Device.Start.JustPressed or Input.Keyboard.Start.JustPressed then
+    if InputMenuAccepted() or Input.Device.Start.Pressed or Input.Keyboard.Start.Pressed then
     begin
       FScene.Current := SCENE_TOP_OUT;
       Sounds.PlaySound(SOUND_START);
@@ -1381,8 +1379,8 @@ end;
 
 procedure TLogic.UpdateCommon();
 begin
-  if Input.Fixed.Help.JustPressed then OpenHelp();
-  if Input.Fixed.Video.JustPressed then Placement.ToggleVideoMode();
+  if Input.Fixed.Help.Pressed  then OpenHelp();
+  if Input.Fixed.Video.Pressed then Placement.ToggleVideoMode();
 
   if not Memory.Game.Started then
     Generators.Shuffle();

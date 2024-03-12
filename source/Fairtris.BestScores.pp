@@ -31,12 +31,12 @@ uses
 type
   TScoreEntry = class(TObject)
   private
-    FRegionID: Integer;
+    FRegionID:     Integer;
     FLinesCleared: Integer;
-    FLevelBegin: Integer;
-    FLevelEnd: Integer;
-    FTetrisRate: Integer;
-    FTotalScore: Integer;
+    FLevelBegin:   Integer;
+    FLevelEnd:     Integer;
+    FTetrisRate:   Integer;
+    FTotalScore:   Integer;
   private
     FValid: Boolean;
   private
@@ -50,10 +50,10 @@ type
     function Clone(): TScoreEntry;
   public
     property LinesCleared: Integer read FLinesCleared write FLinesCleared;
-    property LevelBegin: Integer read FLevelBegin write FLevelBegin;
-    property LevelEnd: Integer read FLevelEnd write FLevelEnd;
-    property TetrisRate: Integer read FTetrisRate write FTetrisRate;
-    property TotalScore: Integer read FTotalScore write FTotalScore;
+    property LevelBegin:   Integer read FLevelBegin   write FLevelBegin;
+    property LevelEnd:     Integer read FLevelEnd     write FLevelEnd;
+    property TetrisRate:   Integer read FTetrisRate   write FTetrisRate;
+    property TotalScore:   Integer read FTotalScore   write FTotalScore;
   public
     property Valid: Boolean read FValid;
   end;
@@ -74,7 +74,7 @@ type
     function GetBestResult(): Integer;
   public
     constructor Create(const AFileName: String; ARegionID: Integer);
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Load();
     procedure Save();
@@ -83,8 +83,8 @@ type
     procedure Clear();
   public
     property Entry[AIndex: Integer]: TScoreEntry read GetEntry; default;
-    property Count: Integer read GetCount;
   public
+    property Count:      Integer read GetCount;
     property BestResult: Integer read GetBestResult;
   end;
 
@@ -97,7 +97,7 @@ type
     function GetGenerator(AGeneratorID: Integer): TGeneratorEntries;
   public
     constructor Create(const APath: String; ARegionID: Integer);
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Load();
     procedure Save();
@@ -116,7 +116,7 @@ type
     function GetRegion(ARegionID: Integer): TRegionEntries;
   public
     constructor Create();
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Load();
     procedure Save();
@@ -156,19 +156,17 @@ end;
 constructor TScoreEntry.Create(ARegionID: Integer; AValid: Boolean);
 begin
   FRegionID := ARegionID;
-  FValid := AValid;
+  FValid    := AValid;
 end;
 
 
 procedure TScoreEntry.Load(AFile: TIniFile; const ASection: String);
 begin
   FLinesCleared := AFile.ReadInteger(ASection, BEST_SCORES_KEY_SCORE_LINES_CLEARED, -1);
-
-  FLevelBegin := AFile.ReadInteger(ASection, BEST_SCORES_KEY_SCORE_LEVEL_BEGIN, -1);
-  FLevelEnd   := AFile.ReadInteger(ASection, BEST_SCORES_KEY_SCORE_LEVEL_END,   -1);
-
-  FTetrisRate := AFile.ReadInteger(ASection, BEST_SCORES_KEY_SCORE_TETRIS_RATE, -1);
-  FTotalScore := AFile.ReadInteger(ASection, BEST_SCORES_KEY_SCORE_TOTAL_SCORE, -1);
+  FLevelBegin   := AFile.ReadInteger(ASection, BEST_SCORES_KEY_SCORE_LEVEL_BEGIN,   -1);
+  FLevelEnd     := AFile.ReadInteger(ASection, BEST_SCORES_KEY_SCORE_LEVEL_END,     -1);
+  FTetrisRate   := AFile.ReadInteger(ASection, BEST_SCORES_KEY_SCORE_TETRIS_RATE,   -1);
+  FTotalScore   := AFile.ReadInteger(ASection, BEST_SCORES_KEY_SCORE_TOTAL_SCORE,   -1);
 
   Validate();
 end;
@@ -177,12 +175,10 @@ end;
 procedure TScoreEntry.Save(AFile: TIniFile; const ASection: String);
 begin
   AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_LINES_CLEARED, FLinesCleared);
-
-  AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_LEVEL_BEGIN, FLevelBegin);
-  AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_LEVEL_END,   FLevelEnd);
-
-  AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_TETRIS_RATE, FTetrisRate);
-  AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_TOTAL_SCORE, FTotalScore);
+  AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_LEVEL_BEGIN,   FLevelBegin);
+  AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_LEVEL_END,     FLevelEnd);
+  AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_TETRIS_RATE,   FTetrisRate);
+  AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_TOTAL_SCORE,   FTotalScore);
 end;
 
 
@@ -190,21 +186,21 @@ function TScoreEntry.Clone(): TScoreEntry;
 begin
   Result := TScoreEntry.Create(FRegionID);
 
-  Result.FRegionID := FRegionID;
+  Result.FRegionID     := FRegionID;
   Result.FLinesCleared := FLinesCleared;
-  Result.FLevelBegin := FLevelBegin;
-  Result.FLevelEnd := FLevelEnd;
-  Result.FTetrisRate := FTetrisRate;
-  Result.FTotalScore := FTotalScore;
-  Result.FValid := FValid;
+  Result.FLevelBegin   := FLevelBegin;
+  Result.FLevelEnd     := FLevelEnd;
+  Result.FTetrisRate   := FTetrisRate;
+  Result.FTotalScore   := FTotalScore;
+  Result.FValid        := FValid;
 end;
 
 
 constructor TGeneratorEntries.Create(const AFileName: String; ARegionID: Integer);
 begin
   FScoresFile := TMemIniFile.Create(AFileName);
-  FEntries := TScoreEntries.Create();
-  FRegion := ARegionID;
+  FEntries    := TScoreEntries.Create();
+  FRegion     := ARegionID;
 end;
 
 
@@ -240,8 +236,9 @@ end;
 
 procedure TGeneratorEntries.Load();
 var
-  NewEntry: TScoreEntry;
-  EntriesCount, Index: Integer;
+  NewEntry:     TScoreEntry;
+  EntriesCount: Integer;
+  Index:        Integer;
 begin
   FEntries.Clear();
   EntriesCount := FScoresFile.ReadInteger(BEST_SCORES_SECTION_GENERAL, BEST_SCORES_KEY_GENERAL_COUNT, 0);
@@ -261,7 +258,8 @@ end;
 
 procedure TGeneratorEntries.Save();
 var
-  StoreCount, Index: Integer;
+  StoreCount: Integer;
+  Index:      Integer;
 begin
   StoreCount := Min(FEntries.Count, BEST_SCORES_COUNT);
 

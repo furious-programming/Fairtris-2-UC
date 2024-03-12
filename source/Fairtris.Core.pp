@@ -95,7 +95,8 @@ uses
 
 function TCore.CanPlacePiece(): Boolean;
 var
-  LayoutX, LayoutY: Integer;
+  LayoutX: Integer;
+  LayoutY: Integer;
 begin
   for LayoutY := -2 to 2 do
   begin
@@ -150,11 +151,12 @@ end;
 
 function TCore.CanRotatePiece(ADirection: Integer): Boolean;
 var
-  OldPosition, OldOrientation: Integer;
+  OldPosition:    Integer;
+  OldOrientation: Integer;
 begin
   if Memory.Game.PieceID = PIECE_O then Exit(False);
 
-  OldPosition := Memory.Game.PieceX;
+  OldPosition    := Memory.Game.PieceX;
   OldOrientation := Memory.Game.PieceOrientation;
 
   Memory.Game.PieceOrientation := WrapAround(Memory.Game.PieceOrientation, PIECE_ORIENTATION_COUNT, ADirection);
@@ -169,7 +171,7 @@ begin
   else
     Result := False;
 
-  Memory.Game.PieceX := OldPosition;
+  Memory.Game.PieceX           := OldPosition;
   Memory.Game.PieceOrientation := OldOrientation;
 end;
 
@@ -197,21 +199,19 @@ end;
 
 procedure TCore.SpawnPiece();
 begin
-  Memory.Game.PieceID := Memory.Game.Next;
+  Memory.Game.PieceID          := Memory.Game.Next;
   Memory.Game.PieceOrientation := PIECE_ORIENTATION_SPAWN;
-
-  Memory.Game.Next := Generators.Generator.Pick();
-
-  Memory.Game.PieceX := PIECE_SPAWN_X;
-  Memory.Game.PieceY := PIECE_SPAWN_Y;
-
-  Memory.Game.AutorepeatY := 0;
+  Memory.Game.Next             := Generators.Generator.Pick();
+  Memory.Game.PieceX           := PIECE_SPAWN_X;
+  Memory.Game.PieceY           := PIECE_SPAWN_Y;
+  Memory.Game.AutorepeatY      := 0;
 end;
 
 
 procedure TCore.PlacePiece();
 var
-  LayoutX, LayoutY: Integer;
+  LayoutX: Integer;
+  LayoutY: Integer;
 begin
   for LayoutY := -2 to 2 do
   begin
@@ -261,14 +261,16 @@ end;
 
 procedure TCore.ClearLine(AIndex: Integer);
 begin
-  Memory.Game.Stack[Memory.Game.ClearColumn, AIndex] := BRICK_EMPTY;
+  Memory.Game.Stack[Memory.Game.ClearColumn, AIndex]     := BRICK_EMPTY;
   Memory.Game.Stack[9 - Memory.Game.ClearColumn, AIndex] := BRICK_EMPTY;
 end;
 
 
 procedure TCore.LowerStack(AIndex: Integer);
 var
-  BrickX, BrickY, LineIndex: Integer;
+  BrickX:    Integer;
+  BrickY:    Integer;
+  LineIndex: Integer;
 begin
   for BrickY := AIndex - 1 downto 0 do
     for BrickX := 0 to 9 do
@@ -286,11 +288,11 @@ end;
 
 procedure TCore.UpdatePieceControlDropControl();
 begin
-  if Input.Device.Left.Pressed or Input.Device.Right.Pressed then
+  if Input.Device.Left.Down or Input.Device.Right.Down then
     UpdatePieceControlDropLookupSpeed()
   else
   begin
-    if Input.Device.Down.Pressed then
+    if Input.Device.Down.Down then
       Memory.Game.AutorepeatY := 1;
 
     UpdatePieceControlDropLookupSpeed();
@@ -300,12 +302,12 @@ end;
 
 procedure TCore.UpdatePieceControlDropAutorepeat();
 begin
-  if Input.Device.Down.Pressed and Input.Device.Left.Released and Input.Device.Right.Released then
+  if Input.Device.Down.Down and Input.Device.Left.Up and Input.Device.Right.Up then
     UpdatePieceControlDropDownPressed()
   else
   begin
     Memory.Game.AutorepeatY := 0;
-    Memory.Game.FallPoints := 0;
+    Memory.Game.FallPoints  := 0;
 
     UpdatePieceControlDropLookupSpeed();
   end;
@@ -321,7 +323,7 @@ begin
   else
   begin
     Memory.Game.AutorepeatY := 1;
-    Memory.Game.FallPoints += 1;
+    Memory.Game.FallPoints  += 1;
 
     UpdatePieceControlDropMove();
   end;
@@ -338,9 +340,9 @@ begin
   begin
     PlacePiece();
 
-    Memory.Game.State := GAME_STATE_LINES_CHECK;
-    Memory.Game.ClearCount := 0;
-    Memory.Game.ClearTimer := 0;
+    Memory.Game.State       := GAME_STATE_LINES_CHECK;
+    Memory.Game.ClearCount  := 0;
+    Memory.Game.ClearTimer  := 0;
     Memory.Game.ClearColumn := 4;
   end;
 end;
@@ -363,12 +365,12 @@ end;
 
 procedure TCore.UpdatePieceControlShift();
 begin
-  if Input.Device.Down.Pressed then Exit;
+  if Input.Device.Down.Down then Exit;
 
-  if Input.Device.Left.Pressed and Input.Device.Right.Pressed then Exit;
-  if Input.Device.Left.Released and Input.Device.Right.Released then Exit;
+  if Input.Device.Left.Down and Input.Device.Right.Down then Exit;
+  if Input.Device.Left.Up   and Input.Device.Right.Up   then Exit;
 
-  if Input.Device.Left.JustPressed or Input.Device.Right.JustPressed then
+  if Input.Device.Left.Pressed or Input.Device.Right.Pressed then
     Memory.Game.AutorepeatX := 0
   else
   begin
@@ -380,7 +382,7 @@ begin
       Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES[Memory.Lobby.Region];
   end;
 
-  if Input.Device.Left.Pressed then
+  if Input.Device.Left.Down then
     if CanShiftPiece(PIECE_SHIFT_LEFT) then
     begin
       ShiftPiece(PIECE_SHIFT_LEFT);
@@ -389,7 +391,7 @@ begin
     else
       Memory.Game.AutorepeatX := Memory.Options.AutoShift(Memory.Lobby.Region);
 
-  if Input.Device.Right.Pressed then
+  if Input.Device.Right.Down then
     if CanShiftPiece(PIECE_SHIFT_RIGHT) then
     begin
       ShiftPiece(PIECE_SHIFT_RIGHT);
@@ -404,14 +406,14 @@ procedure TCore.UpdatePieceControlRotate();
 var
   Rotation: Integer;
 begin
-  if Input.Device.B.JustPressed and Input.Device.A.JustPressed then Exit;
+  if Input.Device.B.Pressed and Input.Device.A.Pressed then Exit;
 
-  if Input.Device.B.JustReleased or Input.Device.A.JustReleased then
+  if Input.Device.B.Released or Input.Device.A.Released then
     Memory.Game.AutospinCharged := False;
 
-  if Input.Device.B.JustPressed or Input.Device.A.JustPressed or Memory.Game.AutospinCharged then
+  if Input.Device.B.Pressed or Input.Device.A.Pressed or Memory.Game.AutospinCharged then
   begin
-    if Input.Device.B.JustPressed then
+    if Input.Device.B.Pressed then
       Rotation := IfThen(Memory.Game.AutospinCharged, Memory.Game.AutospinRotation, PIECE_ROTATE_COUNTERCLOCKWISE)
     else
       Rotation := IfThen(Memory.Game.AutospinCharged, Memory.Game.AutospinRotation, PIECE_ROTATE_CLOCKWISE);
@@ -425,7 +427,7 @@ begin
     end
     else
     begin
-      Memory.Game.AutospinCharged := True;
+      Memory.Game.AutospinCharged  := True;
       Memory.Game.AutospinRotation := Rotation;
     end;
   end;
@@ -440,7 +442,7 @@ begin
     if Memory.Game.AutorepeatY = 0 then
       UpdatePieceControlDropControl()
     else
-      if not Input.Device.Down.JustPressed then
+      if not Input.Device.Down.Pressed then
         Memory.Game.AutorepeatY += 1
       else
       begin
@@ -459,7 +461,7 @@ end;
 
 procedure TCore.UpdateCommonNext();
 begin
-  if Input.Device.Select.JustPressed then
+  if Input.Device.Select.Pressed then
     if Memory.Game.State <> GAME_STATE_UPDATE_TOP_OUT then
     begin
       Memory.Game.NextVisible := not Memory.Game.NextVisible;
@@ -473,13 +475,12 @@ begin
   Generators.Generator.Step();
 
   {$IFDEF MODE_DEBUG}
-  if Input.Keyboard.Device.Key[SDL_SCANCODE_PAGEUP].JustPressed   then Memory.Game.Level += 1;
-  if Input.Keyboard.Device.Key[SDL_SCANCODE_PAGEDOWN].JustPressed then Memory.Game.Level := Max(Memory.Game.Level - 1, 0);
+  if Input.Keyboard.Device.Key[SDL_SCANCODE_PAGEUP].Pressed   then Memory.Game.Level += 1;
+  if Input.Keyboard.Device.Key[SDL_SCANCODE_HOME].Pressed     then Memory.Game.Level += 25;
+  if Input.Keyboard.Device.Key[SDL_SCANCODE_END].Pressed      then Memory.Game.Level := Max(Memory.Game.Level - 25, 0);
+  if Input.Keyboard.Device.Key[SDL_SCANCODE_PAGEDOWN].Pressed then Memory.Game.Level := Max(Memory.Game.Level - 1, 0);
 
-  if Input.Keyboard.Device.Key[SDL_SCANCODE_HOME].JustPressed then Memory.Game.Level += 25;
-  if Input.Keyboard.Device.Key[SDL_SCANCODE_END].JustPressed  then Memory.Game.Level := Max(Memory.Game.Level - 25, 0);
-
-  if Input.Keyboard.Device.Key[SDL_SCANCODE_DELETE].Pressed then Memory.Game.ClearStack();
+  if Input.Keyboard.Device.Key[SDL_SCANCODE_DELETE].Down      then Memory.Game.ClearStack();
   {$ENDIF}
 
   UpdateCommonGain();
@@ -501,7 +502,7 @@ begin
 
   if Memory.Game.LockTimer = 0 then
   begin
-    Memory.Game.State := GAME_STATE_UPDATE_COUNTERS;
+    Memory.Game.State      := GAME_STATE_UPDATE_COUNTERS;
     Memory.Game.ClearCount := 0;
     Memory.Game.ClearTimer := 0;
 
@@ -515,14 +516,14 @@ begin
   SpawnPiece();
 
   Memory.Game.AutospinCharged := False;
-  Memory.Game.FallPoints := 0;
-  Memory.Game.AutorepeatX := Memory.Options.AutoShift(Memory.Lobby.Region);
+  Memory.Game.FallPoints      := 0;
+  Memory.Game.AutorepeatX     := Memory.Options.AutoShift(Memory.Lobby.Region);
 
   if CanPlacePiece() then
     Memory.Game.State := GAME_STATE_PIECE_CONTROL
   else
   begin
-    Memory.Game.State := GAME_STATE_UPDATE_TOP_OUT;
+    Memory.Game.State       := GAME_STATE_UPDATE_TOP_OUT;
     Memory.Game.TopOutTimer := TOP_OUT_FRAMES[Memory.Lobby.Region];
 
     Sounds.PlaySound(SOUND_TOP_OUT, True);
@@ -541,19 +542,19 @@ begin
     if Memory.Game.ClearPermits[Index] then
     begin
       Memory.Game.ClearIndexes[Index] := Memory.Game.PieceY + Index;
-      Memory.Game.ClearCount += 1;
+      Memory.Game.ClearCount          += 1;
     end;
   end;
 
   if Memory.Game.ClearCount > 0 then
   begin
-    Memory.Game.State := GAME_STATE_LINES_CLEAR;
+    Memory.Game.State   := GAME_STATE_LINES_CLEAR;
     Memory.Game.PieceID := PIECE_UNKNOWN;
   end
   else
   begin
-    Memory.Game.State := GAME_STATE_PIECE_LOCK;
-    Memory.Game.LockRow := Memory.Game.PieceY;
+    Memory.Game.State     := GAME_STATE_PIECE_LOCK;
+    Memory.Game.LockRow   := Memory.Game.PieceY;
     Memory.Game.LockTimer := PIECE_FRAMES_LOCK_DELAY[Memory.Game.LockRow];
   end;
 end;
@@ -584,7 +585,7 @@ begin
 
     if Memory.Game.ClearColumn < 0 then
     begin
-      Memory.Game.State := GAME_STATE_UPDATE_COUNTERS;
+      Memory.Game.State    := GAME_STATE_UPDATE_COUNTERS;
       Memory.Game.Flashing := False;
     end;
   end;
@@ -610,7 +611,7 @@ procedure TCore.UpdateCounters();
 var
   Gain: Integer;
 var
-  HappenedKillScreen: Boolean = False;
+  HappenedKillScreen:      Boolean = False;
   HappenedLaterTransition: Boolean = False;
   HappenedFirstTransition: Boolean = False;
 begin
@@ -641,8 +642,8 @@ begin
       Sounds.PlaySound(SOUND_TRANSITION, True);
     end;
 
-    Memory.Game.Lines += Memory.Game.ClearCount;
-    Memory.Game.LinesCleared := Memory.Game.Lines;
+    Memory.Game.Lines                              += Memory.Game.ClearCount;
+    Memory.Game.LinesCleared                       := Memory.Game.Lines;
     Memory.Game.LineClears[Memory.Game.ClearCount] += 1;
 
     if HappenedKillScreen then
@@ -652,7 +653,7 @@ begin
       Memory.Game.Burned := 0
     else
     begin
-      Memory.Game.Burned += Memory.Game.ClearCount;
+      Memory.Game.Burned      += Memory.Game.ClearCount;
       Memory.Game.LinesBurned += Memory.Game.ClearCount;
     end;
 
@@ -678,11 +679,11 @@ begin
 
   if Memory.Game.FallSkipped then
   begin
-    Memory.Game.FallPoints := 0;
+    Memory.Game.FallPoints  := 0;
     Memory.Game.FallSkipped := False;
   end;
 
-  Memory.Game.State := GAME_STATE_STACK_LOWER;
+  Memory.Game.State      := GAME_STATE_STACK_LOWER;
   Memory.Game.LowerTimer := 1;
 end;
 
@@ -692,7 +693,7 @@ begin
   if Memory.Game.TopOutTimer > 0 then
     Memory.Game.TopOutTimer -= 1
   else
-    if Input.Device.Start.JustPressed or Input.Fixed.Accept.JustPressed or Input.Fixed.Cancel.JustPressed then
+    if Input.Device.Start.Pressed or Input.Fixed.Accept.Pressed or Input.Fixed.Cancel.Pressed then
     begin
       Memory.Game.Ended := True;
       Sounds.PlaySound(SOUND_START);
@@ -703,14 +704,15 @@ end;
 procedure TCore.Reset();
 begin
   Memory.Game.Reset();
-  Memory.Game.Started := True;
+  Memory.Game.Started     := True;
   Memory.Game.AutorepeatY := PIECE_FRAMES_HANG[Memory.Lobby.Region];
-  Memory.Game.PieceID := Generators.Generator.Pick();
+  Memory.Game.PieceID     := Generators.Generator.Pick();
 
   Generators.Generator.Step();
-  Memory.Game.Next := Generators.Generator.Pick();
-  Memory.Game.Level := Memory.Lobby.Level;
-  Memory.Game.Best := BestScores[Memory.Lobby.Region][Memory.Lobby.Generator].BestResult;
+
+  Memory.Game.Next        := Generators.Generator.Pick();
+  Memory.Game.Level       := Memory.Lobby.Level;
+  Memory.Game.Best        := BestScores[Memory.Lobby.Region][Memory.Lobby.Generator].BestResult;
   Memory.Game.NextVisible := True;
 end;
 

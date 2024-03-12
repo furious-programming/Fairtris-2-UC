@@ -29,7 +29,7 @@ uses
 type
   TTaskbar = class(TObject)
   private
-    FButton: ITaskBarList3;
+    FButton:    ITaskBarList3;
     FSupported: Boolean;
   public
     procedure Initialize();
@@ -56,7 +56,7 @@ procedure TTaskbar.Initialize();
 var
   Instance: IInterface;
 begin
-  Instance := CreateComObject(CLSID_TASKBARLIST);
+  Instance   := CreateComObject(CLSID_TASKBARLIST);
   FSupported := Supports(Instance, ITaskBarList3, FButton);
 end;
 

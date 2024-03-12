@@ -35,24 +35,23 @@ type
   TClock = class(TObject)
   private
     FTicksPerSecond: Int64;
-    FTicksPerFrame: Int64;
+    FTicksPerFrame:  Int64;
   private
     FFrameTicksBegin: Int64;
-    FFrameTicksEnd: Int64;
-    FFrameTicksNext: Int64;
+    FFrameTicksEnd:   Int64;
+    FFrameTicksNext:  Int64;
   private
     FFrameIndex: Integer;
   private
     FFrameRate: TClockFrameRate;
     FFrameLoad: TClockFrameLoad;
   private
-    FFrameRateTank: Integer;
+    FFrameRateTank:   Integer;
     FFrameRateSecond: Integer;
-    FFrameRateLimit: Integer;
+    FFrameRateLimit:  Integer;
+    FFrameLoadTank:   Integer;
   private
-    FFrameLoadTank: Integer;
-  private
-    function GetFrameIndexInHalf(): Boolean;
+    function  GetFrameIndexInHalf(): Boolean;
     procedure SetFrameRateLimit(AFrameRateLimit: Integer);
   private
     function GetCounterFrequency(): Int64;
@@ -68,7 +67,7 @@ type
     procedure UpdateFrameLoad();
   public
     constructor Create();
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Initialize();
   public
@@ -76,9 +75,9 @@ type
     procedure UpdateFrameEnd();
     procedure UpdateFrameAlign();
   public
-    property FrameIndex: Integer read FFrameIndex;
+    property FrameIndex:       Integer read FFrameIndex;
     property FrameIndexInHalf: Boolean read GetFrameIndexInHalf;
-    property FrameRateLimit: Integer read FFrameRateLimit write SetFrameRateLimit;
+    property FrameRateLimit:   Integer read FFrameRateLimit write SetFrameRateLimit;
   public
     property FrameRate: TClockFrameRate read FFrameRate;
     property FrameLoad: TClockFrameLoad read FFrameLoad;
@@ -126,7 +125,7 @@ end;
 procedure TClock.SetFrameRateLimit(AFrameRateLimit: Integer);
 begin
   FFrameRateLimit := AFrameRateLimit;
-  FTicksPerFrame := FTicksPerSecond div FFrameRateLimit;
+  FTicksPerFrame  := FTicksPerSecond div FFrameRateLimit;
 end;
 
 
@@ -161,14 +160,14 @@ end;
 procedure TClock.InitFrameRate();
 begin
   FFrameRateSecond := SecondOf(Now());
-  FFrameRateLimit := CLOCK_FRAMERATE_DEFAULT;
+  FFrameRateLimit  := CLOCK_FRAMERATE_DEFAULT;
 end;
 
 
 procedure TClock.InitTicks();
 begin
   FTicksPerSecond := GetCounterFrequency();
-  FTicksPerFrame := FTicksPerSecond div FFrameRateLimit;
+  FTicksPerFrame  := FTicksPerSecond div FFrameRateLimit;
 end;
 
 
@@ -183,9 +182,8 @@ begin
   else
   begin
     FFrameRate.Current := FFrameRateTank;
-
-    FFrameRateTank := 1;
-    FFrameRateSecond := NewSecond;
+    FFrameRateTank     := 1;
+    FFrameRateSecond   := NewSecond;
   end;
 end;
 
@@ -197,7 +195,7 @@ begin
   else
   begin
     FFrameLoad.Current := FFrameLoadTank div (FFrameRateLimit div 4);
-    FFrameLoadTank := (FFrameTicksEnd - FFrameTicksBegin) * 100 div FTicksPerFrame;
+    FFrameLoadTank     := (FFrameTicksEnd - FFrameTicksBegin) * 100 div FTicksPerFrame;
   end;
 end;
 
@@ -211,14 +209,14 @@ end;
 procedure TClock.UpdateFrameBegin();
 begin
   FFrameTicksBegin := GetCounterValue();
-  FFrameTicksNext := FFrameTicksBegin + FTicksPerFrame;
+  FFrameTicksNext  := FFrameTicksBegin + FTicksPerFrame;
 end;
 
 
 procedure TClock.UpdateFrameEnd();
 begin
   FFrameTicksEnd := GetCounterValue();
-  FFrameIndex += 1;
+  FFrameIndex    += 1;
 
   UpdateFrameRate();
   UpdateFrameLoad();

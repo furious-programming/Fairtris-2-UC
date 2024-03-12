@@ -51,19 +51,17 @@ type
 type
   TGeneralSettings = class(TCustomSettings)
   private
-    FMonitor: Integer;
-    FLeft: Integer;
-    FTop: Integer;
-  private
-    FInput: Integer;
+    FMonitor:   Integer;
+    FLeft:      Integer;
+    FTop:       Integer;
+    FInput:     Integer;
     FShiftNTSC: Integer;
-    FShiftPAL: Integer;
-    FSize: Integer;
-    FSounds: Integer;
-  private
-    FRegion: Integer;
+    FShiftPAL:  Integer;
+    FSize:      Integer;
+    FSounds:    Integer;
+    FRegion:    Integer;
     FGenerator: Integer;
-    FLevel: Integer;
+    FLevel:     Integer;
   private
     function CorrectMonitor(AValue: Integer): Integer;
     function CorrectLeft(AValue: Integer): Integer;
@@ -78,19 +76,17 @@ type
     procedure Load(AFile: TIniFile; const ASection: String);
     procedure Save(AFile: TIniFile; const ASection: String);
   public
-    property Monitor: Integer read FMonitor;
-    property Left: Integer read FLeft;
-    property Top: Integer read FTop;
-  public
-    property Input: Integer read FInput;
+    property Monitor:   Integer read FMonitor;
+    property Left:      Integer read FLeft;
+    property Top:       Integer read FTop;
+    property Input:     Integer read FInput;
     property ShiftNTSC: Integer read FShiftNTSC;
-    property ShiftPAL: Integer read FShiftPAL;
-    property Size: Integer read FSize;
-    property Sounds: Integer read FSounds;
-  public
-    property Region: Integer read FRegion;
+    property ShiftPAL:  Integer read FShiftPAL;
+    property Size:      Integer read FSize;
+    property Sounds:    Integer read FSounds;
+    property Region:    Integer read FRegion;
     property Generator: Integer read FGenerator;
-    property Level: Integer read FLevel;
+    property Level:     Integer read FLevel;
   end;
 
 
@@ -106,7 +102,7 @@ type
     procedure Load(AFile: TIniFile; const ASection: String); virtual; abstract;
     procedure Save(AFile: TIniFile; const ASection: String);
   public
-    ScanCodes: array [DEVICE_FIRST .. DEVICE_LAST] of UInt8;
+    ScanCodes: array [TRIGGER_DEVICE_FIRST .. TRIGGER_DEVICE_LAST] of UInt8;
   end;
 
 
@@ -129,20 +125,20 @@ type
   private
     FSettingsFile: TMemIniFile;
   private
-    FGeneral: TGeneralSettings;
-    FVideo: TVideoSettings;
-    FKeyboard: TKeyboardSettings;
+    FGeneral:    TGeneralSettings;
+    FVideo:      TVideoSettings;
+    FKeyboard:   TKeyboardSettings;
     FController: TControllerSettings;
   public
     constructor Create();
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Load();
     procedure Save();
   public
-    property Video: TVideoSettings read FVideo;
-    property General: TGeneralSettings read FGeneral;
-    property Keyboard: TKeyboardSettings read FKeyboard;
+    property Video:      TVideoSettings      read FVideo;
+    property General:    TGeneralSettings    read FGeneral;
+    property Keyboard:   TKeyboardSettings   read FKeyboard;
     property Controller: TControllerSettings read FController;
   end;
 
@@ -247,10 +243,9 @@ end;
 
 procedure TGeneralSettings.Correct();
 begin
-  FMonitor := CorrectMonitor(FMonitor);
-  FLeft := CorrectLeft(FLeft);
-  FTop := CorrectTop(FTop);
-
+  FMonitor   := CorrectMonitor(FMonitor);
+  FLeft      := CorrectLeft(FLeft);
+  FTop       := CorrectTop(FTop);
   FInput     := CorrectRange(FInput,     INPUT_FIRST,      INPUT_LAST,      INPUT_DEFAULT);
   FShiftNTSC := CorrectRange(FShiftNTSC, SHIFT_NTSC_FIRST, SHIFT_NTSC_LAST, SHIFT_NTSC_DEFAULT);
   FShiftPAL  := CorrectRange(FShiftPAL,  SHIFT_PAL_FIRST,  SHIFT_PAL_LAST,  SHIFT_PAL_DEFAULT);
@@ -264,11 +259,10 @@ end;
 
 procedure TGeneralSettings.Collect();
 begin
-  FMonitor := DetermineMonitor();
-  FSize    := Placement.WindowSize;
-  FLeft    := Placement.WindowBounds.X;
-  FTop     := Placement.WindowBounds.Y;
-
+  FMonitor   := DetermineMonitor();
+  FSize      := Placement.WindowSize;
+  FLeft      := Placement.WindowBounds.X;
+  FTop       := Placement.WindowBounds.Y;
   FInput     := Memory.Options.Input;
   FShiftNTSC := Memory.Options.ShiftNTSC;
   FShiftPAL  := Memory.Options.ShiftPAL;
@@ -323,7 +317,7 @@ procedure TMappingSettings.Collect();
 var
   Index: Integer;
 begin
-  for Index := DEVICE_FIRST to DEVICE_LAST do
+  for Index := TRIGGER_DEVICE_FIRST to TRIGGER_DEVICE_LAST do
     ScanCodes[Index] := Input[FDeviceID].ScanCode[Index];
 end;
 
@@ -332,18 +326,19 @@ procedure TMappingSettings.Save(AFile: TIniFile; const ASection: String);
 var
   Index: Integer;
 begin
-  for Index := DEVICE_FIRST to DEVICE_LAST do
+  for Index := TRIGGER_DEVICE_FIRST to TRIGGER_DEVICE_LAST do
     AFile.WriteInteger(ASection, SETTINGS_KEY_MAPPING[Index], ScanCodes[Index]);
 end;
 
 
 procedure TKeyboardSettings.Load(AFile: TIniFile; const ASection: String);
 var
-  Index, ScanCode: Integer;
+  Index:    Integer;
+  ScanCode: Integer;
 begin
-  for Index := KEYBOARD_KEY_FIRST to KEYBOARD_KEY_LAST do
+  for Index := TRIGGER_KEYBOARD_KEY_FIRST to TRIGGER_KEYBOARD_KEY_LAST do
   begin
-    ScanCode := AFile.ReadInteger(ASection, SETTINGS_KEY_MAPPING[Index], KEYBOARD_SCANCODE_KEY_NOT_MAPPED);
+    ScanCode         := AFile.ReadInteger(ASection, SETTINGS_KEY_MAPPING[Index], KEYBOARD_SCANCODE_KEY_NOT_MAPPED);
     ScanCodes[Index] := CorrectRange(
       ScanCode,
       KEYBOARD_SCANCODE_KEY_FIRST,
@@ -352,22 +347,23 @@ begin
     );
   end;
 
-  for Index := KEYBOARD_KEY_FIRST to KEYBOARD_KEY_LAST do
+  for Index := TRIGGER_KEYBOARD_KEY_FIRST to TRIGGER_KEYBOARD_KEY_LAST do
     if ScanCodes[Index] <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED then
       Exit;
 
-  for Index := KEYBOARD_KEY_FIRST to KEYBOARD_KEY_LAST do
+  for Index := TRIGGER_KEYBOARD_KEY_FIRST to TRIGGER_KEYBOARD_KEY_LAST do
     ScanCodes[Index] := MAPPING_DEFAULT_KEYBOARD[Index];
 end;
 
 
 procedure TControllerSettings.Load(AFile: TIniFile; const ASection: String);
 var
-  Index, ScanCode: Integer;
+  Index:    Integer;
+  ScanCode: Integer;
 begin
-  for Index := CONTROLLER_BUTTON_FIRST to CONTROLLER_BUTTON_LAST do
+  for Index := TRIGGER_CONTROLLER_BUTTON_FIRST to TRIGGER_CONTROLLER_BUTTON_LAST do
   begin
-    ScanCode := AFile.ReadInteger(ASection, SETTINGS_KEY_MAPPING[Index], CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED);
+    ScanCode         := AFile.ReadInteger(ASection, SETTINGS_KEY_MAPPING[Index], CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED);
     ScanCodes[Index] := CorrectRange(
       ScanCode,
       CONTROLLER_SCANCODE_BUTTON_FIRST,
@@ -376,11 +372,11 @@ begin
     );
   end;
 
-  for Index := CONTROLLER_BUTTON_FIRST to CONTROLLER_BUTTON_LAST do
+  for Index := TRIGGER_CONTROLLER_BUTTON_FIRST to TRIGGER_CONTROLLER_BUTTON_LAST do
     if ScanCodes[Index] <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED then
       Exit;
 
-  for Index := CONTROLLER_BUTTON_FIRST to CONTROLLER_BUTTON_LAST do
+  for Index := TRIGGER_CONTROLLER_BUTTON_FIRST to TRIGGER_CONTROLLER_BUTTON_LAST do
     ScanCodes[Index] := MAPPING_DEFAULT_CONTROLLER[Index];
 end;
 
@@ -389,9 +385,9 @@ constructor TSettings.Create();
 begin
   FSettingsFile := TMemIniFile.Create(SETTINGS_FILENAME);
 
-  FVideo := TVideoSettings.Create();
-  FGeneral := TGeneralSettings.Create();
-  FKeyboard := TKeyboardSettings.Create(INPUT_KEYBOARD);
+  FVideo      := TVideoSettings.Create();
+  FGeneral    := TGeneralSettings.Create();
+  FKeyboard   := TKeyboardSettings.Create(INPUT_KEYBOARD);
   FController := TControllerSettings.Create(INPUT_CONTROLLER);
 end;
 
@@ -411,9 +407,9 @@ end;
 
 procedure TSettings.Load();
 begin
-  FVideo.Load(FSettingsFile, SETTINGS_SECTION_VIDEO);
-  FGeneral.Load(FSettingsFile, SETTINGS_SECTION_GENERAL);
-  FKeyboard.Load(FSettingsFile, SETTINGS_SECTION_KEYBOARD);
+  FVideo.Load     (FSettingsFile, SETTINGS_SECTION_VIDEO);
+  FGeneral.Load   (FSettingsFile, SETTINGS_SECTION_GENERAL);
+  FKeyboard.Load  (FSettingsFile, SETTINGS_SECTION_KEYBOARD);
   FController.Load(FSettingsFile, SETTINGS_SECTION_CONTROLLER);
 end;
 
@@ -425,9 +421,9 @@ begin
   FKeyboard.Collect();
   FController.Collect();
 
-  FVideo.Save(FSettingsFile, SETTINGS_SECTION_VIDEO);
-  FGeneral.Save(FSettingsFile, SETTINGS_SECTION_GENERAL);
-  FKeyboard.Save(FSettingsFile, SETTINGS_SECTION_KEYBOARD);
+  FVideo.Save     (FSettingsFile, SETTINGS_SECTION_VIDEO);
+  FGeneral.Save   (FSettingsFile, SETTINGS_SECTION_GENERAL);
+  FKeyboard.Save  (FSettingsFile, SETTINGS_SECTION_KEYBOARD);
   FController.Save(FSettingsFile, SETTINGS_SECTION_CONTROLLER);
 end;
 

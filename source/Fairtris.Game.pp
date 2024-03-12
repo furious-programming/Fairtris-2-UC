@@ -46,7 +46,7 @@ type
     procedure UpdateTaskbar();
   public
     constructor Create();
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Run();
   end;
@@ -83,7 +83,7 @@ uses
 procedure TGame.CreateSystem();
 begin
   SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, '0');
-  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 'linear');
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,         'linear');
 
   if SDL_Init(SDL_INIT_VIDEO or SDL_INIT_AUDIO or SDL_INIT_JOYSTICK or SDL_INIT_EVENTS) < 0 then
     raise SDLException.CreateFmt(ERROR_MESSAGE_SDL, [ERROR_MESSAGE[ERROR_SDL_INITIALIZE_SYSTEM], SDL_GetError()]);
@@ -98,26 +98,23 @@ end;
 
 procedure TGame.CreateObjects();
 begin
-  Window := TWindow.Create();
-  Taskbar := TTaskbar.Create();
-
-  Clock := TClock.Create();
-  Buffers := TBuffers.Create();
-  Input := TInput.Create();
-  Placement := TPlacement.Create();
-  Renderer := TRenderer.Create();
-
-  Sounds := TSounds.Create();
-  Grounds := TGrounds.Create();
-  Sprites := TSprites.Create();
-  Settings := TSettings.Create();
+  Window     := TWindow.Create();
+  Taskbar    := TTaskbar.Create();
+  Clock      := TClock.Create();
+  Buffers    := TBuffers.Create();
+  Input      := TInput.Create();
+  Placement  := TPlacement.Create();
+  Renderer   := TRenderer.Create();
+  Sounds     := TSounds.Create();
+  Grounds    := TGrounds.Create();
+  Sprites    := TSprites.Create();
+  Settings   := TSettings.Create();
   BestScores := TBestScores.Create();
-
   Generators := TGenerators.Create();
-  Logic := TLogic.Create();
-  Core := TCore.Create();
-  Memory := TMemory.Create();
-  Converter := TConverter.Create();
+  Logic      := TLogic.Create();
+  Core       := TCore.Create();
+  Memory     := TMemory.Create();
+  Converter  := TConverter.Create();
 end;
 
 
@@ -132,19 +129,16 @@ procedure TGame.DestroyObjects();
 begin
   Window.Free();
   Taskbar.Free();
-
   Clock.Free();
   Buffers.Free();
   Input.Free();
   Placement.Free();
   Renderer.Free();
-
   Sounds.Free();
   Grounds.Free();
   Sprites.Free();
   Settings.Free();
   BestScores.Free();
-
   Generators.Free();
   Logic.Free();
   Core.Free();
@@ -183,7 +177,6 @@ begin
   Placement.Initialize();
   Sounds.Initilize();
   Taskbar.Initialize();
-
   Generators.Initialize();
 end;
 
@@ -221,11 +214,13 @@ begin
       SDL_BUTTON_LEFT:
         if Event.Button.Clicks = 2 then
           Placement.ToggleVideoMode();
+
       SDL_BUTTON_RIGHT:
         if Event.Button.Clicks = 2 then
           if not Placement.VideoEnabled and (Placement.WindowSize <> SIZE_FULLSCREEN) then
             Placement.WindowSize := SIZE_FULLSCREEN;
     end;
+
     SDL_MOUSEWHEEL:
     begin
       if Event.Wheel.Y < 0 then Placement.ReduceWindow();
@@ -233,10 +228,10 @@ begin
 
       Memory.Options.Size := Placement.WindowSize;
     end;
+
     SDL_JOYDEVICEADDED:   Input.Controller.Attach();
     SDL_JOYDEVICEREMOVED: Input.Controller.Detach();
-    SDL_QUITEV:
-      Logic.Stop();
+    SDL_QUITEV:           Logic.Stop();
   end;
 end;
 
@@ -268,9 +263,9 @@ end;
 procedure TGame.UpdateWindow();
 begin
   SDL_SetRenderDrawColor(Window.Renderer, 0, 0, 0, 255);
-  SDL_RenderClear(Window.Renderer);
-  SDL_RenderCopy(Window.Renderer, Buffers.Native, nil, @Buffers.Client);
-  SDL_RenderPresent(Window.Renderer);
+  SDL_RenderClear       (Window.Renderer);
+  SDL_RenderCopy        (Window.Renderer, Buffers.Native, nil, @Buffers.Client);
+  SDL_RenderPresent     (Window.Renderer);
 end;
 
 
@@ -286,6 +281,7 @@ begin
 
   repeat
     OpenFrame();
+    begin
       UpdateWindow();
       UpdateQueue();
       UpdateInput();
@@ -296,7 +292,7 @@ begin
         UpdateBuffer();
         UpdateTaskbar();
       end;
-
+    end;
     CloseFrame();
   until Logic.Stopped;
 

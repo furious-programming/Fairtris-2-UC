@@ -50,20 +50,20 @@ type
   public
     procedure Initialize();
   public
-    ItemIndex: Integer;
+    ItemIndex:  Integer;
     Autorepeat: Integer;
   public
-    Region: Integer;
+    Region:    Integer;
     Generator: Integer;
-    Level: Integer;
+    Level:     Integer;
   end;
 
 
 type
   TGameMemory = class(TObject)
   private type
-    TStack = array [0 .. 9, -2 .. 19] of Integer;
-    TLineClears = array [LINES_FIRST .. LINES_LAST] of Integer;
+    TStack            = array [0 .. 9, -2 .. 19] of Integer;
+    TLineClears       = array [LINES_FIRST .. LINES_LAST] of Integer;
     TLineClearPermits = array [-2 .. 1] of Boolean;
     TLineClearIndexes = array [-2 .. 1] of Integer;
   public
@@ -76,64 +76,63 @@ type
   {$ENDIF}
   public
     FromScene: Integer;
+    State:     Integer;
   public
-    Started: Boolean;
-    Ended: Boolean;
+    Started:  Boolean;
+    Ended:    Boolean;
+    Flashing: Boolean;
   public
-    State: Integer;
-  public
-    PieceID: Integer;
+    PieceID:          Integer;
     PieceOrientation: Integer;
-    PieceX: Integer;
-    PieceY: Integer;
+    PieceX:           Integer;
+    PieceY:           Integer;
   public
     AutorepeatX: Integer;
     AutorepeatY: Integer;
   public
-    AutospinCharged: Boolean;
+    AutospinCharged:  Boolean;
     AutospinRotation: Integer;
   public
-    FallTimer: Integer;
-    FallSpeed: Integer;
-    FallPoints: Integer;
+    FallTimer:   Integer;
+    FallSpeed:   Integer;
+    FallPoints:  Integer;
     FallSkipped: Boolean;
   public
-    LockRow: Integer;
+    LockRow:   Integer;
     LockTimer: Integer;
   public
-    SpeedrunTimer: Integer;
+    SpeedrunTimer:     Integer;
     SpeedrunCompleted: Boolean;
   public
-    ClearCount: Integer;
-    ClearTimer: Integer;
-    ClearColumn: Integer;
+    ClearCount:   Integer;
+    ClearTimer:   Integer;
+    ClearColumn:  Integer;
     ClearPermits: TLineClearPermits;
     ClearIndexes: TLineClearIndexes;
   public
     AfterTransition: Boolean;
     AfterKillScreen: Boolean;
   public
-    LowerTimer: Integer;
+    LowerTimer:  Integer;
     TopOutTimer: Integer;
   public
-    Flashing: Boolean;
   public
-    Stack: TStack;
+    Stack:      TStack;
     LineClears: TLineClears;
   public
-    Best: Integer;
-    Score: Integer;
-    Transition: Integer;
-    Lines: Integer;
+    Best:         Integer;
+    Score:        Integer;
+    Transition:   Integer;
+    Lines:        Integer;
     LinesCleared: Integer;
-    LinesBurned: Integer;
-    Level: Integer;
-    Next: Integer;
-    NextVisible: Boolean;
-    Burned: Integer;
-    TetrisRate: Integer;
-    Gain: Integer;
-    GainTimer: Integer;
+    LinesBurned:  Integer;
+    Level:        Integer;
+    Next:         Integer;
+    NextVisible:  Boolean;
+    Burned:       Integer;
+    TetrisRate:   Integer;
+    Gain:         Integer;
+    GainTimer:    Integer;
   end;
 
 
@@ -152,13 +151,11 @@ type
   public
     ItemIndex: Integer;
   public
-    TotalScore: Integer;
-    Transition: Integer;
-  public
+    TotalScore:   Integer;
+    Transition:   Integer;
     LinesCleared: Integer;
-    LinesBurned: Integer;
-  public
-    TetrisRate: Integer;
+    LinesBurned:  Integer;
+    TetrisRate:   Integer;
   end;
 
 
@@ -172,51 +169,47 @@ type
     ItemIndex: Integer;
     FromScene: Integer;
   public
-    Input: Integer;
+    Input:     Integer;
     ShiftNTSC: Integer;
-    ShiftPAL: Integer;
-    Size: Integer;
-    Sounds: Integer;
+    ShiftPAL:  Integer;
+    Size:      Integer;
+    Sounds:    Integer;
   end;
 
 
 type
   TKeyboardMemory = class(TObject)
-  private type
-    TScanCodes = array [KEYBOARD_KEY_FIRST .. KEYBOARD_KEY_LAST] of UInt8;
-  public      
+  public
     procedure Initialize();
   public
-    function MappedCorrectly(): Boolean;
+    function  MappedCorrectly(): Boolean;
     procedure RemoveDuplicates(AScanCode: UInt8; AProtectedKey: Integer);
   public
     ItemIndex: Integer;
-    KeyIndex: Integer;
+    KeyIndex:  Integer;
   public
     Changing: Boolean;
-    Mapping: Boolean;
+    Mapping:  Boolean;
   public
-    ScanCodes: TScanCodes;
+    ScanCodes: array [TRIGGER_KEYBOARD_KEY_FIRST .. TRIGGER_KEYBOARD_KEY_LAST] of UInt8;
   end;
 
 
 type
   TControllerMemory = class(TObject)
-  private type
-    TScanCodes = array [CONTROLLER_BUTTON_FIRST .. CONTROLLER_BUTTON_LAST] of UInt8;
-  public             
+  public
     procedure Initialize();
   public
-    function MappedCorrectly(): Boolean;
+    function  MappedCorrectly(): Boolean;
     procedure RemoveDuplicates(AScanCode: UInt8; AProtectedButton: Integer);
   public
-    ItemIndex: Integer;
+    ItemIndex:   Integer;
     ButtonIndex: Integer;
   public
     Changing: Boolean;
-    Mapping: Boolean;
+    Mapping:  Boolean;
   public
-    ScanCodes: TScanCodes;
+    ScanCodes: array [TRIGGER_CONTROLLER_BUTTON_FIRST .. TRIGGER_CONTROLLER_BUTTON_LAST] of UInt8;
   end;
 
 
@@ -224,14 +217,14 @@ type
   TBSoDMemory = class(TObject)
   public
     constructor Create();
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Initialize();
     procedure Reset();
   public
-    State: Integer;
-    Timer: Integer;
     Buffer: PSDL_Texture;
+    State:  Integer;
+    Timer:  Integer;
   end;
 
 
@@ -239,46 +232,46 @@ type
   TQuitMemory = class(TObject)
   public
     constructor Create();
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Initialize();
   public
+    Buffer:    PSDL_Texture;
     HangTimer: Integer;
-    Buffer: PSDL_Texture;
   end;
 
 
 type
   TMemory = class(TObject)
   private
-    FLegal: TLegalMemory;
-    FMenu: TMenuMemory;
-    FLobby: TLobbyMemory;
-    FGame: TGameMemory;
-    FPause: TPauseMemory;
-    FTopOut: TTopOutMemory;
-    FOptions: TOptionsMemory;
-    FKeyboard: TKeyboardMemory;
+    FLegal:      TLegalMemory;
+    FMenu:       TMenuMemory;
+    FLobby:      TLobbyMemory;
+    FGame:       TGameMemory;
+    FPause:      TPauseMemory;
+    FTopOut:     TTopOutMemory;
+    FOptions:    TOptionsMemory;
+    FKeyboard:   TKeyboardMemory;
     FController: TControllerMemory;
-    FBSoD: TBSoDMemory;
-    FQuit: TQuitMemory;
+    FBSoD:       TBSoDMemory;
+    FQuit:       TQuitMemory;
   public
     constructor Create();
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Initialize();
   public
-    property Legal: TLegalMemory read FLegal;
-    property Menu: TMenuMemory read FMenu;
-    property Lobby: TLobbyMemory read FLobby;
-    property Game: TGameMemory read FGame;
-    property Pause: TPauseMemory read FPause;
-    property TopOut: TTopOutMemory read FTopOut;
-    property Options: TOptionsMemory read FOptions;
-    property Keyboard: TKeyboardMemory read FKeyboard;
+    property Legal:      TLegalMemory      read FLegal;
+    property Menu:       TMenuMemory       read FMenu;
+    property Lobby:      TLobbyMemory      read FLobby;
+    property Game:       TGameMemory       read FGame;
+    property Pause:      TPauseMemory      read FPause;
+    property TopOut:     TTopOutMemory     read FTopOut;
+    property Options:    TOptionsMemory    read FOptions;
+    property Keyboard:   TKeyboardMemory   read FKeyboard;
     property Controller: TControllerMemory read FController;
-    property BSoD: TBSoDMemory read FBSoD;
-    property Quit: TQuitMemory read FQuit;
+    property BSoD:       TBSoDMemory       read FBSoD;
+    property Quit:       TQuitMemory       read FQuit;
   end;
 
 
@@ -310,12 +303,12 @@ end;
 
 procedure TLobbyMemory.Initialize();
 begin
-  ItemIndex := ITEM_LOBBY_START;
+  ItemIndex  := ITEM_LOBBY_START;
   Autorepeat := 0;
 
-  Region := Settings.General.Region;
+  Region    := Settings.General.Region;
   Generator := Settings.General.Generator;
-  Level := Settings.General.Level;
+  Level     := Settings.General.Level;
 end;
 
 
@@ -327,64 +320,60 @@ end;
 
 procedure TGameMemory.Reset();
 begin
-  Started := False;
-  Ended := False;
+  State             := GAME_STATE_PIECE_CONTROL;
 
-  State := GAME_STATE_PIECE_CONTROL;
+  Started           := False;
+  Ended             := False;
+  Flashing          := False;
 
-  PieceID := PIECE_UNKNOWN;
-  PieceOrientation := PIECE_ORIENTATION_SPAWN;
+  PieceID           := PIECE_UNKNOWN;
+  PieceOrientation  := PIECE_ORIENTATION_SPAWN;
+  PieceX            := PIECE_SPAWN_X;
+  PieceY            := PIECE_SPAWN_Y;
 
-  PieceX := PIECE_SPAWN_X;
-  PieceY := PIECE_SPAWN_Y;
+  AutorepeatX       := 0;
+  AutorepeatY       := 0;
+  AutospinCharged   := False;
 
-  AutorepeatX := 0;
-  AutorepeatY := 0;
-  AutospinCharged := False;
+  FallTimer         := 0;
+  FallSpeed         := 0;
+  FallPoints        := 0;
+  FallSkipped       := False;
 
-  FallTimer := 0;
-  FallSpeed := 0;
-  FallPoints := 0;
-  FallSkipped := False;
+  LockRow           := 0;
+  LockTimer         := 0;
 
-  LockRow := 0;
-  LockTimer := 0;
-
-  SpeedrunTimer := 0;
+  SpeedrunTimer     := 0;
   SpeedrunCompleted := False;
 
-  ClearCount := 0;
-  ClearTimer := 0;
-  ClearColumn := 0;
-  ClearPermits := Default(TLineClearPermits);
-  ClearIndexes := Default(TLineClearIndexes);
+  ClearCount        := 0;
+  ClearTimer        := 0;
+  ClearColumn       := 0;
+  ClearPermits      := Default(TLineClearPermits);
+  ClearIndexes      := Default(TLineClearIndexes);
 
-  AfterTransition := False;
-  AfterKillScreen := False;
+  AfterTransition   := False;
+  AfterKillScreen   := False;
 
-  LowerTimer := 0;
-  TopOutTimer := 0;
+  LowerTimer        := 0;
+  TopOutTimer       := 0;
 
-  Flashing := False;
+  Stack             := Default(TStack);
+  LineClears        := Default(TLineClears);
 
-  Stack := Default(TStack);
-  LineClears := Default(TLineClears);
+  Best              := 0;
+  Score             := 0;
+  Transition        := 0;
+  Lines             := 0;
+  LinesCleared      := 0;
+  LinesBurned       := 0;
+  Level             := 0;
+  Next              := 0;
+  Burned            := 0;
+  TetrisRate        := 0;
 
-  Best := 0;
-  Score := 0;
-  Transition := 0;
-
-  Lines := 0;
-  LinesCleared := 0;
-  LinesBurned := 0;
-
-  Level := 0;
-  Next  := 0;
-  Burned := 0;
-  TetrisRate := 0;
-
-  Gain := 0;
-  GainTimer := 0;
+  Gain              := 0;
+  GainTimer         := 0;
 end;
 
 
@@ -429,21 +418,20 @@ end;
 procedure TKeyboardMemory.Initialize();
 begin
   ItemIndex := ITEM_KEYBOARD_FIRST;
-  KeyIndex := ITEM_KEYBOARD_KEY_FIRST;
-
+  KeyIndex  := ITEM_KEYBOARD_KEY_FIRST;
   ScanCodes := Settings.Keyboard.ScanCodes;
 end;
 
 
 function TKeyboardMemory.MappedCorrectly(): Boolean;
 begin
-  Result := (ScanCodes[KEYBOARD_KEY_UP]    <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED) and
-            (ScanCodes[KEYBOARD_KEY_DOWN]  <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED) and
-            (ScanCodes[KEYBOARD_KEY_LEFT]  <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED) and
-            (ScanCodes[KEYBOARD_KEY_RIGHT] <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED) and
-            (ScanCodes[KEYBOARD_KEY_START] <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED) and
-            (ScanCodes[KEYBOARD_KEY_B]     <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED) and
-            (ScanCodes[KEYBOARD_KEY_A]     <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED);
+  Result := (ScanCodes[TRIGGER_KEYBOARD_KEY_UP]    <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED) and
+            (ScanCodes[TRIGGER_KEYBOARD_KEY_DOWN]  <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED) and
+            (ScanCodes[TRIGGER_KEYBOARD_KEY_LEFT]  <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED) and
+            (ScanCodes[TRIGGER_KEYBOARD_KEY_RIGHT] <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED) and
+            (ScanCodes[TRIGGER_KEYBOARD_KEY_START] <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED) and
+            (ScanCodes[TRIGGER_KEYBOARD_KEY_B]     <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED) and
+            (ScanCodes[TRIGGER_KEYBOARD_KEY_A]     <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED);
 end;
 
 
@@ -468,11 +456,11 @@ end;
 
 function TControllerMemory.MappedCorrectly(): Boolean;
 begin
-  Result := (ScanCodes[CONTROLLER_BUTTON_LEFT]  <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED) and
-            (ScanCodes[CONTROLLER_BUTTON_RIGHT] <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED) and
-            (ScanCodes[CONTROLLER_BUTTON_START] <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED) and
-            (ScanCodes[CONTROLLER_BUTTON_B]     <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED) and
-            (ScanCodes[CONTROLLER_BUTTON_A]     <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED);
+  Result := (ScanCodes[TRIGGER_CONTROLLER_BUTTON_LEFT]  <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED) and
+            (ScanCodes[TRIGGER_CONTROLLER_BUTTON_RIGHT] <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED) and
+            (ScanCodes[TRIGGER_CONTROLLER_BUTTON_START] <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED) and
+            (ScanCodes[TRIGGER_CONTROLLER_BUTTON_B]     <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED) and
+            (ScanCodes[TRIGGER_CONTROLLER_BUTTON_A]     <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED);
 end;
 
 
@@ -540,17 +528,17 @@ end;
 
 constructor TMemory.Create();
 begin
-  FLegal := TLegalMemory.Create();
-  FMenu := TMenuMemory.Create();
-  FLobby := TLobbyMemory.Create();
-  FGame := TGameMemory.Create();
-  FPause := TPauseMemory.Create();
-  FTopOut := TTopOutMemory.Create();
-  FOptions := TOptionsMemory.Create();
-  FKeyboard := TKeyboardMemory.Create();
+  FLegal      := TLegalMemory.Create();
+  FMenu       := TMenuMemory.Create();
+  FLobby      := TLobbyMemory.Create();
+  FGame       := TGameMemory.Create();
+  FPause      := TPauseMemory.Create();
+  FTopOut     := TTopOutMemory.Create();
+  FOptions    := TOptionsMemory.Create();
+  FKeyboard   := TKeyboardMemory.Create();
   FController := TControllerMemory.Create();
-  FBSoD := TBSoDMemory.Create();
-  FQuit := TQuitMemory.Create();
+  FBSoD       := TBSoDMemory.Create();
+  FQuit       := TQuitMemory.Create();
 end;
 
 

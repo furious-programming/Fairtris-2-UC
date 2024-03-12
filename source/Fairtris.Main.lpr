@@ -19,7 +19,6 @@
 program Fairtris.Main;
 
 {$MODE OBJFPC}{$LONGSTRINGS ON}
-
 {$RESOURCE Fairtris.Main.res}
 
 uses

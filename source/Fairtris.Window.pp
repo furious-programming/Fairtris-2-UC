@@ -30,24 +30,23 @@ uses
 type
   TWindow = class(TObject)
   private
-    FHandle: THandle;
-    FWindow: PSDL_Window;
+    FHandle:   THandle;
+    FWindow:   PSDL_Window;
     FRenderer: PSDL_Renderer;
   private
     function GetFocused(): Boolean;
   public
     constructor Create();
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
-    property Window: PSDL_Window read FWindow;
+    property Window:   PSDL_Window   read FWindow;
     property Renderer: PSDL_Renderer read FRenderer;
-  public
-    property Handle: THandle read FHandle;
-    property Focused: Boolean read GetFocused;
+    property Handle:   THandle       read FHandle;
+    property Focused:  Boolean       read GetFocused;
   end;
 
 
-function GetWindowInstance(): PSDL_Window;
+  function GetWindowInstance(): PSDL_Window;
 
 
 var
@@ -97,7 +96,7 @@ end;
 
 destructor TWindow.Destroy();
 begin
-  SDL_DestroyWindow(FWindow);
+  SDL_DestroyWindow  (FWindow);
   SDL_DestroyRenderer(FRenderer);
 
   inherited Destroy();

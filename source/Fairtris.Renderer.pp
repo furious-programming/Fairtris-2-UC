@@ -139,18 +139,18 @@ begin
   case AChar of
     'A' .. 'Z': Result := Ord(AChar) - 64;
     '0' .. '9': Result := Ord(AChar) - 21;
-    ',':        Result := 37;
-    '/':        Result := 38;
-    '(':        Result := 39;
-    ')':        Result := 40;
-    '"':        Result := 41;
-    '.':        Result := 42;
-    '-':        Result := 43;
-    '%':        Result := 44;
-    '>':        Result := 45;
-    ':':        Result := 46;
-    '_':        Result := 47;
-    '#':        Result := 48;
+           ',': Result := 37;
+           '/': Result := 38;
+           '(': Result := 39;
+           ')': Result := 40;
+           '"': Result := 41;
+           '.': Result := 42;
+           '-': Result := 43;
+           '%': Result := 44;
+           '>': Result := 45;
+           ':': Result := 46;
+           '_': Result := 47;
+           '#': Result := 48;
   otherwise
     Result := 0;
   end;
@@ -180,14 +180,14 @@ end;
 
 procedure TRenderer.RenderText(AX, AY: Integer; const AText: String; AColor: Integer; AAlign: Integer);
 var
-  Character: Char;
-  CharIndex: Integer;
-var
-  BufferRect, CharRect: TSDL_Rect;
+  Character:  Char;
+  CharIndex:  Integer;
+  BufferRect: TSDL_Rect;
+  CharRect:   TSDL_Rect;
 begin
   SDL_SetTextureColorMod(Sprites.Charset, GetR(AColor), GetG(AColor), GetB(AColor));
 
-  CharRect := SDL_Rect(0, 0, CHAR_WIDTH, CHAR_HEIGHT);
+  CharRect   := SDL_Rect(0, 0, CHAR_WIDTH, CHAR_HEIGHT);
   BufferRect := SDL_Rect(AX, AY, CHAR_WIDTH, CHAR_HEIGHT);
 
   if AAlign = ALIGN_RIGHT then
@@ -195,7 +195,7 @@ begin
 
   for Character in AText do
   begin
-    CharIndex := CharToIndex(UpCase(Character));
+    CharIndex  := CharToIndex(UpCase(Character));
     CharRect.X := CharIndex * CHAR_WIDTH;
 
     SDL_RenderCopy(Window.Renderer, Sprites.Charset, @CharRect, @BufferRect);
@@ -299,13 +299,13 @@ begin
     SDL_Rect(
       AX,
       AY,
-      THUMBNAIL_BUTTON_WIDTH[AButton],
+      THUMBNAIL_BUTTON_WIDTH [AButton],
       THUMBNAIL_BUTTON_HEIGHT[AButton]
     ),
     SDL_Rect(
-      THUMBNAIL_BUTTON_X[AButton],
-      THUMBNAIL_BUTTON_Y[AButton],
-      THUMBNAIL_BUTTON_WIDTH[AButton],
+      THUMBNAIL_BUTTON_X     [AButton],
+      THUMBNAIL_BUTTON_Y     [AButton],
+      THUMBNAIL_BUTTON_WIDTH [AButton],
       THUMBNAIL_BUTTON_HEIGHT[AButton]
     )
   );
@@ -323,6 +323,7 @@ begin
 
     SCENE_QUIT:
       SDL_RenderCopy(Window.Renderer, Memory.Quit.Buffer, nil, nil);
+
   otherwise
     SDL_RenderCopy(Window.Renderer, Grounds[Logic.Scene.Current], nil, nil);
   end;
@@ -332,8 +333,8 @@ end;
 procedure TRenderer.RenderMenuSelection();
 begin
   RenderText(
-    ITEM_X_MENU[Memory.Menu.ItemIndex],
-    ITEM_Y_MENU[Memory.Menu.ItemIndex],
+    ITEM_X_MENU   [Memory.Menu.ItemIndex],
+    ITEM_Y_MENU   [Memory.Menu.ItemIndex],
     ITEM_TEXT_MENU[Memory.Menu.ItemIndex]
   );
 
@@ -348,8 +349,8 @@ end;
 procedure TRenderer.RenderLobbySelection();
 begin
   RenderText(
-    ITEM_X_LOBBY[Memory.Lobby.ItemIndex],
-    ITEM_Y_LOBBY[Memory.Lobby.ItemIndex],
+    ITEM_X_LOBBY   [Memory.Lobby.ItemIndex],
+    ITEM_Y_LOBBY   [Memory.Lobby.ItemIndex],
     ITEM_TEXT_LOBBY[Memory.Lobby.ItemIndex]
   );
 
@@ -532,8 +533,8 @@ procedure TRenderer.RenderGameController();
 var
   Index: Integer;
 begin
-  for Index := DEVICE_FIRST to DEVICE_LAST do
-    if Input.Device.Switch[Index].Pressed then
+  for Index := TRIGGER_DEVICE_FIRST to TRIGGER_DEVICE_LAST do
+    if Input.Device.Switch[Index].Down then
       RenderButton(
         GAME_CONTROLLER_X + THUMBNAIL_BUTTON_X[Index],
         GAME_CONTROLLER_Y + THUMBNAIL_BUTTON_Y[Index],
@@ -544,15 +545,18 @@ end;
 
 procedure TRenderer.RenderGameStack();
 var
-  OffsetX, OffsetY, BrickX, BrickY: Integer;
+  OffsetX: Integer;
+  OffsetY: Integer;
+  BrickX:  Integer;
+  BrickY:  Integer;
 begin
   OffsetY := GAME_STACK_Y;
-  BrickY := 0;
+  BrickY  := 0;
 
   while BrickY <= 19 do
   begin
     OffsetX := GAME_STACK_X;
-    BrickX := 0;
+    BrickX  := 0;
 
     while BrickX <= 9 do
     begin
@@ -565,18 +569,25 @@ begin
         );
 
       OffsetX += BRICK_CELL_WIDTH;
-      BrickX += 1;
+      BrickX  += 1;
     end;
 
     OffsetY += BRICK_CELL_HEIGHT;
-    BrickY += 1;
+    BrickY  += 1;
   end;
 end;
 
 
 procedure TRenderer.RenderGamePiece();
 var
-  OffsetX, OffsetY, BrickX, BrickY, BrickXMin, BrickXMax, BrickYMin, BrickYMax: Integer;
+  OffsetX:   Integer;
+  OffsetY:   Integer;
+  BrickX:    Integer;
+  BrickY:    Integer;
+  BrickXMin: Integer;
+  BrickXMax: Integer;
+  BrickYMin: Integer;
+  BrickYMax: Integer;
 begin
   if Memory.Game.PieceID = PIECE_UNKNOWN then Exit;
 
@@ -668,31 +679,30 @@ end;
 
 procedure TRenderer.RenderGameNext();
 begin
-  if Memory.Game.NextVisible then
-  begin
-    if Logic.Scene.Current = SCENE_GAME_NORMAL then
-      RenderText(
-        GAME_NEXT_TITLE_X,
-        GAME_NEXT_TITLE_Y,
-        GAME_NEXT_TITLE,
-        GAME_TITLE_COLOR[Memory.Game.Level and $FF]
-      );
+  if not Memory.Game.NextVisible then Exit;
 
-    RenderNext(
-      GAME_NEXT_X,
-      GAME_NEXT_Y,
-      Memory.Game.Next,
-      Memory.Game.Level
+  if Logic.Scene.Current = SCENE_GAME_NORMAL then
+    RenderText(
+      GAME_NEXT_TITLE_X,
+      GAME_NEXT_TITLE_Y,
+      GAME_NEXT_TITLE,
+      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
     );
-  end;
+
+  RenderNext(
+    GAME_NEXT_X,
+    GAME_NEXT_Y,
+    Memory.Game.Next,
+    Memory.Game.Level
+  );
 end;
 
 
 procedure TRenderer.RenderPauseSelection();
 begin
   RenderText(
-    ITEM_X_PAUSE[Memory.Pause.ItemIndex],
-    ITEM_Y_PAUSE[Memory.Pause.ItemIndex],
+    ITEM_X_PAUSE   [Memory.Pause.ItemIndex],
+    ITEM_Y_PAUSE   [Memory.Pause.ItemIndex],
     ITEM_TEXT_PAUSE[Memory.Pause.ItemIndex]
   );
 
@@ -837,8 +847,8 @@ end;
 procedure TRenderer.RenderTopOutSelection();
 begin
   RenderText(
-    ITEM_X_TOP_OUT[Memory.TopOut.ItemIndex],
-    ITEM_Y_TOP_OUT[Memory.TopOut.ItemIndex],
+    ITEM_X_TOP_OUT   [Memory.TopOut.ItemIndex],
+    ITEM_Y_TOP_OUT   [Memory.TopOut.ItemIndex],
     ITEM_TEXT_TOP_OUT[Memory.TopOut.ItemIndex]
   );
 
@@ -891,8 +901,8 @@ end;
 procedure TRenderer.RenderOptionsSelection();
 begin
   RenderText(
-    ITEM_X_OPTIONS[Memory.Options.ItemIndex],
-    ITEM_Y_OPTIONS[Memory.Options.ItemIndex],
+    ITEM_X_OPTIONS   [Memory.Options.ItemIndex],
+    ITEM_Y_OPTIONS   [Memory.Options.ItemIndex],
     ITEM_TEXT_OPTIONS[Memory.Options.ItemIndex],
     IfThen(
       Memory.Options.ItemIndex = ITEM_OPTIONS_SET_UP,
@@ -1060,8 +1070,8 @@ procedure TRenderer.RenderKeyboardItemSelection();
 begin
   if not Memory.Keyboard.Changing then
     RenderText(
-      ITEM_X_KEYBOARD[Memory.Keyboard.ItemIndex],
-      ITEM_Y_KEYBOARD[Memory.Keyboard.ItemIndex],
+      ITEM_X_KEYBOARD   [Memory.Keyboard.ItemIndex],
+      ITEM_Y_KEYBOARD   [Memory.Keyboard.ItemIndex],
       ITEM_TEXT_KEYBOARD[Memory.Keyboard.ItemIndex]
     );
 
@@ -1110,8 +1120,8 @@ begin
   if not Memory.Keyboard.Changing then Exit;
 
   RenderText(
-    ITEM_X_KEYBOARD_KEY[Memory.Keyboard.KeyIndex],
-    ITEM_Y_KEYBOARD_KEY[Memory.Keyboard.KeyIndex],
+    ITEM_X_KEYBOARD_KEY   [Memory.Keyboard.KeyIndex],
+    ITEM_Y_KEYBOARD_KEY   [Memory.Keyboard.KeyIndex],
     ITEM_TEXT_KEYBOARD_KEY[Memory.Keyboard.KeyIndex],
     IfThen(
       Memory.Keyboard.Mapping,
@@ -1163,8 +1173,8 @@ procedure TRenderer.RenderControllerItemSelection();
 begin
   if not Memory.Controller.Changing then
     RenderText(
-      ITEM_X_CONTROLLER[Memory.Controller.ItemIndex],
-      ITEM_Y_CONTROLLER[Memory.Controller.ItemIndex],
+      ITEM_X_CONTROLLER   [Memory.Controller.ItemIndex],
+      ITEM_Y_CONTROLLER   [Memory.Controller.ItemIndex],
       ITEM_TEXT_CONTROLLER[Memory.Controller.ItemIndex]
     );
 
@@ -1213,8 +1223,8 @@ begin
   if not Memory.Controller.Changing then Exit;
 
   RenderText(
-    ITEM_X_CONTROLLER_BUTTON[Memory.Controller.ButtonIndex],
-    ITEM_Y_CONTROLLER_BUTTON[Memory.Controller.ButtonIndex],
+    ITEM_X_CONTROLLER_BUTTON   [Memory.Controller.ButtonIndex],
+    ITEM_Y_CONTROLLER_BUTTON   [Memory.Controller.ButtonIndex],
     ITEM_TEXT_CONTROLLER_BUTTON[Memory.Controller.ButtonIndex],
     IfThen(
       Memory.Controller.Mapping,
@@ -1365,9 +1375,9 @@ end;
 
 procedure TRenderer.RenderBegin();
 begin
-  SDL_SetRenderTarget(Window.Renderer, Buffers.Native);
+  SDL_SetRenderTarget   (Window.Renderer, Buffers.Native);
   SDL_SetRenderDrawColor(Window.Renderer, 0, 0, 0, 255);
-  SDL_RenderClear(Window.Renderer);
+  SDL_RenderClear       (Window.Renderer);
 end;
 
 

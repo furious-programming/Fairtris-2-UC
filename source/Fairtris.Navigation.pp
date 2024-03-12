@@ -31,12 +31,12 @@ uses
 type
   TNavigation = class(TObject)
   private
-    FKeys: array [KEYBOARD_KEY_FIXED_FIRST .. KEYBOARD_KEY_FIXED_LAST] of TSwitch;
+    FKeys: array [TRIGGER_KEYBOARD_KEY_FIXED_FIRST .. TRIGGER_KEYBOARD_KEY_FIXED_LAST] of TSwitch;
   private
     function GetKey(AKeyID: Integer): TSwitch;
   public
     constructor Create();
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Reset();
     procedure Update(AKeyboard: TKeyboard);
@@ -44,16 +44,15 @@ type
     procedure Validate();
     procedure Invalidate();
   public
-    property Up: TSwitch index KEYBOARD_KEY_FIXED_UP read GetKey;
-    property Down: TSwitch index KEYBOARD_KEY_FIXED_DOWN read GetKey;
-    property Left: TSwitch index KEYBOARD_KEY_FIXED_LEFT read GetKey;
-    property Right: TSwitch index KEYBOARD_KEY_FIXED_RIGHT read GetKey;
-    property Accept: TSwitch index KEYBOARD_KEY_FIXED_ACCEPT read GetKey;
-    property Cancel: TSwitch index KEYBOARD_KEY_FIXED_CANCEL read GetKey;
-    property Clear: TSwitch index KEYBOARD_KEY_FIXED_CLEAR read GetKey;
-  public
-    property Help: TSwitch index KEYBOARD_KEY_FIXED_HELP read GetKey;
-    property Video: TSwitch index KEYBOARD_KEY_FIXED_TOGGLE_VIDEO read GetKey;
+    property Up:     TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_UP     read GetKey;
+    property Down:   TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_DOWN   read GetKey;
+    property Left:   TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_LEFT   read GetKey;
+    property Right:  TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_RIGHT  read GetKey;
+    property Accept: TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_ACCEPT read GetKey;
+    property Cancel: TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_CANCEL read GetKey;
+    property Clear:  TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_CLEAR  read GetKey;
+    property Help:   TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_HELP   read GetKey;
+    property Video:  TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_VIDEO  read GetKey;
   end;
 
 
@@ -97,17 +96,15 @@ end;
 
 procedure TNavigation.Update(AKeyboard: TKeyboard);
 begin
-  FKeys[KEYBOARD_KEY_FIXED_UP].Pressed    := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_UP].Pressed;
-  FKeys[KEYBOARD_KEY_FIXED_DOWN].Pressed  := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_DOWN].Pressed;
-  FKeys[KEYBOARD_KEY_FIXED_LEFT].Pressed  := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_LEFT].Pressed;
-  FKeys[KEYBOARD_KEY_FIXED_RIGHT].Pressed := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_RIGHT].Pressed;
-
-  FKeys[KEYBOARD_KEY_FIXED_ACCEPT].Pressed := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_ACCEPT].Pressed;
-  FKeys[KEYBOARD_KEY_FIXED_CANCEL].Pressed := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_CANCEL].Pressed;
-  FKeys[KEYBOARD_KEY_FIXED_CLEAR].Pressed  := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_CLEAR].Pressed;
-
-  FKeys[KEYBOARD_KEY_FIXED_HELP].Pressed := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_HELP].Pressed;
-  FKeys[KEYBOARD_KEY_FIXED_TOGGLE_VIDEO].Pressed := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_VIDEO].Pressed;
+  FKeys[TRIGGER_KEYBOARD_KEY_FIXED_UP].Down     := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_UP].Down;
+  FKeys[TRIGGER_KEYBOARD_KEY_FIXED_DOWN].Down   := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_DOWN].Down;
+  FKeys[TRIGGER_KEYBOARD_KEY_FIXED_LEFT].Down   := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_LEFT].Down;
+  FKeys[TRIGGER_KEYBOARD_KEY_FIXED_RIGHT].Down  := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_RIGHT].Down;
+  FKeys[TRIGGER_KEYBOARD_KEY_FIXED_ACCEPT].Down := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_ACCEPT].Down;
+  FKeys[TRIGGER_KEYBOARD_KEY_FIXED_CANCEL].Down := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_CANCEL].Down;
+  FKeys[TRIGGER_KEYBOARD_KEY_FIXED_CLEAR].Down  := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_CLEAR].Down;
+  FKeys[TRIGGER_KEYBOARD_KEY_FIXED_HELP].Down   := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_HELP].Down;
+  FKeys[TRIGGER_KEYBOARD_KEY_FIXED_VIDEO].Down  := AKeyboard.Device[KEYBOARD_SCANCODE_KEY_FIXED_VIDEO].Down;
 end;
 
 

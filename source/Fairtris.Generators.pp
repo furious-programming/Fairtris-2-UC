@@ -53,7 +53,7 @@ type
   public
     constructor Create(const ACount: Integer);
     constructor Create(const AItems: array of Integer);
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Reset();
   public
@@ -69,7 +69,7 @@ type
   TPool = class(TBag)
   private
     procedure SetItem(AIndex, AItem: Integer);
-    function GetEmpty(): Boolean;
+    function  GetEmpty(): Boolean;
   public
     procedure Append(AItem: Integer);
     procedure Remove(AItem: Integer);
@@ -92,7 +92,7 @@ type
     procedure PerformStep(); virtual; abstract;
   public
     constructor Create(); virtual;
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Initialize(); virtual;
   public
@@ -106,10 +106,9 @@ type
 type
   T7BagGenerator = class(TCustomGenerator)
   private
-    FBags: array [0 .. 1] of TBag;
-  private
-    FBagPick: Integer;
-    FBagSwap: Integer;
+    FBags:     array [0 .. 1] of TBag;
+    FBagPick:  Integer;
+    FBagSwap:  Integer;
     FBagPiece: Integer;
   private
     procedure PreShuffle();
@@ -117,7 +116,7 @@ type
     procedure PerformStep(); override;
   public
     constructor Create(); override;
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Initialize(); override;
   public
@@ -134,17 +133,16 @@ type
     FPieceBags: array [MULTIBAG_BAG_FIRST .. MULTIBAG_BAG_LAST] of TBag;
   private
     FIndexPick: Integer;
-  private
-    FBagPick: Integer;
-    FBagSwap: Integer;
-    FBagPiece: Integer;
+    FBagPick:   Integer;
+    FBagSwap:   Integer;
+    FBagPiece:  Integer;
   private
     procedure PreShuffle();
   protected
     procedure PerformStep(); override;
   public
     constructor Create(); override;
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Initialize(); override;
   public
@@ -157,7 +155,7 @@ type
 type
   TClassicGenerator = class(TCustomGenerator)
   private
-    FSpawnID: UInt8;
+    FSpawnID:    UInt8;
     FSpawnCount: UInt8;
   private
     function IndexToSpawnID(AIndex: UInt8): UInt8;
@@ -174,7 +172,7 @@ type
 type
   TBalancedGenerator = class(TCustomGenerator)
   private
-    FSpawnID: UInt8;
+    FSpawnID:    UInt8;
     FSpawnCount: UInt8;
   private
     FHistoryIndex: Integer;
@@ -199,14 +197,14 @@ type
 type
   TTGMGenerator = class(TCustomGenerator)
   private
-    FPieces: TPool;
+    FPieces:  TPool;
     FSpecial: TPool;
     FHistory: TPool;
   protected
     procedure PerformStep(); override;
   public
     constructor Create(); override;
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Shuffle(APreShuffling: Boolean = False); override;
   public
@@ -217,17 +215,17 @@ type
 type
   TTGM3Generator = class(TCustomGenerator)
   private
-    FPieces: TPool;
+    FPieces:  TPool;
     FSpecial: TPool;
   private
-    FPool: TPool;
-    FOrder: TPool;
+    FPool:    TPool;
+    FOrder:   TPool;
     FHistory: TPool;
   protected
     procedure PerformStep(); override;
   public
     constructor Create(); override;
-    destructor Destroy(); override;
+    destructor  Destroy(); override;
   public
     procedure Shuffle(APreShuffling: Boolean = False); override;
   public
@@ -245,12 +243,12 @@ type
 type
   TGenerators = class(TObject)
   private
-    FGenerator: IGenerable;
+    FGenerator:   IGenerable;
     FGeneratorID: Integer;
   private
     FGenerators: array [GENERATOR_FIRST .. GENERATOR_LAST] of IGenerable;
   private
-    function GetGenerator(AGeneratorID: Integer): IGenerable;
+    function  GetGenerator(AGeneratorID: Integer): IGenerable;
     procedure SetGeneratorID(AGeneratorID: Integer);
   public
     constructor Create();
@@ -258,9 +256,9 @@ type
     procedure Initialize();
     procedure Shuffle();
   public
-    property Generator: IGenerable read FGenerator;
     property Generators[AGeneratorID: Integer]: IGenerable read GetGenerator; default;
-    property GeneratorID: Integer read FGeneratorID write SetGeneratorID;
+    property Generator:   IGenerable read FGenerator;
+    property GeneratorID: Integer    read FGeneratorID write SetGeneratorID;
   end;
 
 
@@ -352,7 +350,8 @@ end;
 
 procedure TBag.Swap(ASeed: UInt16);
 var
-  IndexA, IndexB: Integer;
+  IndexA: Integer;
+  IndexB: Integer;
 begin
   IndexA := Hi(ASeed) mod FCurrentItems.Count;
   IndexB := Lo(ASeed) mod FCurrentItems.Count;
@@ -479,9 +478,8 @@ procedure T7BagGenerator.Initialize();
 begin
   inherited Initialize();
 
-  FBagPick := 0;
-  FBagSwap := 1;
-
+  FBagPick  := 0;
+  FBagSwap  := 1;
   FBagPiece := 0;
 end;
 
@@ -494,16 +492,15 @@ begin
   FRegister.Step();
   FBags[1].Swap(FRegister.Seed);
 
-  FBagPick := FBagPick xor 1;
-  FBagSwap := FBagSwap xor 1;
-
+  FBagPick  := FBagPick xor 1;
+  FBagSwap  := FBagSwap xor 1;
   FBagPiece := (FBagPiece + 1) mod FBags[0].Size;
 end;
 
 
 function T7BagGenerator.Pick(): Integer;
 begin
-  Result := FBags[FBagPick][FBagPiece];
+  Result    := FBags[FBagPick][FBagPiece];
   FBagPiece := (FBagPiece + 1) mod FBags[FBagPick].Size;
 
   if FBagPiece = 0 then
@@ -572,11 +569,9 @@ begin
   inherited Initialize();
 
   FIndexPick := 0;
-
-  FBagPick := MULTIBAG_BAG_FIRST;
-  FBagSwap := MULTIBAG_BAG_FIRST + 1;
-
-  FBagPiece := MULTIBAG_PIECE_FIRST;
+  FBagPick   := MULTIBAG_BAG_FIRST;
+  FBagSwap   := MULTIBAG_BAG_FIRST + 1;
+  FBagPiece  := MULTIBAG_PIECE_FIRST;
 end;
 
 
@@ -597,17 +592,15 @@ begin
   end;
 
   FIndexPick := (FIndexPick + 1) mod FIndexBags[0].Size;
-
-  FBagPick := FBagPick xor 1;
-  FBagSwap := FBagSwap xor 1;
-
-  FBagPiece := (FBagPiece + 1) mod FPieceBags[0].Size;
+  FBagPiece  := (FBagPiece  + 1) mod FPieceBags[0].Size;
+  FBagPick   := FBagPick xor 1;
+  FBagSwap   := FBagSwap xor 1;
 end;
 
 
 function TMultiBagGenerator.Pick(): Integer;
 begin
-  Result := FPieceBags[FIndexBags[FBagPick][FIndexPick]][FBagPiece];
+  Result    := FPieceBags[FIndexBags[FBagPick][FIndexPick]][FBagPiece];
   FBagPiece := (FBagPiece + 1) mod FPieceBags[0].Size;
 
   if FBagPiece = 0 then
@@ -677,7 +670,7 @@ var
 begin
   {$PUSH}{$RANGECHECKS OFF}
   FSpawnCount += 1;
-  Index := (Hi(FRegister.Seed) + FSpawnCount) and %111;
+  Index       := (Hi(FRegister.Seed) + FSpawnCount) and %111;
   {$POP}
 
   if (Index = 7) or (IndexToSpawnID(Index) = FSpawnID) then
@@ -687,7 +680,7 @@ begin
   end;
 
   FSpawnID := IndexToSpawnID(Index);
-  Result := SpawnIDToPieceID(FSpawnID);
+  Result   := SpawnIDToPieceID(FSpawnID);
 end;
 
 
@@ -721,7 +714,7 @@ end;
 procedure TBalancedGenerator.UpdateHistory(APiece: Integer);
 begin
   FHistory[FHistoryIndex] := APiece;
-  FHistoryIndex := WrapAround(FHistoryIndex, BALANCED_HISTORY_PIECES_COUNT, 1);
+  FHistoryIndex           := WrapAround(FHistoryIndex, BALANCED_HISTORY_PIECES_COUNT, 1);
 end;
 
 
@@ -752,7 +745,7 @@ end;
 function TBalancedGenerator.Pick(): Integer;
 var
   Index: UInt8;
-  Roll: Boolean;
+  Roll:  Boolean;
 begin
   {$PUSH}{$RANGECHECKS OFF}
   FSpawnCount += 1;
@@ -775,7 +768,7 @@ begin
   UpdateDrought(Index);
 
   FSpawnID := Index;
-  Result := FSpawnID;
+  Result   := FSpawnID;
 end;
 
 
@@ -789,7 +782,7 @@ constructor TTGMGenerator.Create();
 begin
   inherited Create();
 
-  FPieces := TPool.Create(TGM_POOL_PIECES);
+  FPieces  := TPool.Create(TGM_POOL_PIECES);
   FSpecial := TPool.Create(TGM_POOL_SPECIAL);
   FHistory := TPool.Create(TGM_POOL_HISTORY);
 end;
@@ -845,13 +838,11 @@ constructor TTGM3Generator.Create();
 begin
   inherited Create();
 
-  FPieces := TPool.Create(TGM3_POOL_PIECES);
+  FPieces  := TPool.Create(TGM3_POOL_PIECES);
   FSpecial := TPool.Create(TGM3_POOL_SPECIAL);
-
-  FPool := TPool.Create(TGM3_POOL_POOL);
+  FPool    := TPool.Create(TGM3_POOL_POOL);
   FHistory := TPool.Create(TGM3_POOL_HISTORY);
-
-  FOrder := TPool.Create([]);
+  FOrder   := TPool.Create([]);
 end;
 
 
@@ -875,7 +866,8 @@ end;
 
 function TTGM3Generator.Pick(): Integer;
 var
-  Roll, Index: Integer;
+  Roll:  Integer;
+  Index: Integer;
 begin
   if FHistory.Size = TGM3_POOL_HISTORY_COUNT then
   begin
@@ -888,7 +880,7 @@ begin
     begin
       FRegister.Step();
 
-      Index := Hi(FRegister.Seed) mod FPool.Size;
+      Index  := Hi(FRegister.Seed) mod FPool.Size;
       Result := FPool[Index];
 
       if (not FHistory.Contains(Result)) or (Roll = 5) then Break;
@@ -912,7 +904,7 @@ var
 begin
   {$PUSH}{$RANGECHECKS OFF}
   FSpawnCount += 1;
-  Index := (Hi(FRegister.Seed) + FSpawnCount) and %111;
+  Index       := (Hi(FRegister.Seed) + FSpawnCount) and %111;
   {$POP}
 
   if Index = 7 then
@@ -946,7 +938,7 @@ end;
 procedure TGenerators.SetGeneratorID(AGeneratorID: Integer);
 begin
   FGeneratorID := AGeneratorID;
-  FGenerator := FGenerators[FGeneratorID];
+  FGenerator   := FGenerators[FGeneratorID];
 end;
 
 

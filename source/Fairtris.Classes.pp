@@ -34,8 +34,8 @@ type
   generic TCustomState<T> = class(TObject)
   protected
     FPrevious: T;
-    FCurrent: T;
-    FDefault: T;
+    FCurrent:  T;
+    FDefault:  T;
   protected
     FChanged: Boolean;
   protected
@@ -49,8 +49,8 @@ type
     procedure Invalidate();
   public
     property Previous: T read FPrevious;
-    property Current: T read FCurrent write SetCurrent;
-    property Default: T read FDefault write SetDefault;
+    property Current:  T read FCurrent write SetCurrent;
+    property Default:  T read FDefault write SetDefault;
   public
     property Changed: Boolean read FChanged;
   end;
@@ -59,17 +59,15 @@ type
 type
   TSwitch = class(specialize TCustomState<Boolean>)
   private
+    function GetDown(): Boolean;
+    function GetUp(): Boolean;
     function GetPressed(): Boolean;
     function GetReleased(): Boolean;
-  private
-    function GetJustPressed(): Boolean;
-    function GetJustReleased(): Boolean;
   public
-    property Pressed: Boolean read GetPressed write SetCurrent;
+    property Down:     Boolean read GetDown write SetCurrent;
+    property Up:       Boolean read GetUp;
+    property Pressed:  Boolean read GetPressed;
     property Released: Boolean read GetReleased;
-  public
-    property JustPressed: Boolean read GetJustPressed;
-    property JustReleased: Boolean read GetJustReleased;
   end;
 
 
@@ -86,9 +84,8 @@ end;
 procedure TCustomState.SetCurrent(AState: T);
 begin
   FPrevious := FCurrent;
-  FCurrent := AState;
-
-  FChanged := FPrevious <> FCurrent;
+  FCurrent  := AState;
+  FChanged  := FPrevious <> FCurrent;
 end;
 
 
@@ -102,9 +99,8 @@ end;
 procedure TCustomState.Reset();
 begin
   FPrevious := FDefault;
-  FCurrent := FDefault;
-
-  FChanged := False;
+  FCurrent  := FDefault;
+  FChanged  := False;
 end;
 
 
@@ -120,25 +116,25 @@ begin
 end;
 
 
-function TSwitch.GetPressed(): Boolean;
+function TSwitch.GetDown(): Boolean;
 begin
   Result := FCurrent;
 end;
 
 
-function TSwitch.GetReleased(): Boolean;
+function TSwitch.GetUp(): Boolean;
 begin
   Result := not FCurrent;
 end;
 
 
-function TSwitch.GetJustPressed(): Boolean;
+function TSwitch.GetPressed(): Boolean;
 begin
   Result := not FPrevious and FCurrent;
 end;
 
 
-function TSwitch.GetJustReleased(): Boolean;
+function TSwitch.GetReleased(): Boolean;
 begin
   Result := FPrevious and not FCurrent;
 end;

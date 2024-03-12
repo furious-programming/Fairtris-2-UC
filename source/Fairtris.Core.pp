@@ -410,27 +410,12 @@ begin
   if Input.Device.B.JustReleased or Input.Device.A.JustReleased then
     Memory.Game.AutospinCharged := False;
 
-  if Input.Device.B.JustPressed or Memory.Game.AutospinCharged then
+  if Input.Device.B.JustPressed or Input.Device.A.JustPressed or Memory.Game.AutospinCharged then
   begin
-    Rotation := IfThen(Memory.Game.AutospinCharged, Memory.Game.AutospinRotation, PIECE_ROTATE_COUNTERCLOCKWISE);
-
-    if CanRotatePiece(Rotation) then
-    begin
-      RotatePiece(Rotation);
-      Sounds.PlaySound(SOUND_SPIN);
-
-      Memory.Game.AutospinCharged := False;
-    end
+    if Input.Device.B.JustPressed then
+      Rotation := IfThen(Memory.Game.AutospinCharged, Memory.Game.AutospinRotation, PIECE_ROTATE_COUNTERCLOCKWISE)
     else
-    begin
-      Memory.Game.AutospinCharged := True;
-      Memory.Game.AutospinRotation := Rotation;
-    end;
-  end;
-
-  if Input.Device.A.JustPressed or Memory.Game.AutospinCharged then
-  begin
-    Rotation := IfThen(Memory.Game.AutospinCharged, Memory.Game.AutospinRotation, PIECE_ROTATE_CLOCKWISE);
+      Rotation := IfThen(Memory.Game.AutospinCharged, Memory.Game.AutospinRotation, PIECE_ROTATE_CLOCKWISE);
 
     if CanRotatePiece(Rotation) then
     begin

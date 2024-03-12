@@ -34,8 +34,6 @@ type
   private
     function CharToIndex(AChar: Char): Integer;
   private
-    function MarathonEntryToString(AEntry: TScoreEntry = nil): String;
-  private
     procedure RenderSprite(ASprite: PSDL_Texture; ABufferRect, ASpriteRect: TSDL_Rect);
     procedure RenderText(AX, AY: Integer; const AText: String; AColor: Integer = COLOR_WHITE; AAlign: Integer = ALIGN_LEFT);
     procedure RenderTextPair(AX, AY: Integer; const ATextA, ATextB: String; AColorA, AColorB: Integer; AAlign: Integer = ALIGN_LEFT);
@@ -155,21 +153,6 @@ begin
   otherwise
     Result := 0;
   end;
-end;
-
-
-function TRenderer.MarathonEntryToString(AEntry: TScoreEntry): String;
-begin
-  if AEntry <> nil then
-  begin
-    Result := '%.4d'.Format([AEntry.LinesCleared]);
-    Result += '%.2d'.Format([AEntry.LevelBegin]).PadLeft(4) + '-' + '%.3d'.Format([AEntry.LevelEnd]);
-
-    Result += Converter.TetrisesToString(AEntry.TetrisRate).PadLeft(6);
-    Result += Converter.ScoreToString(AEntry.TotalScore).PadLeft(10);
-  end
-  else
-    Result := '-     -          -         -';
 end;
 
 
@@ -487,25 +470,70 @@ end;
 
 procedure TRenderer.RenderLobbyBestScores();
 var
+  Entry: TScoreEntry;
   Index: Integer;
 begin
   for Index := BEST_SCORES_FIRST to BEST_SCORES_LAST do
     if Index < BestScores[Memory.Lobby.Region][Memory.Lobby.Generator].Count then
+    begin
+      Entry := BestScores[Memory.Lobby.Region][Memory.Lobby.Generator][Index];
+
+      RenderTextPair(
+        ITEM_X_LOBBY_BEST_LINES,
+        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        Converter.LinesToStringPrefix(Entry.LinesCleared),
+        Converter.LinesToString      (Entry.LinesCleared),
+        COLOR_DARK,
+        COLOR_WHITE
+      );
+
+      RenderTextPair(
+        ITEM_X_LOBBY_BEST_LEVEL_BEGIN,
+        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        Converter.LevelToStringPrefix(Entry.LevelBegin, True),
+        Converter.LevelToString      (Entry.LevelBegin),
+        COLOR_DARK,
+        COLOR_WHITE
+      );
+
       RenderText(
+        ITEM_X_LOBBY_BEST_LEVEL_DASH,
+        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        '-'
+      );
+
+      RenderTextPair(
+        ITEM_X_LOBBY_BEST_LEVEL_END,
+        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        Converter.LevelToStringPrefix(Entry.LevelEnd),
+        Converter.LevelToString      (Entry.LevelEnd),
+        COLOR_DARK,
+        COLOR_WHITE
+      );
+
+      RenderTextPair(
+        ITEM_X_LOBBY_BEST_TETRISES,
+        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        Converter.TetrisesToStringPrefix(Entry.TetrisRate),
+        Converter.TetrisesToString      (Entry.TetrisRate),
+        COLOR_DARK,
+        COLOR_WHITE
+      );
+
+      RenderTextPair(
         ITEM_X_LOBBY_BEST_SCORE,
-        ITEM_Y_LOBBY_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
-        MarathonEntryToString(
-          BestScores
-            [Memory.Lobby.Region]
-            [Memory.Lobby.Generator].Entry[Index]
-        ),
-        COLOR_GRAY
-      )
+        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        Converter.ScoreToStringPrefix(Entry.TotalScore),
+        Converter.ScoreToString      (Entry.TotalScore),
+        COLOR_DARK,
+        COLOR_WHITE
+      );
+    end
     else
       RenderText(
-        ITEM_X_LOBBY_BEST_SCORE,
-        ITEM_Y_LOBBY_BEST_SCORES + Index * BEST_SCORES_SPACING_Y,
-        MarathonEntryToString(),
+        ITEM_X_LOBBY_BEST_LINES,
+        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        '0000  00-000  000%  00000000',
         COLOR_DARK
       );
 end;

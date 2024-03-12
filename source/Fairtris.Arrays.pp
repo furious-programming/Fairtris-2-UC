@@ -271,9 +271,6 @@ const
   );
 
 const
-  ITEM_Y_LOBBY_BEST_SCORES = 140;
-
-const
   ITEM_Y_LOBBY: array [ITEM_LOBBY_FIRST .. ITEM_LOBBY_LAST] of Integer = (
     ITEM_Y_LOBBY_REGION,
     ITEM_Y_LOBBY_GENERATOR,

@@ -36,7 +36,7 @@ type
     function LinesToStringPrefix(ALines: Integer): String;
   public
     function LevelToString(ALevel: Integer): String;
-    function LevelToStringPrefix(ALevel: Integer): String;
+    function LevelToStringPrefix(ALevel: Integer; AShort: Boolean = False): String;
   public
     function TetrisesToString(ATetrises: Integer): String;
     function TetrisesToStringPrefix(ATetrises: Integer): String;
@@ -99,9 +99,9 @@ begin
 end;
 
 
-function TConverter.LevelToStringPrefix(ALevel: Integer): String;
+function TConverter.LevelToStringPrefix(ALevel: Integer; AShort: Boolean): String;
 begin
-  Result := StringOfChar('0', 3 - LevelToString(ALevel).Length);
+  Result := StringOfChar('0', 3 - Ord(AShort) - LevelToString(ALevel).Length);
 end;
 
 

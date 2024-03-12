@@ -57,11 +57,11 @@ type
     procedure RenderGameGain();
     procedure RenderGameController();
     procedure RenderGameStack();
+    procedure RenderGamePiece();
     procedure RenderGameScore();
     procedure RenderGameLines();
     procedure RenderGameLevel();
     procedure RenderGameNext();
-    procedure RenderGamePiece();
   private
     procedure RenderPauseSelection();
     procedure RenderPauseItems();
@@ -562,6 +562,45 @@ begin
 end;
 
 
+procedure TRenderer.RenderGamePiece();
+var
+  OffsetX, OffsetY, BrickX, BrickY, BrickXMin, BrickXMax, BrickYMin, BrickYMax: Integer;
+begin
+  if Memory.Game.PieceID  = PIECE_UNKNOWN            then Exit;
+  if Memory.Game.State   <> GAME_STATE_PIECE_CONTROL then Exit;
+
+  BrickXMin := Max(Memory.Game.PieceX - 2, 0);
+  BrickXMax := Min(Memory.Game.PieceX + 2, 9);
+
+  BrickYMin := Max(Memory.Game.PieceY - 2, 0);
+  BrickYMax := Min(Memory.Game.PieceY + 2, 19);
+
+  for BrickY := BrickYMin to BrickYMax do
+  begin
+    OffsetY := GAME_STACK_Y;
+    OffsetY += BrickY * BRICK_CELL_HEIGHT;
+
+    for BrickX := BrickXMin to BrickXMax do
+    begin
+      OffsetX := GAME_STACK_X;
+      OffsetX += BrickX * BRICK_CELL_WIDTH;
+
+      RenderBrick(
+        OffsetX,
+        OffsetY,
+        PIECE_LAYOUT[
+          Memory.Game.PieceID,
+          Memory.Game.PieceOrientation,
+          BrickY - Memory.Game.PieceY,
+          BrickX - Memory.Game.PieceX
+        ],
+        Memory.Game.Level
+      );
+    end;
+  end;
+end;
+
+
 procedure TRenderer.RenderGameScore();
 begin
   if Logic.Scene.Current = SCENE_GAME_NORMAL then
@@ -634,44 +673,6 @@ begin
       Memory.Game.Next,
       Memory.Game.Level
     );
-  end;
-end;
-
-
-procedure TRenderer.RenderGamePiece();
-var
-  OffsetX, OffsetY, BrickX, BrickY, BrickXMin, BrickXMax, BrickYMin, BrickYMax: Integer;
-begin
-  if Memory.Game.PieceID = PIECE_UNKNOWN then Exit;
-
-  BrickXMin := Max(Memory.Game.PieceX - 2, 0);
-  BrickXMax := Min(Memory.Game.PieceX + 2, 9);
-
-  BrickYMin := Max(Memory.Game.PieceY - 2, 0);
-  BrickYMax := Min(Memory.Game.PieceY + 2, 19);
-
-  for BrickY := BrickYMin to BrickYMax do
-  begin
-    OffsetY := GAME_STACK_Y;
-    OffsetY += BrickY * BRICK_CELL_HEIGHT;
-
-    for BrickX := BrickXMin to BrickXMax do
-    begin
-      OffsetX := GAME_STACK_X;
-      OffsetX += BrickX * BRICK_CELL_WIDTH;
-
-      RenderBrick(
-        OffsetX,
-        OffsetY,
-        PIECE_LAYOUT[
-          Memory.Game.PieceID,
-          Memory.Game.PieceOrientation,
-          BrickY - Memory.Game.PieceY,
-          BrickX - Memory.Game.PieceX
-        ],
-        Memory.Game.Level
-      );
-    end;
   end;
 end;
 

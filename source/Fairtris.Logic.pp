@@ -597,9 +597,9 @@ begin
     begin
       Memory.Lobby.Autorepeat += 1;
 
-      if Memory.Lobby.Autorepeat = AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region] then
+      if Memory.Lobby.Autorepeat = Memory.Options.AutoShift(Memory.Lobby.Region) then
       begin
-        Memory.Lobby.Autorepeat := AUTOSHIFT_FRAMES_PRECHARGE[Memory.Lobby.Region];
+        Memory.Lobby.Autorepeat := AUTOSHIFT_FRAMES[Memory.Lobby.Region];
 
         UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT, ITEM_PREV);
         Sounds.PlaySound(SOUND_SHIFT);
@@ -618,9 +618,9 @@ begin
     begin
       Memory.Lobby.Autorepeat += 1;
 
-      if Memory.Lobby.Autorepeat = AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region] then
+      if Memory.Lobby.Autorepeat = Memory.Options.AutoShift(Memory.Lobby.Region) then
       begin
-        Memory.Lobby.Autorepeat := AUTOSHIFT_FRAMES_PRECHARGE[Memory.Lobby.Region];
+        Memory.Lobby.Autorepeat := AUTOSHIFT_FRAMES[Memory.Lobby.Region];
 
         UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT, ITEM_NEXT);
         Sounds.PlaySound(SOUND_SHIFT);
@@ -850,19 +850,7 @@ end;
 
 procedure TLogic.UpdateOptionsBoost();
 begin
-  if Memory.Options.ItemIndex <> ITEM_OPTIONS_BOOST then Exit;
 
-  if InputOptionSetPrev() then
-  begin
-    UpdateItemIndex(Memory.Options.Boost, BOOST_COUNT, ITEM_PREV);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
-
-  if InputOptionSetNext() then
-  begin
-    UpdateItemIndex(Memory.Options.Boost, BOOST_COUNT, ITEM_NEXT);
-    Sounds.PlaySound(SOUND_SHIFT);
-  end;
 end;
 
 

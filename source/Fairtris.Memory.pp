@@ -167,11 +167,14 @@ type
   public          
     procedure Initialize();
   public
+    function AutoShift(ARegion: Integer): Integer;
+  public
     ItemIndex: Integer;
     FromScene: Integer;
   public
     Input: Integer;
-    Boost: Integer;
+    ShiftNTSC: Integer;
+    ShiftPAL: Integer;
     Size: Integer;
     Sounds: Integer;
   end;
@@ -406,10 +409,20 @@ begin
   ItemIndex := ITEM_OPTIONS_FIRST;
   FromScene := SCENE_MENU;
 
-  Input := Settings.General.Input;
-  Boost := Settings.General.Boost;
-  Size := Settings.General.Size;
-  Sounds := Settings.General.Sounds;
+  Input     := Settings.General.Input;
+  ShiftNTSC := Settings.General.ShiftNTSC;
+  ShiftPAL  := Settings.General.ShiftPAL;
+  Size      := Settings.General.Size;
+  Sounds    := Settings.General.Sounds;
+end;
+
+
+function TOptionsMemory.AutoShift(ARegion: Integer): Integer;
+begin
+  case ARegion of
+    REGION_NTSC: Result := ShiftNTSC;
+    REGION_PAL:  Result := ShiftPAL;
+  end;
 end;
 
 

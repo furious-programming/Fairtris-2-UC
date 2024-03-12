@@ -56,7 +56,8 @@ type
     FTop: Integer;
   private
     FInput: Integer;
-    FBoost: Integer;
+    FShiftNTSC: Integer;
+    FShiftPAL: Integer;
     FSize: Integer;
     FSounds: Integer;
   private
@@ -82,7 +83,8 @@ type
     property Top: Integer read FTop;
   public
     property Input: Integer read FInput;
-    property Boost: Integer read FBoost;
+    property ShiftNTSC: Integer read FShiftNTSC;
+    property ShiftPAL: Integer read FShiftPAL;
     property Size: Integer read FSize;
     property Sounds: Integer read FSounds;
   public
@@ -249,13 +251,13 @@ begin
   FLeft := CorrectLeft(FLeft);
   FTop := CorrectTop(FTop);
 
-  FInput  := CorrectRange(FInput,  INPUT_FIRST,  INPUT_LAST,  INPUT_DEFAULT);
-  FBoost  := CorrectRange(FBoost,  BOOST_FIRST,  BOOST_LAST,  BOOST_DEFAULT);
-  FSize   := CorrectRange(FSize,   SIZE_FIRST,   SIZE_LAST,   SIZE_DEFAULT);
-  FSounds := CorrectRange(FSounds, SOUNDS_FIRST, SOUNDS_LAST, SOUNDS_DEFAULT);
-
-  FRegion    := CorrectRange(FRegion,    REGION_FIRST,    REGION_LAST,    REGION_DEFAULT);
-  FGenerator := CorrectRange(FGenerator, GENERATOR_FIRST, GENERATOR_LAST, GENERATOR_DEFAULT);
+  FInput     := CorrectRange(FInput,     INPUT_FIRST,      INPUT_LAST,      INPUT_DEFAULT);
+  FShiftNTSC := CorrectRange(FShiftNTSC, SHIFT_NTSC_FIRST, SHIFT_NTSC_LAST, SHIFT_NTSC_DEFAULT);
+  FShiftPAL  := CorrectRange(FShiftPAL,  SHIFT_PAL_FIRST,  SHIFT_PAL_LAST,  SHIFT_PAL_DEFAULT);
+  FSize      := CorrectRange(FSize,      SIZE_FIRST,       SIZE_LAST,       SIZE_DEFAULT);
+  FSounds    := CorrectRange(FSounds,    SOUNDS_FIRST,     SOUNDS_LAST,     SOUNDS_DEFAULT);
+  FRegion    := CorrectRange(FRegion,    REGION_FIRST,     REGION_LAST,     REGION_DEFAULT);
+  FGenerator := CorrectRange(FGenerator, GENERATOR_FIRST,  GENERATOR_LAST,  GENERATOR_DEFAULT);
   FLevel     := CorrectLevel(FLevel);
 end;
 
@@ -263,34 +265,33 @@ end;
 procedure TGeneralSettings.Collect();
 begin
   FMonitor := DetermineMonitor();
-  FSize := Placement.WindowSize;
-  FLeft := Placement.WindowBounds.X;
-  FTop := Placement.WindowBounds.Y;
+  FSize    := Placement.WindowSize;
+  FLeft    := Placement.WindowBounds.X;
+  FTop     := Placement.WindowBounds.Y;
 
-  FInput := Memory.Options.Input;
-  FBoost := Memory.Options.Boost;
-  FSounds := Memory.Options.Sounds;
-
-  FRegion := Memory.Lobby.Region;
+  FInput     := Memory.Options.Input;
+  FShiftNTSC := Memory.Options.ShiftNTSC;
+  FShiftPAL  := Memory.Options.ShiftPAL;
+  FSounds    := Memory.Options.Sounds;
+  FRegion    := Memory.Lobby.Region;
   FGenerator := Memory.Lobby.Generator;
-  FLevel := Memory.Lobby.Level;
+  FLevel     := Memory.Lobby.Level;
 end;
 
 
 procedure TGeneralSettings.Load(AFile: TIniFile; const ASection: String);
 begin
-  FMonitor := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_MONITOR, SETTINGS_VALUE_GENERAL_MONITOR);
-  FLeft    := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_LEFT,    SETTINGS_VALUE_GENERAL_LEFT);
-  FTop     := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_TOP,     SETTINGS_VALUE_GENERAL_TOP);
-
-  FInput  := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_INPUT,  SETTINGS_VALUE_GENERAL_INPUT);
-  FBoost  := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_BOOST, SETTINGS_VALUE_GENERAL_BOOST);
-  FSize   := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_SIZE,   SETTINGS_VALUE_GENERAL_SIZE);
-  FSounds := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_SOUNDS, SETTINGS_VALUE_GENERAL_SOUNDS);
-
-  FRegion    := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_REGION,    SETTINGS_VALUE_GENERAL_REGION);
-  FGenerator := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_GENERATOR, SETTINGS_VALUE_GENERAL_GENERATOR);
-  FLevel     := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_LEVEL,     SETTINGS_VALUE_GENERAL_LEVEL);
+  FMonitor   := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_MONITOR,    SETTINGS_VALUE_GENERAL_MONITOR);
+  FLeft      := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_LEFT,       SETTINGS_VALUE_GENERAL_LEFT);
+  FTop       := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_TOP,        SETTINGS_VALUE_GENERAL_TOP);
+  FInput     := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_INPUT,      SETTINGS_VALUE_GENERAL_INPUT);
+  FShiftNTSC := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_SHIFT_NTSC, SETTINGS_VALUE_GENERAL_SHIFT_NTSC);
+  FShiftPAL  := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_SHIFT_PAL,  SETTINGS_VALUE_GENERAL_SHIFT_PAL);
+  FSize      := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_SIZE,       SETTINGS_VALUE_GENERAL_SIZE);
+  FSounds    := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_SOUNDS,     SETTINGS_VALUE_GENERAL_SOUNDS);
+  FRegion    := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_REGION,     SETTINGS_VALUE_GENERAL_REGION);
+  FGenerator := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_GENERATOR,  SETTINGS_VALUE_GENERAL_GENERATOR);
+  FLevel     := AFile.ReadInteger(ASection, SETTINGS_KEY_GENERAL_LEVEL,      SETTINGS_VALUE_GENERAL_LEVEL);
 
   Correct();
 end;
@@ -298,18 +299,17 @@ end;
 
 procedure TGeneralSettings.Save(AFile: TIniFile; const ASection: String);
 begin
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_MONITOR, FMonitor);
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_LEFT,    FLeft);
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_TOP,     FTop);
-
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_INPUT,  FInput);
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_BOOST,  FBoost);
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_SIZE,   FSize);
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_SOUNDS, FSounds);
-
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_REGION,    FRegion);
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_GENERATOR, FGenerator);
-  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_LEVEL,     FLevel);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_MONITOR,    FMonitor);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_LEFT,       FLeft);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_TOP,        FTop);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_INPUT,      FInput);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_SHIFT_NTSC, FShiftNTSC);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_SHIFT_PAL,  FShiftPAL);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_SIZE,       FSize);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_SOUNDS,     FSounds);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_REGION,     FRegion);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_GENERATOR,  FGenerator);
+  AFile.WriteInteger(ASection, SETTINGS_KEY_GENERAL_LEVEL,      FLevel);
 end;
 
 

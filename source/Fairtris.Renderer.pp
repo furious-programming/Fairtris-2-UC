@@ -978,17 +978,6 @@ begin
 
   RenderText(
     ITEM_X_OPTIONS_PARAM,
-    ITEM_Y_OPTIONS_BOOST,
-    ITEM_TEXT_OPTIONS_BOOST[Memory.Options.Boost],
-    IfThen(
-      Memory.Options.ItemIndex = ITEM_OPTIONS_BOOST,
-      COLOR_WHITE,
-      COLOR_GRAY
-    )
-  );
-
-  RenderText(
-    ITEM_X_OPTIONS_PARAM,
     ITEM_Y_OPTIONS_SIZE,
     IfThen(
       Placement.VideoEnabled,

@@ -374,10 +374,10 @@ begin
   begin
     Memory.Game.AutorepeatX += 1;
 
-    if Memory.Game.AutorepeatX < AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region] then
+    if Memory.Game.AutorepeatX < Memory.Options.AutoShift(Memory.Lobby.Region) then
       Exit
     else
-      Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_PRECHARGE[Memory.Lobby.Region];
+      Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES[Memory.Lobby.Region];
   end;
 
   if Input.Device.Left.Pressed then
@@ -387,7 +387,7 @@ begin
       Sounds.PlaySound(SOUND_SHIFT);
     end
     else
-      Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region];
+      Memory.Game.AutorepeatX := Memory.Options.AutoShift(Memory.Lobby.Region);
 
   if Input.Device.Right.Pressed then
     if CanShiftPiece(PIECE_SHIFT_RIGHT) then
@@ -396,7 +396,7 @@ begin
       Sounds.PlaySound(SOUND_SHIFT);
     end
     else
-      Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region];
+      Memory.Game.AutorepeatX := Memory.Options.AutoShift(Memory.Lobby.Region);
 end;
 
 
@@ -480,11 +480,6 @@ begin
   if Input.Keyboard.Device.Key[SDL_SCANCODE_END].JustPressed  then Memory.Game.Level := Max(Memory.Game.Level - 25, 0);
 
   if Input.Keyboard.Device.Key[SDL_SCANCODE_DELETE].Pressed then Memory.Game.ClearStack();
-
-  if (Memory.Options.Boost = BOOST_ENABLED) and (Memory.Game.Level >= LEVEL_LAST) then
-    AUTOSHIFT_FRAMES_CHARGE := AUTOSHIFT_FRAMES_CHARGE_BOOST
-  else
-    AUTOSHIFT_FRAMES_CHARGE := AUTOSHIFT_FRAMES_CHARGE_NORMAL;
   {$ENDIF}
 
   UpdateCommonGain();
@@ -521,7 +516,7 @@ begin
 
   Memory.Game.AutospinCharged := False;
   Memory.Game.FallPoints := 0;
-  Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region];
+  Memory.Game.AutorepeatX := Memory.Options.AutoShift(Memory.Lobby.Region);
 
   if CanPlacePiece() then
     Memory.Game.State := GAME_STATE_PIECE_CONTROL
@@ -644,9 +639,6 @@ begin
     begin
       Memory.Game.Level += 1;
       Sounds.PlaySound(SOUND_TRANSITION, True);
-
-      if (Memory.Options.Boost = BOOST_ENABLED) and (Memory.Lobby.Level >= LEVEL_LAST) then
-        AUTOSHIFT_FRAMES_CHARGE := AUTOSHIFT_FRAMES_CHARGE_BOOST;
     end;
 
     Memory.Game.Lines += Memory.Game.ClearCount;
@@ -720,11 +712,6 @@ begin
   Memory.Game.Level := Memory.Lobby.Level;
   Memory.Game.Best := BestScores[Memory.Lobby.Region][Memory.Lobby.Generator].BestResult;
   Memory.Game.NextVisible := True;
-
-  if (Memory.Options.Boost = BOOST_ENABLED) and (Memory.Lobby.Level >= LEVEL_LAST) then
-    AUTOSHIFT_FRAMES_CHARGE := AUTOSHIFT_FRAMES_CHARGE_BOOST
-  else
-    AUTOSHIFT_FRAMES_CHARGE := AUTOSHIFT_FRAMES_CHARGE_NORMAL;
 end;
 
 

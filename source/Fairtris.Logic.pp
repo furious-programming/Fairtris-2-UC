@@ -103,7 +103,8 @@ type
   private
     procedure UpdateOptionsSelection();
     procedure UpdateOptionsInput();
-    procedure UpdateOptionsBoost();
+    procedure UpdateOptionsShiftNTSC();
+    procedure UpdateOptionsShiftPAL();
     procedure UpdateOptionsWindow();
     procedure UpdateOptionsSounds();
     procedure UpdateOptionsScene();
@@ -848,9 +849,51 @@ begin
 end;
 
 
-procedure TLogic.UpdateOptionsBoost();
+procedure TLogic.UpdateOptionsShiftNTSC();
 begin
+  if Memory.Options.ItemIndex <> ITEM_OPTIONS_SHIFT_NTSC then Exit;
 
+  if InputOptionSetPrev() then
+    if Memory.Options.ShiftNTSC > SHIFT_NTSC_FIRST then
+    begin
+      Memory.Options.ShiftNTSC -= 1;
+      Sounds.PlaySound(SOUND_SHIFT);
+    end
+    else
+      Sounds.PlaySound(SOUND_HUM);
+
+  if InputOptionSetNext() then
+    if Memory.Options.ShiftNTSC < SHIFT_NTSC_LAST then
+    begin
+      Memory.Options.ShiftNTSC += 1;
+      Sounds.PlaySound(SOUND_SHIFT);
+    end
+    else
+      Sounds.PlaySound(SOUND_HUM);
+end;
+
+
+procedure TLogic.UpdateOptionsShiftPAL();
+begin
+  if Memory.Options.ItemIndex <> ITEM_OPTIONS_SHIFT_PAL then Exit;
+
+  if InputOptionSetPrev() then
+    if Memory.Options.ShiftPAL > SHIFT_PAL_FIRST then
+    begin
+      Memory.Options.ShiftPAL -= 1;
+      Sounds.PlaySound(SOUND_SHIFT);
+    end
+    else
+      Sounds.PlaySound(SOUND_HUM);
+
+  if InputOptionSetNext() then
+    if Memory.Options.ShiftPAL < SHIFT_PAL_LAST then
+    begin
+      Memory.Options.ShiftPAL += 1;
+      Sounds.PlaySound(SOUND_SHIFT);
+    end
+    else
+      Sounds.PlaySound(SOUND_HUM);
 end;
 
 
@@ -1404,7 +1447,8 @@ begin
 
   UpdateOptionsSelection();
   UpdateOptionsInput();
-  UpdateOptionsBoost();
+  UpdateOptionsShiftNTSC();
+  UpdateOptionsShiftPAL();
   UpdateOptionsWindow();
   UpdateOptionsSounds();
   UpdateOptionsScene();

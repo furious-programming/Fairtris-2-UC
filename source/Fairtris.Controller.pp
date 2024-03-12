@@ -120,6 +120,7 @@ implementation
 
 uses
   Math,
+  Fairtris.Arrays,
   Fairtris.Memory,
   Fairtris.Settings;
 
@@ -281,17 +282,11 @@ end;
 
 
 procedure TController.InitScanCodesDefault();
+var
+  Index: Integer;
 begin
-  FScanCodesDefault[CONTROLLER_BUTTON_UP]     := CONTROLLER_SCANCODE_BUTTON_UP;
-  FScanCodesDefault[CONTROLLER_BUTTON_DOWN]   := CONTROLLER_SCANCODE_BUTTON_DOWN;
-  FScanCodesDefault[CONTROLLER_BUTTON_LEFT]   := CONTROLLER_SCANCODE_BUTTON_LEFT;
-  FScanCodesDefault[CONTROLLER_BUTTON_RIGHT]  := CONTROLLER_SCANCODE_BUTTON_RIGHT;
-
-  FScanCodesDefault[CONTROLLER_BUTTON_SELECT] := CONTROLLER_SCANCODE_BUTTON_SELECT;
-  FScanCodesDefault[CONTROLLER_BUTTON_START]  := CONTROLLER_SCANCODE_BUTTON_START;
-
-  FScanCodesDefault[CONTROLLER_BUTTON_B]      := CONTROLLER_SCANCODE_BUTTON_B;
-  FScanCodesDefault[CONTROLLER_BUTTON_A]      := CONTROLLER_SCANCODE_BUTTON_A;
+  for Index := CONTROLLER_BUTTON_FIRST to CONTROLLER_BUTTON_LAST do
+    FScanCodesDefault[Index] := MAPPING_DEFAULT_CONTROLLER[Index];
 end;
 
 

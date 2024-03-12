@@ -341,7 +341,7 @@ procedure TKeyboardSettings.Load(AFile: TIniFile; const ASection: String);
 var
   Index, ScanCode: Integer;
 begin
-  for Index := DEVICE_FIRST to DEVICE_LAST do
+  for Index := KEYBOARD_KEY_FIRST to KEYBOARD_KEY_LAST do
   begin
     ScanCode := AFile.ReadInteger(ASection, SETTINGS_KEY_MAPPING[Index], KEYBOARD_SCANCODE_KEY_NOT_MAPPED);
     ScanCodes[Index] := CorrectRange(
@@ -351,6 +351,13 @@ begin
       KEYBOARD_SCANCODE_KEY_NOT_MAPPED
     );
   end;
+
+  for Index := KEYBOARD_KEY_FIRST to KEYBOARD_KEY_LAST do
+    if ScanCodes[Index] <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED then
+      Exit;
+
+  for Index := KEYBOARD_KEY_FIRST to KEYBOARD_KEY_LAST do
+    ScanCodes[Index] := MAPPING_DEFAULT_KEYBOARD[Index];
 end;
 
 
@@ -358,7 +365,7 @@ procedure TControllerSettings.Load(AFile: TIniFile; const ASection: String);
 var
   Index, ScanCode: Integer;
 begin
-  for Index := DEVICE_FIRST to DEVICE_LAST do
+  for Index := CONTROLLER_BUTTON_FIRST to CONTROLLER_BUTTON_LAST do
   begin
     ScanCode := AFile.ReadInteger(ASection, SETTINGS_KEY_MAPPING[Index], CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED);
     ScanCodes[Index] := CorrectRange(
@@ -368,6 +375,13 @@ begin
       CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED
     );
   end;
+
+  for Index := CONTROLLER_BUTTON_FIRST to CONTROLLER_BUTTON_LAST do
+    if ScanCodes[Index] <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED then
+      Exit;
+
+  for Index := CONTROLLER_BUTTON_FIRST to CONTROLLER_BUTTON_LAST do
+    ScanCodes[Index] := MAPPING_DEFAULT_CONTROLLER[Index];
 end;
 
 

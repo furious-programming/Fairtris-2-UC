@@ -205,17 +205,11 @@ end;
 
 
 procedure TKeyboard.InitScanCodesDefault();
+var
+  Index: Integer;
 begin
-  FScanCodesDefault[KEYBOARD_KEY_UP]     := KEYBOARD_SCANCODE_KEY_UP;
-  FScanCodesDefault[KEYBOARD_KEY_DOWN]   := KEYBOARD_SCANCODE_KEY_DOWN;
-  FScanCodesDefault[KEYBOARD_KEY_LEFT]   := KEYBOARD_SCANCODE_KEY_LEFT;
-  FScanCodesDefault[KEYBOARD_KEY_RIGHT]  := KEYBOARD_SCANCODE_KEY_RIGHT;
-
-  FScanCodesDefault[KEYBOARD_KEY_SELECT] := KEYBOARD_SCANCODE_KEY_SELECT;
-  FScanCodesDefault[KEYBOARD_KEY_START]  := KEYBOARD_SCANCODE_KEY_START;
-
-  FScanCodesDefault[KEYBOARD_KEY_B]      := KEYBOARD_SCANCODE_KEY_B;
-  FScanCodesDefault[KEYBOARD_KEY_A]      := KEYBOARD_SCANCODE_KEY_A;
+  for Index := KEYBOARD_KEY_FIRST to KEYBOARD_KEY_LAST do
+    FScanCodesDefault[Index] := MAPPING_DEFAULT_KEYBOARD[Index];
 end;
 
 

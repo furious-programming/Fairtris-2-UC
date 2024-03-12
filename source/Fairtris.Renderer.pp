@@ -566,8 +566,7 @@ procedure TRenderer.RenderGamePiece();
 var
   OffsetX, OffsetY, BrickX, BrickY, BrickXMin, BrickXMax, BrickYMin, BrickYMax: Integer;
 begin
-  if Memory.Game.PieceID  = PIECE_UNKNOWN            then Exit;
-  if Memory.Game.State   <> GAME_STATE_PIECE_CONTROL then Exit;
+  if Memory.Game.PieceID = PIECE_UNKNOWN then Exit;
 
   BrickXMin := Max(Memory.Game.PieceX - 2, 0);
   BrickXMax := Min(Memory.Game.PieceX + 2, 9);

@@ -141,15 +141,15 @@ uses
 
 procedure TScoreEntry.Validate();
 begin
-  FValid := InRange(FLinesCleared, 0, 999);
+  FValid := InRange(FLinesCleared, 0, 9999);
 
   FValid := FValid and InRange(FLevelBegin, LEVEL_FIRST, LEVEL_LAST);
-  FValid := FValid and InRange(FLevelEnd,   LEVEL_FIRST, 99);
+  FValid := FValid and InRange(FLevelEnd,   LEVEL_FIRST, LEVEL_BSOD);
 
   FValid := FValid and (FLevelBegin <= FLevelEnd);
 
   FValid := FValid and InRange(FTetrisRate, 0, 100);
-  FValid := FValid and InRange(FTotalScore, 0, 9999999);
+  FValid := FValid and InRange(FTotalScore, 0, 99999999);
 end;
 
 
@@ -252,7 +252,9 @@ begin
     NewEntry.Load(FScoresFile, BEST_SCORES_SECTION_SCORE.Format([Index]));
 
     if NewEntry.Valid then
-      FEntries.Add(NewEntry);
+      FEntries.Add(NewEntry)
+    else
+      NewEntry.Free();
   end;
 end;
 

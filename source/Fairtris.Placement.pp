@@ -82,7 +82,6 @@ uses
   Fairtris.Window,
   Fairtris.Buffers,
   Fairtris.Settings,
-  Fairtris.Utils,
   Fairtris.Constants;
 
 

@@ -271,7 +271,6 @@ var
 implementation
 
 uses
-  Math,
   Fairtris.Settings,
   Fairtris.Arrays,
   Fairtris.Utils;

@@ -38,8 +38,7 @@ uses
 implementation
 
 uses
-  SysUtils,
-  Fairtris.Constants;
+  SysUtils;
 
 
 function SDL_Rect(ALeft, ATop, AWidth, AHeight: Integer): TSDL_Rect;

@@ -88,7 +88,6 @@ uses
   Fairtris.Sounds,
   Fairtris.BestScores,
   Fairtris.Generators,
-  Fairtris.Converter,
   Fairtris.Utils,
   Fairtris.Arrays,
   Fairtris.Constants;

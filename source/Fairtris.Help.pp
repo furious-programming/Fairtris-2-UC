@@ -37,8 +37,6 @@ implementation
 
 uses
   Windows,
-  StrUtils,
-  Fairtris.Memory,
   Fairtris.Logic,
   Fairtris.Constants;
 

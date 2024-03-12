@@ -165,8 +165,6 @@ uses
   Fairtris.Input,
   Fairtris.Memory,
   Fairtris.Placement,
-  Fairtris.Converter,
-  Fairtris.Renderer,
   Fairtris.Grounds,
   Fairtris.Sounds,
   Fairtris.BestScores,

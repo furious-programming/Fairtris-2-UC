@@ -22,9 +22,6 @@ unit Fairtris.Converter;
 
 interface
 
-uses
-  SDL2;
-
 
 type
   TConverter = class(TObject)
@@ -46,9 +43,7 @@ implementation
 
 uses
   SysUtils,
-  Fairtris.Memory,
-  Fairtris.Arrays,
-  Fairtris.Constants;
+  Fairtris.Arrays;
 
 
 function TConverter.ScoreToString(AScore: Integer): String;

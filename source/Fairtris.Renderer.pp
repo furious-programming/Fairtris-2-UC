@@ -129,7 +129,6 @@ uses
   Fairtris.Converter,
   Fairtris.Grounds,
   Fairtris.Sprites,
-  Fairtris.Settings,
   Fairtris.Utils,
   Fairtris.Arrays;
 

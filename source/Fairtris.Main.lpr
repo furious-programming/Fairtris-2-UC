@@ -30,6 +30,7 @@ uses
   Fairtris.Classes,
   Fairtris.Constants;
 
+
   procedure HandleErrorSDL(const AMessage: String);
   begin
     SDL_ShowSimpleMessageBox(
@@ -40,6 +41,7 @@ uses
     );
     Halt;
   end;
+
 
   procedure HandleErrorUnknown(const AMessage: String);
   begin
@@ -52,18 +54,22 @@ uses
     Halt;
   end;
 
+
+var
+  Game: TGame;
 begin
   Randomize();
 
+  Game := TGame.Create();
   try
-    with TGame.Create() do
-    begin
-      Run();
-      Free();
+    try
+      Game.Run();
+    except
+      on Error: SDLException do HandleErrorSDL(Error.Message);
+      on Error: Exception    do HandleErrorUnknown(Error.Message);
     end;
-  except
-    on Error: SDLException do HandleErrorSDL(Error.Message);
-    on Error: Exception    do HandleErrorUnknown(Error.Message);
+  finally
+    Game.Free();
   end;
 end.
 

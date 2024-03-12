@@ -99,6 +99,7 @@ type
     procedure RenderOptions();
     procedure RenderKeyboard();
     procedure RenderController();
+    procedure RenderBSoD();
     procedure RenderQuit();
   private
     procedure RenderBegin();
@@ -302,10 +303,18 @@ end;
 
 procedure TRenderer.RenderGround();
 begin
-  if Logic.Scene.Current = SCENE_QUIT then
-    SDL_RenderCopy(Window.Renderer, Memory.Quit.Buffer, nil, nil)
-  else
+  case Logic.Scene.Current of
+    SCENE_BSOD:
+      if Memory.BSoD.State in [BSOD_STATE_START, BSOD_STATE_CURTAIN] then
+        SDL_RenderCopy(Window.Renderer, Memory.BSoD.Buffer, nil, nil)
+      else
+        SDL_RenderCopy(Window.Renderer, Grounds[SCENE_BSOD], nil, nil);
+
+    SCENE_QUIT:
+      SDL_RenderCopy(Window.Renderer, Memory.Quit.Buffer, nil, nil);
+  otherwise
     SDL_RenderCopy(Window.Renderer, Grounds[Logic.Scene.Current], nil, nil);
+  end;
 end;
 
 
@@ -1297,6 +1306,21 @@ begin
 end;
 
 
+procedure TRenderer.RenderBSoD();
+var
+  Rect: TSDL_Rect;
+begin
+  if Memory.BSoD.State <> BSOD_STATE_CURTAIN then Exit;
+
+  Rect.X := 0;
+  Rect.Y := 0;
+  Rect.W := BUFFER_WIDTH;
+  Rect.H := Round(BUFFER_HEIGHT * ((Memory.BSoD.Timer + 1) / (DURATION_HANG_BSOD_CURTAIN * Clock.FrameRateLimit)));
+
+  SDL_RenderCopy(Window.Renderer, Grounds[SCENE_BSOD], @Rect, @Rect);
+end;
+
+
 procedure TRenderer.RenderQuit();
 begin
 
@@ -1333,6 +1357,7 @@ begin
     SCENE_OPTIONS:     RenderOptions();
     SCENE_KEYBOARD:    RenderKeyboard();
     SCENE_CONTROLLER:  RenderController();
+    SCENE_BSOD:        RenderBSoD();
     SCENE_QUIT:        RenderQuit();
   end;
 

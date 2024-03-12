@@ -50,13 +50,16 @@ begin
   case Logic.Scene.Current of
     SCENE_MENU:        Address += 'prime-menu';
     SCENE_LOBBY:       Address += 'lobby';
-    SCENE_GAME_NORMAL: Address += 'marathon';
-    SCENE_GAME_FLASH:  Address += 'marathon';
+    SCENE_GAME_NORMAL: Address += 'game';
+    SCENE_GAME_FLASH:  Address += 'game';
     SCENE_PAUSE:       Address += 'game-pause';
     SCENE_OPTIONS:     Address += 'game-options';
     SCENE_KEYBOARD:    Address += 'set-up-keyboard';
     SCENE_CONTROLLER:  Address += 'set-up-controller';
     SCENE_TOP_OUT:     Address += 'summary';
+    SCENE_BSOD:        Address += 'bsod';
+  otherwise
+    Exit;
   end;
 
   ShellExecute(0, 'open', PChar(Address), nil, nil, SW_SHOWNORMAL);

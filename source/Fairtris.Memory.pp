@@ -218,6 +218,21 @@ type
 
 
 type
+  TBSoDMemory = class(TObject)
+  public
+    constructor Create();
+    destructor Destroy(); override;
+  public
+    procedure Initialize();
+    procedure Reset();
+  public
+    State: Integer;
+    Timer: Integer;
+    Buffer: PSDL_Texture;
+  end;
+
+
+type
   TQuitMemory = class(TObject)
   public
     constructor Create();
@@ -242,6 +257,7 @@ type
     FOptions: TOptionsMemory;
     FKeyboard: TKeyboardMemory;
     FController: TControllerMemory;
+    FBSoD: TBSoDMemory;
     FQuit: TQuitMemory;
   public
     constructor Create();
@@ -258,6 +274,7 @@ type
     property Options: TOptionsMemory read FOptions;
     property Keyboard: TKeyboardMemory read FKeyboard;
     property Controller: TControllerMemory read FController;
+    property BSoD: TBSoDMemory read FBSoD;
     property Quit: TQuitMemory read FQuit;
   end;
 
@@ -310,7 +327,7 @@ begin
   Started := False;
   Ended := False;
 
-  State := STATE_PIECE_CONTROL;
+  State := GAME_STATE_PIECE_CONTROL;
 
   PieceID := PIECE_UNKNOWN;
   PieceOrientation := PIECE_ORIENTATION_SPAWN;
@@ -456,9 +473,39 @@ begin
 end;
 
 
+constructor TBSoDMemory.Create();
+begin
+  Buffer := SDL_CreateTexture(Window.Renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, BUFFER_WIDTH, BUFFER_HEIGHT);
+
+  if Buffer = nil then
+    raise SDLException.CreateFmt(ERROR_MESSAGE_SDL, [ERROR_MESSAGE[ERROR_SDL_CREATE_BSOD_BUFFER], SDL_GetError()]);
+end;
+
+
+destructor TBSoDMemory.Destroy();
+begin
+  SDL_DestroyTexture(Buffer);
+  inherited Destroy();
+end;
+
+
+procedure TBSoDMemory.Initialize();
+begin
+  State := BSOD_STATE_START;
+  Timer := 0;
+end;
+
+
+procedure TBSoDMemory.Reset();
+begin
+  State := BSOD_STATE_START;
+  Timer := 0;
+end;
+
+
 constructor TQuitMemory.Create();
 begin
-  Buffer := SDL_CreateTexture(Window.Renderer, SDL_PIXELFORMAT_BGR24, SDL_TEXTUREACCESS_TARGET, BUFFER_WIDTH, BUFFER_HEIGHT);
+  Buffer := SDL_CreateTexture(Window.Renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, BUFFER_WIDTH, BUFFER_HEIGHT);
 
   if Buffer = nil then
     raise SDLException.CreateFmt(ERROR_MESSAGE_SDL, [ERROR_MESSAGE[ERROR_SDL_CREATE_QUIT_BUFFER], SDL_GetError()]);
@@ -489,6 +536,7 @@ begin
   FOptions := TOptionsMemory.Create();
   FKeyboard := TKeyboardMemory.Create();
   FController := TControllerMemory.Create();
+  FBSoD := TBSoDMemory.Create();
   FQuit := TQuitMemory.Create();
 end;
 
@@ -504,6 +552,7 @@ begin
   FOptions.Free();
   FKeyboard.Free();
   FController.Free();
+  FBSoD.Free();
   FQuit.Free();
 
   inherited Destroy();

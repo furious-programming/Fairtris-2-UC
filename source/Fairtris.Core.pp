@@ -339,7 +339,7 @@ begin
   begin
     PlacePiece();
 
-    Memory.Game.State := STATE_LINES_CHECK;
+    Memory.Game.State := GAME_STATE_LINES_CHECK;
     Memory.Game.ClearCount := 0;
     Memory.Game.ClearTimer := 0;
     Memory.Game.ClearColumn := 4;
@@ -476,7 +476,7 @@ end;
 procedure TCore.UpdateCommonNext();
 begin
   if Input.Device.Select.JustPressed then
-    if Memory.Game.State <> STATE_UPDATE_TOP_OUT then
+    if Memory.Game.State <> GAME_STATE_UPDATE_TOP_OUT then
     begin
       Memory.Game.NextVisible := not Memory.Game.NextVisible;
       Sounds.PlaySound(SOUND_COIN);
@@ -522,7 +522,7 @@ begin
 
   if Memory.Game.LockTimer = 0 then
   begin
-    Memory.Game.State := STATE_UPDATE_COUNTERS;
+    Memory.Game.State := GAME_STATE_UPDATE_COUNTERS;
     Memory.Game.ClearCount := 0;
     Memory.Game.ClearTimer := 0;
 
@@ -540,10 +540,10 @@ begin
   Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES_CHARGE[Memory.Lobby.Region];
 
   if CanPlacePiece() then
-    Memory.Game.State := STATE_PIECE_CONTROL
+    Memory.Game.State := GAME_STATE_PIECE_CONTROL
   else
   begin
-    Memory.Game.State := STATE_UPDATE_TOP_OUT;
+    Memory.Game.State := GAME_STATE_UPDATE_TOP_OUT;
     Memory.Game.TopOutTimer := TOP_OUT_FRAMES[Memory.Lobby.Region];
 
     Sounds.PlaySound(SOUND_TOP_OUT, True);
@@ -568,12 +568,12 @@ begin
 
   if Memory.Game.ClearCount > 0 then
   begin
-    Memory.Game.State := STATE_LINES_CLEAR;
+    Memory.Game.State := GAME_STATE_LINES_CLEAR;
     Memory.Game.PieceID := PIECE_UNKNOWN;
   end
   else
   begin
-    Memory.Game.State := STATE_PIECE_LOCK;
+    Memory.Game.State := GAME_STATE_PIECE_LOCK;
     Memory.Game.LockRow := Memory.Game.PieceY;
     Memory.Game.LockTimer := PIECE_FRAMES_LOCK_DELAY[Memory.Game.LockRow];
   end;
@@ -605,7 +605,7 @@ begin
 
     if Memory.Game.ClearColumn < 0 then
     begin
-      Memory.Game.State := STATE_UPDATE_COUNTERS;
+      Memory.Game.State := GAME_STATE_UPDATE_COUNTERS;
       Memory.Game.Flashing := False;
     end;
   end;
@@ -623,7 +623,7 @@ begin
     Memory.Game.LowerTimer -= 1;
   end
   else
-    Memory.Game.State := STATE_PIECE_SPAWN;
+    Memory.Game.State := GAME_STATE_PIECE_SPAWN;
 end;
 
 
@@ -706,7 +706,7 @@ begin
     Memory.Game.FallSkipped := False;
   end;
 
-  Memory.Game.State := STATE_STACK_LOWER;
+  Memory.Game.State := GAME_STATE_STACK_LOWER;
   Memory.Game.LowerTimer := 1;
 end;
 
@@ -749,14 +749,14 @@ begin
   UpdateCommon();
 
   case Memory.Game.State of
-    STATE_PIECE_CONTROL:   UpdatePieceControl();
-    STATE_PIECE_LOCK:      UpdatePieceLock();
-    STATE_PIECE_SPAWN:     UpdatePieceSpawn();
-    STATE_LINES_CHECK:     UpdateLinesCheck();
-    STATE_LINES_CLEAR:     UpdateLinesClear();
-    STATE_STACK_LOWER:     UpdateStackLower();
-    STATE_UPDATE_COUNTERS: UpdateCounters();
-    STATE_UPDATE_TOP_OUT:  UpdateTopOut();
+    GAME_STATE_PIECE_CONTROL:   UpdatePieceControl();
+    GAME_STATE_PIECE_LOCK:      UpdatePieceLock();
+    GAME_STATE_PIECE_SPAWN:     UpdatePieceSpawn();
+    GAME_STATE_LINES_CHECK:     UpdateLinesCheck();
+    GAME_STATE_LINES_CLEAR:     UpdateLinesClear();
+    GAME_STATE_STACK_LOWER:     UpdateStackLower();
+    GAME_STATE_UPDATE_COUNTERS: UpdateCounters();
+    GAME_STATE_UPDATE_TOP_OUT:  UpdateTopOut();
   end;
 end;
 

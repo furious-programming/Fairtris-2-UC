@@ -73,6 +73,7 @@ const
     'options.png',
     'keyboard.png',
     'controller.png',
+    'bsod.png',
     'quit.png'
   );
 
@@ -105,6 +106,7 @@ const
     'tetris.wav',
     'transition.wav',
     'top out.wav',
+    'success.wav',
     'pause.wav',
     'hum.wav',
     'coin.wav',
@@ -124,7 +126,7 @@ const
   );
 
 const
-  SOUND_CHANNEL: array [SOUND_FIRST .. SOUND_LAST] of Integer = (5, 0, 2, 3, 4, 0, 0, 1, 0, 0, 6, 7, 0);
+  SOUND_CHANNEL: array [SOUND_FIRST .. SOUND_LAST] of Integer = (5, 0, 2, 3, 4, 0, 0, 1, 0, 7, 0, 6, 7, 0);
 
 
 const
@@ -964,6 +966,7 @@ const
     'Unable to create SDL window renderer',
     'Unable to get the SDL version and thus the window handle',
     'Unable to create back buffer texture',
+    'Unable to create BSoD buffer texture',
     'Unable to create quit buffer texture',
     'Unable to load sprite "%s"',
     'Unable to load background "%s"',

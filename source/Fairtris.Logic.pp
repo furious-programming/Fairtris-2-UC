@@ -76,6 +76,7 @@ type
     procedure PreapreOptions();
     procedure PrepareKeyboard();
     procedure PrepareController();
+    procedure PrepareBSoD();
     procedure PrepareQuit();
   private
     procedure UpdateLegalHang();
@@ -117,6 +118,9 @@ type
     procedure UpdateControllerButtonScanCode();
     procedure UpdateControllerScene();
   private
+    procedure UpdateBSoDHang();
+    procedure UpdateBSoDScene();
+  private
     procedure UpdateQuitHang();
     procedure UpdateQuitScene();
   private
@@ -130,6 +134,7 @@ type
     procedure UpdateOptions();
     procedure UpdateKeyboard();
     procedure UpdateController();
+    procedure UpdateBSoD();
     procedure UpdateQuit();
   public
     constructor Create();
@@ -433,6 +438,22 @@ begin
 end;
 
 
+procedure TLogic.PrepareBSoD();
+var
+  OldTarget: PSDL_Texture;
+begin
+  if not FScene.Changed then Exit;
+
+  Memory.BSoD.Reset();
+
+  OldTarget := SDL_GetRenderTarget(Window.Renderer);
+  SDL_SetRenderTarget(Window.Renderer, Memory.BSoD.Buffer);
+
+  SDL_RenderCopy(Window.Renderer, Buffers.Native, nil, nil);
+  SDL_SetRenderTarget(Window.Renderer, OldTarget);
+end;
+
+
 procedure TLogic.PrepareQuit();
 var
   OldTarget: PSDL_Texture;
@@ -659,17 +680,20 @@ begin
   FScene.Current := IfThen(Memory.Game.Flashing, SCENE_GAME_FLASH, SCENE_GAME_NORMAL);
   FScene.Validate();
 
-  if Memory.Game.State = STATE_UPDATE_TOP_OUT then
-  begin
-    if Memory.Game.Ended then
-      FScene.Current := SCENE_TOP_OUT;
-  end
+  if Memory.Game.Level >= LEVEL_BSOD then
+    FScene.Current := SCENE_BSOD
   else
-    if not Input.Device.Connected or Input.Device.Start.JustPressed then
+    if Memory.Game.State = GAME_STATE_UPDATE_TOP_OUT then
     begin
-      FScene.Current := SCENE_PAUSE;
-      Sounds.PlaySound(SOUND_PAUSE, True);
-    end;
+      if Memory.Game.Ended then
+        FScene.Current := SCENE_TOP_OUT;
+    end
+    else
+      if not Input.Device.Connected or Input.Device.Start.JustPressed then
+      begin
+        FScene.Current := SCENE_PAUSE;
+        Sounds.PlaySound(SOUND_PAUSE, True);
+      end;
 end;
 
 
@@ -1265,6 +1289,52 @@ begin
 end;
 
 
+procedure TLogic.UpdateBSoDHang();
+begin
+  if Memory.BSoD.State <> BSOD_STATE_CONTROL then
+    Memory.BSoD.Timer += 1;
+
+  case Memory.BSoD.State of
+    BSOD_STATE_START:
+      if Memory.BSoD.Timer = DURATION_HANG_BSOD_START * Clock.FrameRateLimit then
+      begin
+        Memory.BSoD.State := BSOD_STATE_CURTAIN;
+        Memory.BSoD.Timer := 0;
+      end;
+
+    BSOD_STATE_CURTAIN:
+      if Memory.BSoD.Timer = Round(DURATION_HANG_BSOD_CURTAIN * Clock.FrameRateLimit) then
+      begin
+        Memory.BSoD.State := BSOD_STATE_HANG;
+        Memory.BSoD.Timer := 0;
+      end;
+
+    BSOD_STATE_HANG:
+      if Memory.BSoD.Timer = DURATION_HANG_BSOD_HANG * Clock.FrameRateLimit then
+      begin
+        Memory.BSoD.State := BSOD_STATE_CONTROL;
+        Sounds.PlaySound(SOUND_SUCCESS, True);
+      end;
+  end;
+
+  if Memory.BSoD.State <> BSOD_STATE_CONTROL then
+    Sounds.PlaySound(SOUND_TRANSITION, True);
+end;
+
+
+procedure TLogic.UpdateBSoDScene();
+begin
+  FScene.Validate();
+
+  if Memory.BSoD.State = BSOD_STATE_CONTROL then
+    if InputMenuAccepted() or Input.Device.Start.JustPressed or Input.Keyboard.Start.JustPressed then
+    begin
+      FScene.Current := SCENE_TOP_OUT;
+      Sounds.PlaySound(SOUND_START);
+    end;
+end;
+
+
 procedure TLogic.UpdateQuitHang();
 begin
   Memory.Quit.HangTimer += 1;
@@ -1377,6 +1447,15 @@ begin
 end;
 
 
+procedure TLogic.UpdateBSoD();
+begin
+  PrepareBSoD();
+
+  UpdateBSoDHang();
+  UpdateBSoDScene();
+end;
+
+
 procedure TLogic.UpdateQuit();
 begin
   PrepareQuit();
@@ -1401,6 +1480,7 @@ begin
     SCENE_OPTIONS:     UpdateOptions();
     SCENE_KEYBOARD:    UpdateKeyboard();
     SCENE_CONTROLLER:  UpdateController();
+    SCENE_BSOD:        UpdateBSoD();
     SCENE_QUIT:        UpdateQuit();
   end;
 end;

@@ -476,8 +476,8 @@ begin
   if Input.Keyboard.Device.Key[SDL_SCANCODE_PAGEUP].JustPressed   then Memory.Game.Level += 1;
   if Input.Keyboard.Device.Key[SDL_SCANCODE_PAGEDOWN].JustPressed then Memory.Game.Level := Max(Memory.Game.Level - 1, 0);
 
-  if Input.Keyboard.Device.Key[SDL_SCANCODE_HOME].JustPressed then Memory.Game.Level += 50;
-  if Input.Keyboard.Device.Key[SDL_SCANCODE_END].JustPressed  then Memory.Game.Level := Max(Memory.Game.Level - 50, 0);
+  if Input.Keyboard.Device.Key[SDL_SCANCODE_HOME].JustPressed then Memory.Game.Level += 25;
+  if Input.Keyboard.Device.Key[SDL_SCANCODE_END].JustPressed  then Memory.Game.Level := Max(Memory.Game.Level - 25, 0);
 
   if Input.Keyboard.Device.Key[SDL_SCANCODE_DELETE].Pressed then Memory.Game.ClearStack();
 

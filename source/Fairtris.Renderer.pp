@@ -38,6 +38,7 @@ type
   private
     procedure RenderSprite(ASprite: PSDL_Texture; ABufferRect, ASpriteRect: TSDL_Rect);
     procedure RenderText(AX, AY: Integer; const AText: String; AColor: Integer = COLOR_WHITE; AAlign: Integer = ALIGN_LEFT);
+    procedure RenderBar(AX, AY, AFirst, ALast, AValue, AColorSet, AColorUnset: Integer);
     procedure RenderNext(AX, AY, APiece, ALevel: Integer);
     procedure RenderBrick(AX, AY, ABrick, ALevel: Integer);
     procedure RenderButton(AX, AY, AButton: Integer);
@@ -138,17 +139,18 @@ begin
   case AChar of
     'A' .. 'Z': Result := Ord(AChar) - 64;
     '0' .. '9': Result := Ord(AChar) - 21;
-    ',': Result := 37;
-    '/': Result := 38;
-    '(': Result := 39;
-    ')': Result := 40;
-    '"': Result := 41;
-    '.': Result := 42;
-    '-': Result := 43;
-    '%': Result := 44;
-    '>': Result := 45;
-    ':': Result := 46;
-    '_': Result := 47;
+    ',':        Result := 37;
+    '/':        Result := 38;
+    '(':        Result := 39;
+    ')':        Result := 40;
+    '"':        Result := 41;
+    '.':        Result := 42;
+    '-':        Result := 43;
+    '%':        Result := 44;
+    '>':        Result := 45;
+    ':':        Result := 46;
+    '_':        Result := 47;
+    '#':        Result := 48;
   otherwise
     Result := 0;
   end;
@@ -201,6 +203,16 @@ begin
   end;
 
   SDL_SetTextureColorMod(Sprites.Charset, 255, 255, 255);
+end;
+
+
+procedure TRenderer.RenderBar(AX, AY, AFirst, ALast, AValue, AColorSet, AColorUnset: Integer);
+begin
+  AValue := AValue - AFirst + 1;
+  ALast  := ALast  - AFirst + 1;
+
+  RenderText(AX, AY, StringOfChar(ITEM_TEXT_BAR_CELL, ALast),  AColorUnset);
+  RenderText(AX, AY, StringOfChar(ITEM_TEXT_BAR_CELL, AValue), AColorSet);
 end;
 
 
@@ -972,6 +984,42 @@ begin
         COLOR_WHITE,
         COLOR_GRAY
       ),
+      COLOR_DARK
+    )
+  );
+
+  RenderBar(
+    ITEM_X_OPTIONS_PARAM,
+    ITEM_Y_OPTIONS_SHIFT_NTSC,
+    SHIFT_NTSC_FIRST,
+    SHIFT_NTSC_LAST,
+    Memory.Options.ShiftNTSC,
+    IfThen(
+      Memory.Options.ItemIndex = ITEM_OPTIONS_SHIFT_NTSC,
+      COLOR_WHITE,
+      COLOR_GRAY
+    ),
+    IfThen(
+      Memory.Options.ItemIndex = ITEM_OPTIONS_SHIFT_NTSC,
+      COLOR_GRAY,
+      COLOR_DARK
+    )
+  );
+
+  RenderBar(
+    ITEM_X_OPTIONS_PARAM,
+    ITEM_Y_OPTIONS_SHIFT_PAL,
+    SHIFT_PAL_FIRST,
+    SHIFT_PAL_LAST,
+    Memory.Options.ShiftPAL,
+    IfThen(
+      Memory.Options.ItemIndex = ITEM_OPTIONS_SHIFT_PAL,
+      COLOR_WHITE,
+      COLOR_GRAY
+    ),
+    IfThen(
+      Memory.Options.ItemIndex = ITEM_OPTIONS_SHIFT_PAL,
+      COLOR_GRAY,
       COLOR_DARK
     )
   );

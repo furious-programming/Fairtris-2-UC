@@ -86,13 +86,22 @@ uses
 
 
 function WindowHitTest(AWindow: PSDL_Window; const APoint: PSDL_Point; AData: Pointer): TSDL_HitTestResult; cdecl;
+var
+  Height: Integer;
 begin
   if Placement.WindowSize = SIZE_FULLSCREEN then
     Result := SDL_HITTEST_NORMAL
   else
   begin
-    Result := SDL_HITTEST_DRAGGABLE;
-    Placement.ExposeWindow();
+    SDL_GetWindowSize(AWindow, nil, @Height);
+
+    if APoint^.Y < Round(Height * 0.2) then
+      Result := SDL_HITTEST_DRAGGABLE
+    else
+    begin
+      Result := SDL_HITTEST_NORMAL;
+      Placement.ExposeWindow();
+    end;
   end;
 end;
 

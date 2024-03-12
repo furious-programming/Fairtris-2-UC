@@ -213,10 +213,19 @@ var
   Event: TSDL_Event;
 begin
   Event := Default(TSDL_Event);
-  SDL_PumpEvents();
 
   while SDL_PollEvent(@Event) = 1 do
   case Event.Type_ of
+    SDL_MOUSEBUTTONDOWN:
+    case Event.Button.Button of
+      SDL_BUTTON_LEFT:
+        if Event.Button.Clicks = 2 then
+          Placement.ToggleVideoMode();
+      SDL_BUTTON_RIGHT:
+        if Event.Button.Clicks = 2 then
+          if not Placement.VideoEnabled and (Placement.WindowSize <> SIZE_FULLSCREEN) then
+            Placement.WindowSize := SIZE_FULLSCREEN;
+    end;
     SDL_MOUSEWHEEL:
     begin
       if Event.Wheel.Y < 0 then Placement.ReduceWindow();

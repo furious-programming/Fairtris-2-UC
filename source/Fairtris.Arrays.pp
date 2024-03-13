@@ -88,6 +88,8 @@ const
 const
   GROUND_FILENAME: array [SCENE_FIRST .. SCENE_LAST] of String = (
     'legal.png',
+    'rose normal.png',
+    'rose flash.png',
     'menu.png',
     'lobby.png',
     'game normal.png',

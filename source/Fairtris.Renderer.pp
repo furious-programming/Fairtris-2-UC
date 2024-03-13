@@ -358,8 +358,20 @@ end;
 
 
 procedure TRenderer.RenderGround();
+var
+  RoseRect: TSDL_Rect;
 begin
+  RoseRect := SDL_Rect(
+    Round(Memory.Rose.OriginX),
+    Round(Memory.Rose.OriginY),
+    BUFFER_WIDTH,
+    BUFFER_HEIGHT
+  );
+
   case Logic.Scene.Current of
+    SCENE_LEGAL:
+      SDL_RenderCopy(Window.Renderer, Grounds[SCENE_LEGAL], nil, nil);
+
     SCENE_BSOD:
       if Memory.BSoD.State in [BSOD_STATE_START, BSOD_STATE_CURTAIN] then
         SDL_RenderCopy(Window.Renderer, Memory.BSoD.Buffer, nil, nil)
@@ -369,8 +381,21 @@ begin
     SCENE_QUIT:
       SDL_RenderCopy(Window.Renderer, Memory.Quit.Buffer, nil, nil);
 
+    SCENE_GAME_NORMAL:
+    begin
+      SDL_RenderCopy(Window.Renderer, Grounds[SCENE_ROSE_NORMAL],   @RoseRect, nil);
+      SDL_RenderCopy(Window.Renderer, Grounds[Logic.Scene.Current], nil,       nil);
+    end;
+
+    SCENE_GAME_FLASH:
+    begin
+      SDL_RenderCopy(Window.Renderer, Grounds[SCENE_ROSE_FLASH],    @RoseRect, nil);
+      SDL_RenderCopy(Window.Renderer, Grounds[Logic.Scene.Current], nil,       nil);
+    end;
+
   otherwise
-    SDL_RenderCopy(Window.Renderer, Grounds[Logic.Scene.Current], nil, nil);
+    SDL_RenderCopy(Window.Renderer, Grounds[SCENE_ROSE_NORMAL],   @RoseRect, nil);
+    SDL_RenderCopy(Window.Renderer, Grounds[Logic.Scene.Current], nil,       nil);
   end;
 end;
 

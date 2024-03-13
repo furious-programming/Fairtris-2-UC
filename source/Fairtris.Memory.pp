@@ -37,8 +37,19 @@ type
 
 
 type
-  TMenuMemory = class(TObject)
+  TRoseMemory = class(TObject)
   public             
+    procedure Initialize();
+  public
+    OriginX: Single;
+    OriginY: Single;
+    Timer:   Integer;
+  end;
+
+
+type
+  TMenuMemory = class(TObject)
+  public
     procedure Initialize();
   public
     ItemIndex: Integer;
@@ -240,6 +251,7 @@ type
   TMemory = class(TObject)
   private
     FLegal:      TLegalMemory;
+    FRose:       TRoseMemory;
     FMenu:       TMenuMemory;
     FLobby:      TLobbyMemory;
     FGame:       TGameMemory;
@@ -257,6 +269,7 @@ type
     procedure Initialize();
   public
     property Legal:      TLegalMemory      read FLegal;
+    property Rose:       TRoseMemory       read FRose;
     property Menu:       TMenuMemory       read FMenu;
     property Lobby:      TLobbyMemory      read FLobby;
     property Game:       TGameMemory       read FGame;
@@ -286,6 +299,15 @@ uses
 
 procedure TLegalMemory.Initialize();
 begin
+  Timer := 0;
+end;
+
+
+procedure TRoseMemory.Initialize();
+begin
+  OriginX := ROSE_ORIGIN_X;
+  OriginY := ROSE_ORIGIN_Y;
+
   Timer := 0;
 end;
 
@@ -513,6 +535,7 @@ end;
 constructor TMemory.Create();
 begin
   FLegal      := TLegalMemory.Create();
+  FRose       := TRoseMemory.Create();
   FMenu       := TMenuMemory.Create();
   FLobby      := TLobbyMemory.Create();
   FGame       := TGameMemory.Create();
@@ -529,6 +552,7 @@ end;
 destructor TMemory.Destroy();
 begin
   FLegal.Free();
+  FRose.Free();
   FMenu.Free();
   FLobby.Free();
   FGame.Free();
@@ -547,6 +571,7 @@ end;
 procedure TMemory.Initialize();
 begin
   FLegal.Initialize();
+  FRose.Initialize();
   FMenu.Initialize();
   FLobby.Initialize();
   FPause.Initialize();

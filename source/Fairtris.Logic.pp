@@ -82,6 +82,8 @@ type
     procedure UpdateLegalHang();
     procedure UpdateLegalScene();
   private
+    procedure UpdateRoseState();
+  private
     procedure UpdateMenuSelection();
     procedure UpdateMenuScene();
   private
@@ -480,6 +482,20 @@ begin
 end;
 
 
+procedure TLogic.UpdateRoseState();
+var
+  Theta:  Single;
+  Frames: Integer;
+begin
+  Frames            := Clock.FrameRateLimit * ROSE_DURATION_CYCLE;
+  Memory.Rose.Timer := (Memory.Rose.Timer + 1) mod Frames;
+  Theta             := (Memory.Rose.Timer mod Frames) / Frames * (2 * Pi);
+
+  Memory.Rose.OriginX := ROSE_ORIGIN_X + ROSE_SIZE * Cos(5 * Theta) * Cos(Theta);
+  Memory.Rose.OriginY := ROSE_ORIGIN_Y + ROSE_SIZE * Cos(5 * Theta) * Sin(Theta);
+end;
+
+
 procedure TLogic.UpdateMenuSelection();
 begin
   if InputMenuSetPrev() then
@@ -536,25 +552,39 @@ end;
 
 
 procedure TLogic.UpdateLobbyRegion();
+var
+  Frames:  Integer;
+  Changed: Boolean = False;
 begin
   if Memory.Lobby.ItemIndex <> ITEM_LOBBY_REGION then Exit;
 
   if InputOptionSetPrev() then
   begin
     UpdateItemIndex(Memory.Lobby.Region, REGION_COUNT, ITEM_PREV);
+    Changed := True;
+
     Sounds.PlaySound(SOUND_SHIFT);
   end;
 
   if InputOptionSetNext() then
   begin
     UpdateItemIndex(Memory.Lobby.Region, REGION_COUNT, ITEM_NEXT);
+    Changed := True;
+
     Sounds.PlaySound(SOUND_SHIFT);
   end;
 
-  Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.Lobby.Region];
+  if Changed then
+  begin
+    Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.Lobby.Region];
 
-  if Memory.Lobby.Region = REGION_PAL then
-    Memory.Lobby.Level := Min(Memory.Lobby.Level, LEVEL_LAST);
+    case Memory.Lobby.Region of
+      REGION_NTSC: Frames := CLOCK_FRAMERATE_PAL  * ROSE_DURATION_CYCLE;
+      REGION_PAL:  Frames := CLOCK_FRAMERATE_NTSC * ROSE_DURATION_CYCLE;
+    end;
+
+    Memory.Rose.Timer := Round((Memory.Rose.Timer / Frames) * (Clock.FrameRateLimit * ROSE_DURATION_CYCLE));
+  end;
 end;
 
 
@@ -1379,6 +1409,8 @@ end;
 
 procedure TLogic.UpdateCommon();
 begin
+  UpdateRoseState();
+
   if Input.Fixed.Help.Pressed  then OpenHelp();
   if Input.Fixed.Video.Pressed then Placement.ToggleVideoMode();
 

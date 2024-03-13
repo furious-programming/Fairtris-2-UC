@@ -52,33 +52,45 @@ const
 
 
 const
-  SCENE_LEGAL           = 0;
-  SCENE_MENU            = 1;
-  SCENE_LOBBY           = 2;
-  SCENE_GAME_NORMAL     = 3;
-  SCENE_GAME_FLASH      = 4;
-  SCENE_PAUSE           = 5;
-  SCENE_TOP_OUT         = 6;
-  SCENE_OPTIONS         = 7;
-  SCENE_KEYBOARD        = 8;
-  SCENE_CONTROLLER      = 9;
-  SCENE_BSOD            = 10;
-  SCENE_QUIT            = 11;
-  SCENE_STOP            = 12;
+  ROSE_ORIGIN_X = BUFFER_HEIGHT / 2;
+  ROSE_ORIGIN_Y = BUFFER_HEIGHT / 2;
 
-  SCENE_FIRST           = SCENE_LEGAL;
-  SCENE_LAST            = SCENE_QUIT;
+  ROSE_SIZE     = BUFFER_HEIGHT / 2 - 1;
+
+const
+  ROSE_DURATION_CYCLE = 120;
 
 
 const
-  GAME_STATE_PIECE_CONTROL    = 0;
-  GAME_STATE_PIECE_LOCK       = 1;
-  GAME_STATE_PIECE_SPAWN      = 2;
-  GAME_STATE_LINES_CHECK      = 3;
-  GAME_STATE_LINES_CLEAR      = 4;
-  GAME_STATE_STACK_LOWER      = 5;
-  GAME_STATE_UPDATE_COUNTERS  = 6;
-  GAME_STATE_UPDATE_TOP_OUT   = 7;
+  SCENE_LEGAL       = 0;
+  SCENE_ROSE_NORMAL = 1;
+  SCENE_ROSE_FLASH  = 2;
+  SCENE_MENU        = 3;
+  SCENE_LOBBY       = 4;
+  SCENE_GAME_NORMAL = 5;
+  SCENE_GAME_FLASH  = 6;
+  SCENE_PAUSE       = 7;
+  SCENE_TOP_OUT     = 8;
+  SCENE_OPTIONS     = 9;
+  SCENE_KEYBOARD    = 10;
+  SCENE_CONTROLLER  = 11;
+  SCENE_BSOD        = 12;
+  SCENE_QUIT        = 13;
+  SCENE_STOP        = 14;
+
+  SCENE_FIRST       = SCENE_LEGAL;
+  SCENE_LAST        = SCENE_QUIT;
+
+
+const
+  GAME_STATE_PIECE_CONTROL   = 0;
+  GAME_STATE_PIECE_LOCK      = 1;
+  GAME_STATE_PIECE_SPAWN     = 2;
+  GAME_STATE_LINES_CHECK     = 3;
+  GAME_STATE_LINES_CLEAR     = 4;
+  GAME_STATE_STACK_LOWER     = 5;
+  GAME_STATE_UPDATE_COUNTERS = 6;
+  GAME_STATE_UPDATE_TOP_OUT  = 7;
 
 
 const

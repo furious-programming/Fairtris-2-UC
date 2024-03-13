@@ -474,15 +474,6 @@ procedure TCore.UpdateCommon();
 begin
   Generators.Generator.Step();
 
-  {$IFDEF MODE_DEBUG}
-  if Input.Keyboard.Device.Key[SDL_SCANCODE_PAGEUP].Pressed   then Memory.Game.Level += 1;
-  if Input.Keyboard.Device.Key[SDL_SCANCODE_HOME].Pressed     then Memory.Game.Level += 25;
-  if Input.Keyboard.Device.Key[SDL_SCANCODE_END].Pressed      then Memory.Game.Level := Max(Memory.Game.Level - 25, 0);
-  if Input.Keyboard.Device.Key[SDL_SCANCODE_PAGEDOWN].Pressed then Memory.Game.Level := Max(Memory.Game.Level - 1, 0);
-
-  if Input.Keyboard.Device.Key[SDL_SCANCODE_DELETE].Down      then Memory.Game.ClearStack();
-  {$ENDIF}
-
   UpdateCommonGain();
   UpdateCommonNext();
 end;

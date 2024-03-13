@@ -32,7 +32,7 @@ type
   public
     procedure Initialize();
   public
-    HangTimer: Integer;
+    Timer: Integer;
   end;
 
 
@@ -231,8 +231,8 @@ type
   public
     procedure Initialize();
   public
-    Buffer:    PSDL_Texture;
-    HangTimer: Integer;
+    Buffer: PSDL_Texture;
+    Timer:  Integer;
   end;
 
 
@@ -286,7 +286,7 @@ uses
 
 procedure TLegalMemory.Initialize();
 begin
-  HangTimer := 0;
+  Timer := 0;
 end;
 
 
@@ -506,7 +506,7 @@ end;
 
 procedure TQuitMemory.Initialize();
 begin
-  HangTimer := 0;
+  Timer := 0;
 end;
 
 

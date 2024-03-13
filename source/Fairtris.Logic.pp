@@ -467,7 +467,7 @@ end;
 
 procedure TLogic.UpdateLegalHang();
 begin
-  Memory.Legal.HangTimer += 1;
+  Memory.Legal.Timer += 1;
 end;
 
 
@@ -475,7 +475,7 @@ procedure TLogic.UpdateLegalScene();
 begin
   FScene.Validate();
 
-  if Memory.Legal.HangTimer = DURATION_HANG_LEGAL * Clock.FrameRateLimit then
+  if Memory.Legal.Timer = DURATION_HANG_LEGAL * Clock.FrameRateLimit then
     FScene.Current := SCENE_MENU;
 end;
 
@@ -1364,7 +1364,7 @@ end;
 
 procedure TLogic.UpdateQuitHang();
 begin
-  Memory.Quit.HangTimer += 1;
+  Memory.Quit.Timer += 1;
 end;
 
 
@@ -1372,7 +1372,7 @@ procedure TLogic.UpdateQuitScene();
 begin
   FScene.Validate();
 
-  if Memory.Quit.HangTimer = DURATION_HANG_QUIT * Clock.FrameRateLimit then
+  if Memory.Quit.Timer = DURATION_HANG_QUIT * Clock.FrameRateLimit then
     FStopped := True;
 end;
 

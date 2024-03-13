@@ -594,7 +594,7 @@ begin
     begin
       Memory.Lobby.Autorepeat += 1;
 
-      if Memory.Lobby.Autorepeat = Memory.Options.AutoShift(Memory.Lobby.Region) then
+      if Memory.Lobby.Autorepeat = Memory.Options.Autoshift(Memory.Lobby.Region) then
       begin
         Memory.Lobby.Autorepeat := AUTOSHIFT_FRAMES[Memory.Lobby.Region];
 
@@ -615,7 +615,7 @@ begin
     begin
       Memory.Lobby.Autorepeat += 1;
 
-      if Memory.Lobby.Autorepeat = Memory.Options.AutoShift(Memory.Lobby.Region) then
+      if Memory.Lobby.Autorepeat = Memory.Options.Autoshift(Memory.Lobby.Region) then
       begin
         Memory.Lobby.Autorepeat := AUTOSHIFT_FRAMES[Memory.Lobby.Region];
 

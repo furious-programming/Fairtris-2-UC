@@ -376,7 +376,7 @@ begin
   begin
     Memory.Game.AutorepeatX += 1;
 
-    if Memory.Game.AutorepeatX < Memory.Options.AutoShift(Memory.Lobby.Region) then
+    if Memory.Game.AutorepeatX < Memory.Options.Autoshift(Memory.Lobby.Region) then
       Exit
     else
       Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES[Memory.Lobby.Region];
@@ -389,7 +389,7 @@ begin
       Sounds.PlaySound(SOUND_SHIFT);
     end
     else
-      Memory.Game.AutorepeatX := Memory.Options.AutoShift(Memory.Lobby.Region);
+      Memory.Game.AutorepeatX := Memory.Options.Autoshift(Memory.Lobby.Region);
 
   if Input.Device.Right.Down then
     if CanShiftPiece(PIECE_SHIFT_RIGHT) then
@@ -398,7 +398,7 @@ begin
       Sounds.PlaySound(SOUND_SHIFT);
     end
     else
-      Memory.Game.AutorepeatX := Memory.Options.AutoShift(Memory.Lobby.Region);
+      Memory.Game.AutorepeatX := Memory.Options.Autoshift(Memory.Lobby.Region);
 end;
 
 
@@ -517,7 +517,7 @@ begin
 
   Memory.Game.AutospinCharged := False;
   Memory.Game.FallPoints      := 0;
-  Memory.Game.AutorepeatX     := Memory.Options.AutoShift(Memory.Lobby.Region);
+  Memory.Game.AutorepeatX     := Memory.Options.Autoshift(Memory.Lobby.Region);
 
   if CanPlacePiece() then
     Memory.Game.State := GAME_STATE_PIECE_CONTROL

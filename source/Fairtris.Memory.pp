@@ -161,7 +161,7 @@ type
   public          
     procedure Initialize();
   public
-    function AutoShift(ARegion: Integer): Integer;
+    function Autoshift(ARegion: Integer): Integer;
   public
     ItemIndex: Integer;
     FromScene: Integer;
@@ -400,11 +400,11 @@ begin
 end;
 
 
-function TOptionsMemory.AutoShift(ARegion: Integer): Integer;
+function TOptionsMemory.Autoshift(ARegion: Integer): Integer;
 begin
   case ARegion of
-    REGION_NTSC: Result := ShiftNTSC;
-    REGION_PAL:  Result := ShiftPAL;
+    REGION_NTSC: Result := AUTOSHIFT_FRAMES[ARegion] + SHIFT_NTSC_LAST - ShiftNTSC + 1;
+    REGION_PAL:  Result := AUTOSHIFT_FRAMES[ARegion] + SHIFT_PAL_LAST  - ShiftPAL  + 1;
   end;
 end;
 

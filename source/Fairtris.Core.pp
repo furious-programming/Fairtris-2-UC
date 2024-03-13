@@ -620,7 +620,7 @@ begin
         HappenedFirstTransition := True;
 
     if Memory.Game.AfterTransition then
-      if (Memory.Game.Lines div 10) <> ((Memory.Game.Lines + Memory.Game.ClearCount) div 10) then
+      if Memory.Game.Lines div 10 <> (Memory.Game.Lines + Memory.Game.ClearCount) div 10 then
         HappenedLaterTransition := True;
 
     if HappenedFirstTransition then

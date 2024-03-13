@@ -879,6 +879,13 @@ const
 
 
 const
+  TRANSITION_LINES: array [REGION_FIRST .. REGION_LAST, LEVEL_FIRST .. LEVEL_LAST] of Integer = (
+    (10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 100, 100, 100, 100, 100, 100, 110, 120, 130, 140),
+    (10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 100, 100, 100, 100, 100, 100, 110, 120, 130, 140)
+  );
+
+
+const
   LINECLEAR_VALUE: array [LINES_UNKNOWN .. LINES_LAST] of Integer = (0, 40, 100, 300, 1200);
 
 

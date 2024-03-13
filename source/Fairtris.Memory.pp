@@ -110,6 +110,8 @@ type
     ClearPermits: TLineClearPermits;
     ClearIndexes: TLineClearIndexes;
   public
+    AfterTransition: Boolean;
+  public
     LowerTimer:  Integer;
     TopOutTimer: Integer;
   public
@@ -348,6 +350,8 @@ begin
   ClearColumn       := 0;
   ClearPermits      := Default(TLineClearPermits);
   ClearIndexes      := Default(TLineClearIndexes);
+
+  AfterTransition   := False;
 
   LowerTimer        := 0;
   TopOutTimer       := 0;

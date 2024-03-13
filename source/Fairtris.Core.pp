@@ -609,14 +609,24 @@ end;
 
 procedure TCore.UpdateCounters();
 var
-  Gain:       Integer;
-  Transition: Boolean = False;
+  Gain:                    Integer;
+  HappenedLaterTransition: Boolean = False;
+  HappenedFirstTransition: Boolean = False;
 begin
   if Memory.Game.ClearCount > 0 then
   begin
-    Transition := (Memory.Game.Lines div 10) <> ((Memory.Game.Lines + Memory.Game.ClearCount) div 10);
+    if not Memory.Game.AfterTransition then
+      if Memory.Game.Lines + Memory.Game.ClearCount >= TRANSITION_LINES[Memory.Lobby.Region, Memory.Lobby.Level] then
+        HappenedFirstTransition := True;
 
-    if Transition then
+    if Memory.Game.AfterTransition then
+      if (Memory.Game.Lines div 10) <> ((Memory.Game.Lines + Memory.Game.ClearCount) div 10) then
+        HappenedLaterTransition := True;
+
+    if HappenedFirstTransition then
+      Memory.Game.AfterTransition := True;
+
+    if HappenedFirstTransition or HappenedLaterTransition then
     begin
       Memory.Game.Level += 1;
       Sounds.PlaySound(SOUND_TRANSITION, True);

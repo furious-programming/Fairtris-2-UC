@@ -624,9 +624,9 @@ begin
     begin
       Memory.Lobby.Autorepeat += 1;
 
-      if Memory.Lobby.Autorepeat = Memory.Options.Autoshift(Memory.Lobby.Region) then
+      if Memory.Lobby.Autorepeat = ITEM_AUTOREPEAT_CHARGE[Memory.Lobby.Region] then
       begin
-        Memory.Lobby.Autorepeat := AUTOSHIFT_FRAMES[Memory.Lobby.Region];
+        Memory.Lobby.Autorepeat := ITEM_AUTOREPEAT_PRECHARGE[Memory.Lobby.Region];
 
         UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT, ITEM_PREV);
         Sounds.PlaySound(SOUND_SHIFT);
@@ -645,9 +645,9 @@ begin
     begin
       Memory.Lobby.Autorepeat += 1;
 
-      if Memory.Lobby.Autorepeat = Memory.Options.Autoshift(Memory.Lobby.Region) then
+      if Memory.Lobby.Autorepeat = ITEM_AUTOREPEAT_CHARGE[Memory.Lobby.Region] then
       begin
-        Memory.Lobby.Autorepeat := AUTOSHIFT_FRAMES[Memory.Lobby.Region];
+        Memory.Lobby.Autorepeat := ITEM_AUTOREPEAT_PRECHARGE[Memory.Lobby.Region];
 
         UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT, ITEM_NEXT);
         Sounds.PlaySound(SOUND_SHIFT);

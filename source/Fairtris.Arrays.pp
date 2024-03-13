@@ -174,6 +174,11 @@ const
 
 
 const
+  ITEM_AUTOREPEAT_PRECHARGE: array [REGION_FIRST .. REGION_LAST] of Integer = (10,  8);
+  ITEM_AUTOREPEAT_CHARGE:    array [REGION_FIRST .. REGION_LAST] of Integer = (16, 13);
+
+
+const
   ITEM_X_MENU: array [ITEM_MENU_FIRST .. ITEM_MENU_LAST] of Integer = (
     ITEM_X_MENU_PLAY,
     ITEM_X_MENU_OPTIONS,

@@ -866,10 +866,7 @@ const
 
 
 const
-  AUTOSHIFT_FRAMES: array [REGION_FIRST .. REGION_LAST] of Integer = (
-    SHIFT_NTSC_FIRST - 1,
-    SHIFT_PAL_FIRST  - 1
-  );
+  AUTOSHIFT_FRAMES: array [REGION_FIRST .. REGION_LAST] of Integer = (10, 8);
 
 
 const

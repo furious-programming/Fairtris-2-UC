@@ -247,8 +247,8 @@ var
   CellsSet:   Integer;
   CellsUnset: Integer;
 begin
-  CellsSet   := AValue - AFirst + 1;
-  CellsUnset := ALast  - AValue;
+  CellsSet   := AValue + 1;
+  CellsUnset := ALast - AValue;
 
   RenderTextPair(
     AX,

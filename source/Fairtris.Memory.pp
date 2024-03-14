@@ -107,9 +107,6 @@ type
     LockRow:   Integer;
     LockTimer: Integer;
   public
-    SpeedrunTimer:     Integer;
-    SpeedrunCompleted: Boolean;
-  public
     ClearCount:   Integer;
     ClearTimer:   Integer;
     ClearColumn:  Integer;
@@ -357,9 +354,6 @@ begin
 
   LockRow           := 0;
   LockTimer         := 0;
-
-  SpeedrunTimer     := 0;
-  SpeedrunCompleted := False;
 
   ClearCount        := 0;
   ClearTimer        := 0;

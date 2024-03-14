@@ -81,7 +81,6 @@ var
 implementation
 
 uses
-  SDL2,
   Math,
   Fairtris.Clock,
   Fairtris.Input,

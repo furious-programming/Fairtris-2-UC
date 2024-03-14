@@ -23,7 +23,6 @@ unit Fairtris.Arrays;
 interface
 
 uses
-  SDL2,
   Fairtris.Constants;
 
 

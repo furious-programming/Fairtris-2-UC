@@ -555,7 +555,7 @@ var
   Index: Integer;
 begin
   if Memory.Game.ClearCount = 4 then
-    Memory.Game.Flashing := Memory.Game.ClearTimer mod 4 = 0;
+    Memory.Game.Flashing := Memory.Game.ClearTimer mod 5 > 2;
 
   Memory.Game.ClearTimer += 1;
 

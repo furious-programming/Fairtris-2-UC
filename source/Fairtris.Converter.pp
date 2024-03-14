@@ -27,22 +27,22 @@ type
   TConverter = class(TObject)
   public
     function ScoreToString(AScore: Integer): String;
-    function ScoreToStringPrefix(AScore: Integer): String;
+    function ScoreToStringPlaceholder(AScore: Integer): String;
   public
     function PointsPerLineToString(APoints: Integer): String;
-    function PointsPerLineToStringPrefix(APoints: Integer): String;
+    function PointsPerLineToStringPlaceholder(APoints: Integer): String;
   public
     function LinesToString(ALines: Integer): String;
-    function LinesToStringPrefix(ALines: Integer): String;
+    function LinesToStringPlaceholder(ALines: Integer): String;
   public
     function LevelToString(ALevel: Integer): String;
-    function LevelToStringPrefix(ALevel: Integer; AShort: Boolean = False): String;
+    function LevelToStringPlaceholder(ALevel: Integer; AShort: Boolean = False): String;
   public
     function TetrisesToString(ATetrises: Integer): String;
-    function TetrisesToStringPrefix(ATetrises: Integer): String;
+    function TetrisesToStringPlaceholder(ATetrises: Integer): String;
   public
     function GainToString(AGain: Integer): String;
-    function GainToStringPrefix(AGain: Integer): String;
+    function GainToStringPlaceholder(AGain: Integer): String;
   end;
 
 
@@ -63,7 +63,7 @@ begin
 end;
 
 
-function TConverter.ScoreToStringPrefix(AScore: Integer): String;
+function TConverter.ScoreToStringPlaceholder(AScore: Integer): String;
 begin
   Result := StringOfChar('0', 8 - ScoreToString(AScore).Length);
 end;
@@ -75,7 +75,7 @@ begin
 end;
 
 
-function TConverter.PointsPerLineToStringPrefix(APoints: Integer): String;
+function TConverter.PointsPerLineToStringPlaceholder(APoints: Integer): String;
 begin
   Result := StringOfChar('0', 5 - PointsPerLineToString(APoints).Length);
 end;
@@ -87,7 +87,7 @@ begin
 end;
 
 
-function TConverter.LinesToStringPrefix(ALines: Integer): String;
+function TConverter.LinesToStringPlaceholder(ALines: Integer): String;
 begin
   Result := StringOfChar('0', 4 - LinesToString(ALines).Length);
 end;
@@ -99,7 +99,7 @@ begin
 end;
 
 
-function TConverter.LevelToStringPrefix(ALevel: Integer; AShort: Boolean): String;
+function TConverter.LevelToStringPlaceholder(ALevel: Integer; AShort: Boolean): String;
 begin
   Result := StringOfChar('0', 3 - Ord(AShort) - LevelToString(ALevel).Length);
 end;
@@ -111,7 +111,7 @@ begin
 end;
 
 
-function TConverter.TetrisesToStringPrefix(ATetrises: Integer): String;
+function TConverter.TetrisesToStringPlaceholder(ATetrises: Integer): String;
 begin
   Result := StringOfChar('0', 3 - ATetrises.ToString().Length);
 end;
@@ -126,7 +126,7 @@ begin
 end;
 
 
-function TConverter.GainToStringPrefix(AGain: Integer): String;
+function TConverter.GainToStringPlaceholder(AGain: Integer): String;
 begin
   Result := StringOfChar('0', 6 - GainToString(AGain).Length);
 end;

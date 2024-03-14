@@ -506,17 +506,17 @@ begin
       RenderTextPair(
         ITEM_X_LOBBY_BEST_LINES,
         ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
-        Converter.LinesToStringPrefix(Entry.LinesCleared),
-        Converter.LinesToString      (Entry.LinesCleared),
-        COLOR_DARK,
-        COLOR_WHITE
+        Converter.LinesToString(Entry.LinesCleared),
+        Converter.LinesToStringPlaceholder(Entry.LinesCleared),
+        COLOR_WHITE,
+        COLOR_DARK
       );
 
       RenderTextPair(
         ITEM_X_LOBBY_BEST_LEVEL_BEGIN,
         ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
-        Converter.LevelToStringPrefix(Entry.LevelBegin, True),
-        Converter.LevelToString      (Entry.LevelBegin),
+        Converter.LevelToStringPlaceholder(Entry.LevelBegin, True),
+        Converter.LevelToString(Entry.LevelBegin),
         COLOR_DARK,
         COLOR_WHITE
       );
@@ -530,17 +530,17 @@ begin
       RenderTextPair(
         ITEM_X_LOBBY_BEST_LEVEL_END,
         ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
-        Converter.LevelToStringPrefix(Entry.LevelEnd),
-        Converter.LevelToString      (Entry.LevelEnd),
-        COLOR_DARK,
-        COLOR_WHITE
+        Converter.LevelToString(Entry.LevelEnd),
+        Converter.LevelToStringPlaceholder(Entry.LevelEnd),
+        COLOR_WHITE,
+        COLOR_DARK
       );
 
       RenderTextPair(
         ITEM_X_LOBBY_BEST_TETRISES,
         ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
-        Converter.TetrisesToStringPrefix(Entry.TetrisRate),
-        Converter.TetrisesToString      (Entry.TetrisRate),
+        Converter.TetrisesToStringPlaceholder(Entry.TetrisRate),
+        Converter.TetrisesToString(Entry.TetrisRate),
         COLOR_DARK,
         COLOR_WHITE
       );
@@ -548,8 +548,8 @@ begin
       RenderTextPair(
         ITEM_X_LOBBY_BEST_SCORE,
         ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
-        Converter.ScoreToStringPrefix(Entry.TotalScore),
-        Converter.ScoreToString      (Entry.TotalScore),
+        Converter.ScoreToStringPlaceholder(Entry.TotalScore),
+        Converter.ScoreToString(Entry.TotalScore),
         COLOR_DARK,
         COLOR_WHITE
       );
@@ -576,8 +576,8 @@ begin
   RenderTextPair(
     GAME_TOP_X,
     GAME_TOP_Y,
-    Converter.ScoreToStringPrefix(Memory.Game.Best),
-    Converter.ScoreToString      (Memory.Game.Best),
+    Converter.ScoreToStringPlaceholder(Memory.Game.Best),
+    Converter.ScoreToString(Memory.Game.Best),
     COLOR_DARK,
     COLOR_WHITE
   );
@@ -596,8 +596,8 @@ begin
   RenderTextPair(
     GAME_BURNED_X,
     GAME_BURNED_Y,
-    Converter.LinesToStringPrefix(Memory.Game.Burned),
-    Converter.LinesToString      (Memory.Game.Burned),
+    Converter.LinesToStringPlaceholder(Memory.Game.Burned),
+    Converter.LinesToString(Memory.Game.Burned),
     COLOR_DARK,
     COLOR_WHITE,
     ALIGN_RIGHT
@@ -617,8 +617,8 @@ begin
   RenderTextPair(
     GAME_TETRISES_X,
     GAME_TETRISES_Y,
-    Converter.TetrisesToStringPrefix(Memory.Game.TetrisRate),
-    Converter.TetrisesToString      (Memory.Game.TetrisRate),
+    Converter.TetrisesToStringPlaceholder(Memory.Game.TetrisRate),
+    Converter.TetrisesToString(Memory.Game.TetrisRate),
     COLOR_DARK,
     COLOR_WHITE,
     ALIGN_RIGHT
@@ -638,8 +638,8 @@ begin
   RenderTextPair(
     GAME_GAIN_X,
     GAME_GAIN_Y,
-    Converter.GainToStringPrefix(IfThen(Memory.Game.GainTimer > 0, Memory.Game.Gain, 0)),
-    Converter.GainToString      (IfThen(Memory.Game.GainTimer > 0, Memory.Game.Gain, 0)),
+    Converter.GainToStringPlaceholder(IfThen(Memory.Game.GainTimer > 0, Memory.Game.Gain, 0)),
+    Converter.GainToString(IfThen(Memory.Game.GainTimer > 0, Memory.Game.Gain, 0)),
     COLOR_DARK,
     COLOR_WHITE,
     ALIGN_RIGHT
@@ -753,10 +753,10 @@ begin
   RenderTextPair(
     GAME_SCORE_X,
     GAME_SCORE_Y,
-    Converter.ScoreToStringPrefix(Memory.Game.Score),
-    Converter.ScoreToString      (Memory.Game.Score),
-    COLOR_DARK,
-    COLOR_WHITE
+    Converter.ScoreToString(Memory.Game.Score),
+    Converter.ScoreToStringPlaceholder(Memory.Game.Score),
+    COLOR_WHITE,
+    COLOR_DARK
   );
 end;
 
@@ -773,10 +773,10 @@ begin
   RenderTextPair(
     GAME_LINES_X,
     GAME_LINES_Y,
-    Converter.LinesToStringPrefix(Memory.Game.Lines),
-    Converter.LinesToString      (Memory.Game.Lines),
-    COLOR_DARK,
-    COLOR_WHITE
+    Converter.LinesToString(Memory.Game.Lines),
+    Converter.LinesToStringPlaceholder(Memory.Game.Lines),
+    COLOR_WHITE,
+    COLOR_DARK
   );
 end;
 
@@ -793,10 +793,10 @@ begin
   RenderTextPair(
     GAME_LEVEL_X,
     GAME_LEVEL_Y,
-    Converter.LevelToStringPrefix(Memory.Game.Level),
-    Converter.LevelToString      (Memory.Game.Level),
-    COLOR_DARK,
-    COLOR_WHITE
+    Converter.LevelToString(Memory.Game.Level),
+    Converter.LevelToStringPlaceholder(Memory.Game.Level),
+    COLOR_WHITE,
+    COLOR_DARK
   );
 end;
 
@@ -885,8 +885,8 @@ begin
   RenderTextPair(
     ITEM_X_TOP_OUT_RESULT_TOTAL_SCORE,
     ITEM_Y_TOP_OUT_RESULT_TOTAL_SCORE,
-    Converter.ScoreToStringPrefix(Memory.TopOut.TotalScore),
-    Converter.ScoreToString      (Memory.TopOut.TotalScore),
+    Converter.ScoreToStringPlaceholder(Memory.TopOut.TotalScore),
+    Converter.ScoreToString(Memory.TopOut.TotalScore),
     COLOR_DARK,
     COLOR_WHITE,
     ALIGN_RIGHT
@@ -899,8 +899,8 @@ begin
   RenderTextPair(
     ITEM_X_TOP_OUT_RESULT_POINTS_PER_LINE,
     ITEM_Y_TOP_OUT_RESULT_POINTS_PER_LINE,
-    Converter.PointsPerLineToStringPrefix(Memory.TopOut.PointsPerLine),
-    Converter.PointsPerLineToString      (Memory.TopOut.PointsPerLine),
+    Converter.PointsPerLineToStringPlaceholder(Memory.TopOut.PointsPerLine),
+    Converter.PointsPerLineToString(Memory.TopOut.PointsPerLine),
     COLOR_DARK,
     COLOR_WHITE,
     ALIGN_RIGHT
@@ -913,8 +913,8 @@ begin
   RenderTextPair(
     ITEM_X_TOP_OUT_RESULT_LINES_CLEARED,
     ITEM_Y_TOP_OUT_RESULT_LINES_CLEARED,
-    Converter.LinesToStringPrefix(Memory.TopOut.LinesCleared),
-    Converter.LinesToString      (Memory.TopOut.LinesCleared),
+    Converter.LinesToStringPlaceholder(Memory.TopOut.LinesCleared),
+    Converter.LinesToString(Memory.TopOut.LinesCleared),
     COLOR_DARK,
     COLOR_WHITE,
     ALIGN_RIGHT
@@ -927,8 +927,8 @@ begin
   RenderTextPair(
     ITEM_X_TOP_OUT_RESULT_LINES_BURNED,
     ITEM_Y_TOP_OUT_RESULT_LINES_BURNED,
-    Converter.LinesToStringPrefix(Memory.TopOut.LinesBurned),
-    Converter.LinesToString      (Memory.TopOut.LinesBurned),
+    Converter.LinesToStringPlaceholder(Memory.TopOut.LinesBurned),
+    Converter.LinesToString(Memory.TopOut.LinesBurned),
     COLOR_DARK,
     COLOR_WHITE,
     ALIGN_RIGHT
@@ -941,8 +941,8 @@ begin
   RenderTextPair(
     ITEM_X_TOP_OUT_RESULT_TETRIS_RATE,
     ITEM_Y_TOP_OUT_RESULT_TETRIS_RATE,
-    Converter.TetrisesToStringPrefix(Memory.TopOut.TetrisRate),
-    Converter.TetrisesToString      (Memory.TopOut.TetrisRate),
+    Converter.TetrisesToStringPlaceholder(Memory.TopOut.TetrisRate),
+    Converter.TetrisesToString(Memory.TopOut.TetrisRate),
     COLOR_DARK,
     COLOR_WHITE,
     ALIGN_RIGHT

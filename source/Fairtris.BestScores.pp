@@ -47,8 +47,6 @@ type
     procedure Load(AFile: TIniFile; const ASection: String);
     procedure Save(AFile: TIniFile; const ASection: String);
   public
-    function Clone(): TScoreEntry;
-  public
     property LinesCleared: Integer read FLinesCleared write FLinesCleared;
     property LevelBegin:   Integer read FLevelBegin   write FLevelBegin;
     property LevelEnd:     Integer read FLevelEnd     write FLevelEnd;
@@ -179,20 +177,6 @@ begin
   AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_LEVEL_END,     FLevelEnd);
   AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_TETRIS_RATE,   FTetrisRate);
   AFile.WriteInteger(ASection, BEST_SCORES_KEY_SCORE_TOTAL_SCORE,   FTotalScore);
-end;
-
-
-function TScoreEntry.Clone(): TScoreEntry;
-begin
-  Result := TScoreEntry.Create(FRegionID);
-
-  Result.FRegionID     := FRegionID;
-  Result.FLinesCleared := FLinesCleared;
-  Result.FLevelBegin   := FLevelBegin;
-  Result.FLevelEnd     := FLevelEnd;
-  Result.FTetrisRate   := FTetrisRate;
-  Result.FTotalScore   := FTotalScore;
-  Result.FValid        := FValid;
 end;
 
 

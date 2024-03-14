@@ -11,7 +11,7 @@ PC clone of the official classic **[Nintendo Tetris®](https://en.wikipedia.org/
 
 # Compilation and developing
 
-**[Lazarus 3.2](https://sourceforge.net/projects/lazarus)** was used to compile and work on the code, so you should use that as well (or a newer version if available). The **[headers for SDL2](https://github.com/PascalGameDevelopment/SDL2-for-Pascal)** are in the `source\sdl\` subdirectory, while the `.dll` libraries are in the `bin\` folder, where the executable file is created after compilation. The compiled `.dll` libraries were downloaded from the official **[SDL repository](https://github.com/libsdl-org/SDL). So all you need to do is just open the project in **Lazarus** and hit the compile button.
+**[Lazarus 3.2](https://sourceforge.net/projects/lazarus)** was used to compile and work on the code, so you should use that as well (or a newer version if available). The **[headers for SDL2](https://github.com/PascalGameDevelopment/SDL2-for-Pascal)** are in the `source\sdl\` subdirectory, while the `.dll` libraries are in the `bin\` folder, where the executable file is created after compilation. The compiled `.dll` libraries were downloaded from the official **[SDL repository](https://github.com/libsdl-org/SDL)**. So all you need to do is just open the project in **Lazarus** and hit the compile button.
 
 If you are using **Free Pascal IDE** or regular text editor such as **Notepad++** or **Vim**, be sure to somehow add the **SDL** units path in the project settings and well... keep torturing yourself.
 

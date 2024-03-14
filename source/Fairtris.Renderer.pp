@@ -344,14 +344,14 @@ begin
     SDL_Rect(
       AX,
       AY,
-      THUMBNAIL_BUTTON_WIDTH [AButton],
-      THUMBNAIL_BUTTON_HEIGHT[AButton]
+      GAME_CONTROLLER_BUTTON_WIDTH [AButton],
+      GAME_CONTROLLER_BUTTON_HEIGHT[AButton]
     ),
     SDL_Rect(
-      THUMBNAIL_BUTTON_X     [AButton],
-      THUMBNAIL_BUTTON_Y     [AButton],
-      THUMBNAIL_BUTTON_WIDTH [AButton],
-      THUMBNAIL_BUTTON_HEIGHT[AButton]
+      GAME_CONTROLLER_BUTTON_X     [AButton],
+      GAME_CONTROLLER_BUTTON_Y     [AButton],
+      GAME_CONTROLLER_BUTTON_WIDTH [AButton],
+      GAME_CONTROLLER_BUTTON_HEIGHT[AButton]
     )
   );
 end;
@@ -654,8 +654,8 @@ begin
   for Index := TRIGGER_DEVICE_FIRST to TRIGGER_DEVICE_LAST do
     if Input.Device.Switch[Index].Down then
       RenderButton(
-        GAME_CONTROLLER_X + THUMBNAIL_BUTTON_X[Index],
-        GAME_CONTROLLER_Y + THUMBNAIL_BUTTON_Y[Index],
+        GAME_CONTROLLER_X + GAME_CONTROLLER_BUTTON_X[Index],
+        GAME_CONTROLLER_Y + GAME_CONTROLLER_BUTTON_Y[Index],
         Index
       );
 end;

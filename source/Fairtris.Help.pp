@@ -57,6 +57,7 @@ begin
     SCENE_TOP_OUT:     Address += 'summary';
     SCENE_BSOD:        Address += 'bsod';
   otherwise
+    Terminate();
     Exit;
   end;
 

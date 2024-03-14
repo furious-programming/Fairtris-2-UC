@@ -651,12 +651,6 @@ begin
     Memory.Game.GainTimer := DURATION_HANG_GAIN * Clock.FrameRateLimit;
   end;
 
-  if Memory.Game.FallSkipped then
-  begin
-    Memory.Game.FallPoints  := 0;
-    Memory.Game.FallSkipped := False;
-  end;
-
   Memory.Game.State      := GAME_STATE_STACK_LOWER;
   Memory.Game.LowerTimer := 1;
 end;

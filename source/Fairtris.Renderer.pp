@@ -566,13 +566,12 @@ end;
 
 procedure TRenderer.RenderGameTop();
 begin
-  if Logic.Scene.Current = SCENE_GAME_NORMAL then
-    RenderText(
-      GAME_TOP_TITLE_X,
-      GAME_TOP_TITLE_Y,
-      GAME_TOP_TITLE,
-      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
-    );
+  RenderText(
+    GAME_TOP_TITLE_X,
+    GAME_TOP_TITLE_Y,
+    GAME_TOP_TITLE,
+    GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+  );
 
   RenderTextPair(
     GAME_TOP_X,
@@ -587,13 +586,12 @@ end;
 
 procedure TRenderer.RenderGameBurned();
 begin
-  if Logic.Scene.Current = SCENE_GAME_NORMAL then
-    RenderText(
-      GAME_BURNED_TITLE_X,
-      GAME_BURNED_TITLE_Y,
-      GAME_BURNED_TITLE,
-      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
-    );
+  RenderText(
+    GAME_BURNED_TITLE_X,
+    GAME_BURNED_TITLE_Y,
+    GAME_BURNED_TITLE,
+    GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+  );
 
   RenderTextPair(
     GAME_BURNED_X,
@@ -609,13 +607,12 @@ end;
 
 procedure TRenderer.RenderGameTetrises();
 begin
-  if Logic.Scene.Current = SCENE_GAME_NORMAL then
-    RenderText(
-      GAME_TETRISES_TITLE_X,
-      GAME_TETRISES_TITLE_Y,
-      GAME_TETRISES_TITLE,
-      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
-    );
+  RenderText(
+    GAME_TETRISES_TITLE_X,
+    GAME_TETRISES_TITLE_Y,
+    GAME_TETRISES_TITLE,
+    GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+  );
 
   RenderTextPair(
     GAME_TETRISES_X,
@@ -631,13 +628,12 @@ end;
 
 procedure TRenderer.RenderGameGain();
 begin
-  if Logic.Scene.Current = SCENE_GAME_NORMAL then
-    RenderText(
-      GAME_GAIN_TITLE_X,
-      GAME_GAIN_TITLE_Y,
-      GAME_GAIN_TITLE,
-      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
-    );
+  RenderText(
+    GAME_GAIN_TITLE_X,
+    GAME_GAIN_TITLE_Y,
+    GAME_GAIN_TITLE,
+    GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+  );
 
   RenderTextPair(
     GAME_GAIN_X,
@@ -747,13 +743,12 @@ end;
 
 procedure TRenderer.RenderGameScore();
 begin
-  if Logic.Scene.Current = SCENE_GAME_NORMAL then
-    RenderText(
-      GAME_SCORE_TITLE_X,
-      GAME_SCORE_TITLE_Y,
-      GAME_SCORE_TITLE,
-      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
-    );
+  RenderText(
+    GAME_SCORE_TITLE_X,
+    GAME_SCORE_TITLE_Y,
+    GAME_SCORE_TITLE,
+    GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+  );
 
   RenderTextPair(
     GAME_SCORE_X,
@@ -768,13 +763,12 @@ end;
 
 procedure TRenderer.RenderGameLines();
 begin
-  if Logic.Scene.Current = SCENE_GAME_NORMAL then
-    RenderText(
-      GAME_LINES_TITLE_X,
-      GAME_LINES_TITLE_Y,
-      GAME_LINES_TITLE,
-      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
-    );
+  RenderText(
+    GAME_LINES_TITLE_X,
+    GAME_LINES_TITLE_Y,
+    GAME_LINES_TITLE,
+    GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+  );
 
   RenderTextPair(
     GAME_LINES_X,
@@ -789,13 +783,12 @@ end;
 
 procedure TRenderer.RenderGameLevel();
 begin
-  if Logic.Scene.Current = SCENE_GAME_NORMAL then
-    RenderText(
-      GAME_LEVEL_TITLE_X,
-      GAME_LEVEL_TITLE_Y,
-      GAME_LEVEL_TITLE,
-      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
-    );
+  RenderText(
+    GAME_LEVEL_TITLE_X,
+    GAME_LEVEL_TITLE_Y,
+    GAME_LEVEL_TITLE,
+    GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+  );
 
   RenderTextPair(
     GAME_LEVEL_X,
@@ -812,13 +805,12 @@ procedure TRenderer.RenderGameNext();
 begin
   if not Memory.Game.NextVisible then Exit;
 
-  if Logic.Scene.Current = SCENE_GAME_NORMAL then
-    RenderText(
-      GAME_NEXT_TITLE_X,
-      GAME_NEXT_TITLE_Y,
-      GAME_NEXT_TITLE,
-      GAME_TITLE_COLOR[Memory.Game.Level and $FF]
-    );
+  RenderText(
+    GAME_NEXT_TITLE_X,
+    GAME_NEXT_TITLE_Y,
+    GAME_NEXT_TITLE,
+    GAME_TITLE_COLOR[Memory.Game.Level and $FF]
+  );
 
   RenderNext(
     GAME_NEXT_X,

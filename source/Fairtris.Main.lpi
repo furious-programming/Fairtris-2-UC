@@ -27,7 +27,7 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="2"/>
       <BuildNr Value="16"/>
-      <StringTable CompanyName="furious programming" FileDescription="Fairtris 2: The Ultimate Challenge" InternalName="fairtris2" LegalCopyright="Copyleft 2024 furious programming. All rights reversed." OriginalFilename="fairtris2.exe" ProductName="Fairtris 2" ProductVersion="2"/>
+      <StringTable CompanyName="furious programming" FileDescription="Fairtris 2: The Ultimate Challenge" InternalName="Fairtris2" LegalCopyright="Copyleft 2024 furious programming. All rights reversed." OriginalFilename="fairtris2.exe" ProductName="Fairtris 2" ProductVersion="2"/>
     </VersionInfo>
     <BuildModes Count="2">
       <Item1 Name="Debug" Default="True"/>

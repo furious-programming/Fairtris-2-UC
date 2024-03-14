@@ -52,6 +52,7 @@
           <Linking>
             <Debugging>
               <GenerateDebugInfo Value="False"/>
+              <RunWithoutDebug Value="True"/>
             </Debugging>
             <LinkSmart Value="True"/>
             <Options>

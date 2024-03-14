@@ -118,7 +118,6 @@ type
     LowerTimer:  Integer;
     TopOutTimer: Integer;
   public
-  public
     Stack:      TStack;
     LineClears: TLineClears;
   public

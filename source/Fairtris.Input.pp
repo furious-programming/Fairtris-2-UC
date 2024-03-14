@@ -54,7 +54,6 @@ type
     procedure Update();
   public
     procedure Validate();
-    procedure Invalidate();
   public
     property Devices[ADeviceID: Integer]: IControllable read GetDevices; default;
     property Device:   IControllable read FDevice;
@@ -160,15 +159,6 @@ begin
   GetController().Validate();
 
   FNavigation.Validate();
-end;
-
-
-procedure TInput.Invalidate();
-begin
-  GetKeyboard().Invalidate();
-  GetController().Invalidate();
-
-  FNavigation.Invalidate();
 end;
 
 

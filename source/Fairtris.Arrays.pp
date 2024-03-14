@@ -137,13 +137,13 @@ const
 
 const
   BEST_SCORES_FILENAME: array [GENERATOR_FIRST .. GENERATOR_LAST] of String = (
-    '7-bag.ini',
     'multi-bag.ini',
     'classic.ini',
     'balanced.ini',
     'tgm.ini',
     'tgm3.ini',
-    'unfair.ini'
+    'unfair.ini',
+    '7-bag.ini'
   );
 
 const
@@ -363,13 +363,13 @@ const
   );
 
   ITEM_TEXT_LOBBY_GENERATOR: array [GENERATOR_FIRST .. GENERATOR_LAST] of String = (
-    ITEM_TEXT_LOBBY_GENERATOR_7_BAG,
     ITEM_TEXT_LOBBY_GENERATOR_MULTIBAG,
     ITEM_TEXT_LOBBY_GENERATOR_CLASSIC,
     ITEM_TEXT_LOBBY_GENERATOR_BALANCED,
     ITEM_TEXT_LOBBY_GENERATOR_TGM,
     ITEM_TEXT_LOBBY_GENERATOR_TGM3,
-    ITEM_TEXT_LOBBY_GENERATOR_UNFAIR
+    ITEM_TEXT_LOBBY_GENERATOR_UNFAIR,
+    ITEM_TEXT_LOBBY_GENERATOR_7_BAG
   );
 
 const

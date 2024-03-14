@@ -90,7 +90,6 @@ type
     procedure RenderControllerButtonSelection();
     procedure RenderControllerButtonScanCodes();
   private
-    procedure RenderLegal();
     procedure RenderMenu();
     procedure RenderLobby();
     procedure RenderGame();
@@ -100,7 +99,6 @@ type
     procedure RenderKeyboard();
     procedure RenderController();
     procedure RenderBSoD();
-    procedure RenderQuit();
   private
     procedure RenderBegin();
     procedure RenderEnd();
@@ -1378,12 +1376,6 @@ begin
 end;
 
 
-procedure TRenderer.RenderLegal();
-begin
-
-end;
-
-
 procedure TRenderer.RenderMenu();
 begin
   RenderMenuSelection();
@@ -1473,12 +1465,6 @@ begin
 end;
 
 
-procedure TRenderer.RenderQuit();
-begin
-
-end;
-
-
 procedure TRenderer.RenderBegin();
 begin
   SDL_SetRenderTarget   (Window.Renderer, Buffers.Native);
@@ -1499,7 +1485,6 @@ begin
   RenderGround();
 
   case Logic.Scene.Current of
-    SCENE_LEGAL:       RenderLegal();
     SCENE_MENU:        RenderMenu();
     SCENE_LOBBY:       RenderLobby();
     SCENE_GAME_NORMAL: RenderGame();
@@ -1510,7 +1495,6 @@ begin
     SCENE_KEYBOARD:    RenderKeyboard();
     SCENE_CONTROLLER:  RenderController();
     SCENE_BSOD:        RenderBSoD();
-    SCENE_QUIT:        RenderQuit();
   end;
 
   RenderEnd();

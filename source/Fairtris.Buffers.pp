@@ -65,7 +65,9 @@ end;
 
 destructor TBuffers.Destroy();
 begin
-  SDL_DestroyTexture(FNative);
+  if FNative <> nil then
+    SDL_DestroyTexture(FNative);
+
   inherited Destroy();
 end;
 

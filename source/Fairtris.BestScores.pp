@@ -64,8 +64,8 @@ type
   TGeneratorEntries = class(TObject)
   private
     FScoresFile: TMemIniFile;
-    FEntries: TScoreEntries;
-    FRegion: Integer;
+    FEntries:    TScoreEntries;
+    FRegion:     Integer;
   private
     function GetEntry(AIndex: Integer): TScoreEntry;
     function GetCount(): Integer;

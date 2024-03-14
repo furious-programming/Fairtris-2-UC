@@ -29,25 +29,21 @@ uses
 
 type
   TSprites = class(TObject)
-  private type
-    TCollections = array [SPRITE_FIRST .. SPRITE_LAST] of PSDL_Texture;
   private
-    FCollections: TCollections;
+    FSprites: array [SPRITE_FIRST .. SPRITE_LAST] of PSDL_Texture;
   private
-    function GetCollection(ACollectionID: Integer): PSDL_Texture;
+    function GetSprite(ACollectionID: Integer): PSDL_Texture;
   public
     destructor Destroy(); override;
   public
     procedure Load();
   public
-    property Collection[ACollectionID: Integer]: PSDL_Texture read GetCollection; default;
-  public
-    property Charset:        PSDL_Texture index SPRITE_CHARSET         read GetCollection;
-    property Bricks:         PSDL_Texture index SPRITE_BRICKS          read GetCollection;
-    property BricksGlitched: PSDL_Texture index SPRITE_BRICKS_GLITCHED read GetCollection;
-    property Pieces:         PSDL_Texture index SPRITE_PIECES          read GetCollection;
-    property PiecesGlitched: PSDL_Texture index SPRITE_PIECES_GLITCHED read GetCollection;
-    property Controller:     PSDL_Texture index SPRITE_CONTROLLER      read GetCollection;
+    property Charset:        PSDL_Texture index SPRITE_CHARSET         read GetSprite;
+    property Bricks:         PSDL_Texture index SPRITE_BRICKS          read GetSprite;
+    property BricksGlitched: PSDL_Texture index SPRITE_BRICKS_GLITCHED read GetSprite;
+    property Pieces:         PSDL_Texture index SPRITE_PIECES          read GetSprite;
+    property PiecesGlitched: PSDL_Texture index SPRITE_PIECES_GLITCHED read GetSprite;
+    property Controller:     PSDL_Texture index SPRITE_CONTROLLER      read GetSprite;
   end;
 
 
@@ -69,16 +65,16 @@ destructor TSprites.Destroy();
 var
   Index: Integer;
 begin
-  for Index := Low(FCollections) to High(FCollections) do
-    SDL_DestroyTexture(FCollections[Index]);
+  for Index := Low(FSprites) to High(FSprites) do
+    SDL_DestroyTexture(FSprites[Index]);
 
   inherited Destroy();
 end;
 
 
-function TSprites.GetCollection(ACollectionID: Integer): PSDL_Texture;
+function TSprites.GetSprite(ACollectionID: Integer): PSDL_Texture;
 begin
-  Result := FCollections[ACollectionID];
+  Result := FSprites[ACollectionID];
 end;
 
 
@@ -86,11 +82,11 @@ procedure TSprites.Load();
 var
   Index: Integer;
 begin
-  for Index := Low(FCollections) to High(FCollections) do
+  for Index := Low(FSprites) to High(FSprites) do
   begin
-    FCollections[Index] := Img_LoadTexture(Window.Renderer, PChar(SPRITE_PATH + SPRITE_FILENAME[Index]));
+    FSprites[Index] := Img_LoadTexture(Window.Renderer, PChar(SPRITE_PATH + SPRITE_FILENAME[Index]));
 
-    if FCollections[Index] = nil then
+    if FSprites[Index] = nil then
       raise SDLException.CreateFmt(
         ERROR_MESSAGE_SDL,
         [

@@ -78,7 +78,6 @@ type
     procedure Save();
   public
     procedure Add(AEntry: TScoreEntry);
-    procedure Clear();
   public
     property Entry[AIndex: Integer]: TScoreEntry read GetEntry; default;
   public
@@ -100,8 +99,6 @@ type
     procedure Load();
     procedure Save();
   public
-    procedure Clear();
-  public
     property Generator[AGeneratorID: Integer]: TGeneratorEntries read GetGenerator; default;
   end;
 
@@ -118,8 +115,6 @@ type
   public
     procedure Load();
     procedure Save();
-  public
-    procedure Clear();
   public
     property Region[ARegionID: Integer]: TRegionEntries read GetRegion; default;
   end;
@@ -270,12 +265,6 @@ begin
 end;
 
 
-procedure TGeneratorEntries.Clear();
-begin
-  FEntries.Clear();
-end;
-
-
 constructor TRegionEntries.Create(const APath: String; ARegionID: Integer);
 var
   Index: Integer;
@@ -311,15 +300,6 @@ var
 begin
   for Index := Low(FGenerators) to High(FGenerators) do
     FGenerators[Index].Save();
-end;
-
-
-procedure TRegionEntries.Clear();
-var
-  Index: Integer;
-begin
-  for Index := Low(FGenerators) to High(FGenerators) do
-    FGenerators[Index].Clear();
 end;
 
 
@@ -370,15 +350,6 @@ var
 begin
   for Index := Low(FRegions) to High(FRegions) do
     FRegions[Index].Save();
-end;
-
-
-procedure TBestScores.Clear();
-var
-  Index: Integer;
-begin
-  for Index := Low(FRegions) to High(FRegions) do
-    FRegions[Index].Clear();
 end;
 
 

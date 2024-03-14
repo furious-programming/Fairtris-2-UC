@@ -558,7 +558,7 @@ begin
       RenderText(
         ITEM_X_LOBBY_BEST_LINES,
         ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
-        '0000  00-000  000%  00000000',
+        '-       -        -         -',
         COLOR_DARK
       );
 end;

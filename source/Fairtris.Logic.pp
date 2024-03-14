@@ -1134,13 +1134,16 @@ begin
   end;
 
   if Input.Keyboard.CatchedOneKey(ScanCode) then
-  begin
-    Memory.Keyboard.ScanCodes[Memory.Keyboard.KeyIndex] := ScanCode;
-    Memory.Keyboard.Mapping := False;
-    Memory.Keyboard.RemoveDuplicates(ScanCode, Memory.Keyboard.KeyIndex);
+    if ScanCode in KEYBOARD_KEY_RESERVED then
+      Sounds.PlaySound(SOUND_HUM)
+    else
+    begin
+      Memory.Keyboard.ScanCodes[Memory.Keyboard.KeyIndex] := ScanCode;
+      Memory.Keyboard.Mapping := False;
+      Memory.Keyboard.RemoveDuplicates(ScanCode, Memory.Keyboard.KeyIndex);
 
-    Sounds.PlaySound(SOUND_START);
-  end;
+      Sounds.PlaySound(SOUND_START);
+    end;
 end;
 
 
@@ -1414,8 +1417,14 @@ begin
   if not Memory.Game.Started then
     Generators.Shuffle();
 
-  if Input.Fixed.Help.Pressed  then OpenHelp();
-  if Input.Fixed.Video.Pressed then Placement.ToggleVideoMode();
+  if FScene.Current = SCENE_KEYBOARD then
+    if Memory.Keyboard.Mapping then
+      Exit;
+
+  if Input.Fixed.Help.Pressed    then OpenHelp();
+  if Input.Fixed.Video.Pressed   then Placement.ToggleVideoMode();
+  if Input.Fixed.Enlarge.Pressed then Placement.EnlargeWindow();
+  if Input.Fixed.Reduce.Pressed  then Placement.ReduceWindow();
 end;
 
 

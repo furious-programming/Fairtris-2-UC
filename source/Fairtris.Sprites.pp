@@ -38,6 +38,8 @@ type
   public
     procedure Load();
   public
+    property Sprite[ASpriteID: Integer]: PSDL_Texture read GetSprite;
+  public
     property Charset:        PSDL_Texture index SPRITE_CHARSET         read GetSprite;
     property Bricks:         PSDL_Texture index SPRITE_BRICKS          read GetSprite;
     property BricksGlitched: PSDL_Texture index SPRITE_BRICKS_GLITCHED read GetSprite;

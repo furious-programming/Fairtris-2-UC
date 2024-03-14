@@ -1411,11 +1411,11 @@ procedure TLogic.UpdateCommon();
 begin
   UpdateRoseState();
 
-  if Input.Fixed.Help.Pressed  then OpenHelp();
-  if Input.Fixed.Video.Pressed then Placement.ToggleVideoMode();
-
   if not Memory.Game.Started then
     Generators.Shuffle();
+
+  if Input.Fixed.Help.Pressed  then OpenHelp();
+  if Input.Fixed.Video.Pressed then Placement.ToggleVideoMode();
 end;
 
 

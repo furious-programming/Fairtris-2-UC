@@ -30,7 +30,9 @@ uses
 type
   TPlacement = class(TObject)
   private
-    FInitialized:  Boolean;
+    FInitialized: Boolean;
+  private
+    FVideoBounds:  TSDL_Rect;
     FVideoEnabled: Boolean;
   private
     FMonitorIndex:  Integer;
@@ -43,6 +45,7 @@ type
     procedure SetWindowSize(ASizeID: Integer);
   private
     procedure UpdateWindowBounds();
+    procedure UpdateWindowBoundsMouse();
     procedure UpdateWindowClient();
     procedure UpdateWindowCursor();
     procedure UpdateWindowHitTest();
@@ -107,10 +110,12 @@ end;
 
 constructor TPlacement.Create();
 begin
-  FMonitorIndex := 0;
-  FWindowSizeID := SIZE_DEFAULT;
+  SDL_GetDisplayBounds(0, @FVideoBounds);
 
+  FMonitorIndex := 0;
   SDL_GetDisplayBounds(0, @FMonitorBounds);
+
+  FWindowSizeID := SIZE_DEFAULT;
   UpdateWindow();
 end;
 
@@ -172,6 +177,23 @@ begin
 end;
 
 
+procedure TPlacement.UpdateWindowBoundsMouse();
+var
+  MouseBounds: TSDL_Rect;
+begin
+  if FVideoEnabled then
+  begin
+    MouseBounds.X := 0;
+    MouseBounds.Y := 0;
+
+    SDL_GetWindowSize     (Window.Window, @MouseBounds.W, @MouseBounds.H);
+    SDL_SetWindowMouseRect(Window.Window, @MouseBounds);
+  end
+  else
+    SDL_SetWindowMouseRect(Window.Window, nil);
+end;
+
+
 procedure TPlacement.UpdateWindowClient();
 var
   CurrentWidth:  Integer;
@@ -179,8 +201,8 @@ var
   NewWidth:      Integer;
   NewHeight:     Integer;
 begin
-  CurrentWidth  := IfThen(FVideoEnabled, FMonitorBounds.W, FWindowBounds.W);
-  CurrentHeight := IfThen(FVideoEnabled, FMonitorBounds.H, FWindowBounds.H);
+  CurrentWidth  := IfThen(FVideoEnabled, FVideoBounds.W, FWindowBounds.W);
+  CurrentHeight := IfThen(FVideoEnabled, FVideoBounds.H, FWindowBounds.H);
 
   NewHeight := CurrentHeight;
   NewWidth  := Round(NewHeight * CLIENT_RATIO_LANDSCAPE);
@@ -252,21 +274,21 @@ procedure TPlacement.UpdateVideo();
 begin
   if FVideoEnabled then
   begin
-    SDL_ShowCursor(SDL_DISABLE);
-    SDL_SetWindowHitTest(Window.Window, nil, nil);
-
-    UpdateMonitor();
-    UpdateWindowClient();
-
-    SDL_SetWindowSize      (Window.Window, FMonitorBounds.W, FMonitorBounds.H);
-    SDL_SetWindowPosition  (Window.Window, FMonitorBounds.X, FMonitorBounds.Y);
+    SDL_SetWindowSize      (Window.Window, FVideoBounds.W, FVideoBounds.H);
+    SDL_SetWindowPosition  (Window.Window, FVideoBounds.X, FVideoBounds.Y);
     SDL_SetWindowFullScreen(Window.Window, SDL_WINDOW_FULLSCREEN);
+
+    UpdateWindowClient();
+    UpdateWindowCursor();
+    UpdateWindowHitTest();
   end
   else
   begin
     SDL_SetWindowFullScreen(Window.Window, SDL_DISABLE);
     UpdateWindow();
   end;
+
+  UpdateWindowBoundsMouse();
 end;
 
 
@@ -301,7 +323,10 @@ end;
 procedure TPlacement.ExposeWindow();
 begin
   if not FVideoEnabled then
-    SDL_GetWindowPosition(Window.Window, @FWindowBounds.X, @FWindowBounds.Y);
+  begin
+    UpdateMonitor();
+    UpdateWindowBounds();
+  end
 end;
 
 

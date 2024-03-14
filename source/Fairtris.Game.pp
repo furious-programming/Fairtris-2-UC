@@ -82,8 +82,10 @@ uses
 
 procedure TGame.CreateSystem();
 begin
-  SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, '0');
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,         'linear');
+  SDL_SetHint(SDL_HINT_RENDER_VSYNC,                 '0');
+  SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, '0');
+  SDL_SetHint(SDL_HINT_ACCELEROMETER_AS_JOYSTICK,    '0');
 
   if SDL_Init(SDL_INIT_VIDEO or SDL_INIT_AUDIO or SDL_INIT_JOYSTICK or SDL_INIT_EVENTS) < 0 then
     raise SDLException.CreateFmt(ERROR_MESSAGE_SDL, [ERROR_MESSAGE[ERROR_SDL_INITIALIZE_SYSTEM], SDL_GetError()]);
@@ -209,6 +211,12 @@ begin
 
   while SDL_PollEvent(@Event) = 1 do
   case Event.Type_ of
+    SDL_WINDOWEVENT:
+    case Event.Window.Event of
+      SDL_WINDOWEVENT_MOVED:
+        Placement.ExposeWindow();
+    end;
+
     SDL_MOUSEBUTTONDOWN:
     case Event.Button.Button of
       SDL_BUTTON_LEFT:

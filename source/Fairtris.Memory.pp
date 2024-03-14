@@ -148,7 +148,7 @@ type
 
 
 type
-  TTopOutMemory = class(TObject)
+  TSummaryMemory = class(TObject)
   public
     ItemIndex: Integer;
   public
@@ -251,7 +251,7 @@ type
     FLobby:      TLobbyMemory;
     FGame:       TGameMemory;
     FPause:      TPauseMemory;
-    FTopOut:     TTopOutMemory;
+    FSummary:    TSummaryMemory;
     FOptions:    TOptionsMemory;
     FKeyboard:   TKeyboardMemory;
     FController: TControllerMemory;
@@ -269,7 +269,7 @@ type
     property Lobby:      TLobbyMemory      read FLobby;
     property Game:       TGameMemory       read FGame;
     property Pause:      TPauseMemory      read FPause;
-    property TopOut:     TTopOutMemory     read FTopOut;
+    property Summary:    TSummaryMemory    read FSummary;
     property Options:    TOptionsMemory    read FOptions;
     property Keyboard:   TKeyboardMemory   read FKeyboard;
     property Controller: TControllerMemory read FController;
@@ -531,7 +531,7 @@ begin
   FLobby      := TLobbyMemory.Create();
   FGame       := TGameMemory.Create();
   FPause      := TPauseMemory.Create();
-  FTopOut     := TTopOutMemory.Create();
+  FSummary     := TSummaryMemory.Create();
   FOptions    := TOptionsMemory.Create();
   FKeyboard   := TKeyboardMemory.Create();
   FController := TControllerMemory.Create();
@@ -548,7 +548,7 @@ begin
   FLobby.Free();
   FGame.Free();
   FPause.Free();
-  FTopOut.Free();
+  FSummary.Free();
   FOptions.Free();
   FKeyboard.Free();
   FController.Free();

@@ -57,9 +57,9 @@ type
     procedure PreparePauseSelection();
     procedure PreparePauseScene();
   private
-    procedure PrepareTopOutSelection();
-    procedure PrepareTopOutResult();
-    procedure PrepareTopOutBestScore();
+    procedure PrepareSummarySelection();
+    procedure PrepareSummaryResult();
+    procedure PrepareSummaryBestScore();
   private
     procedure PrepareOptionsSelection();
     procedure PrepareOptionsScene();
@@ -72,7 +72,7 @@ type
   private
     procedure PrepareLobby();
     procedure PreparePause();
-    procedure PrepareTopOut();
+    procedure PrepareSummary();
     procedure PreapreOptions();
     procedure PrepareKeyboard();
     procedure PrepareController();
@@ -100,8 +100,8 @@ type
     procedure UpdatePauseSelection();
     procedure UpdatePauseScene();
   private
-    procedure UpdateTopOutSelection();
-    procedure UpdateTopOutScene();
+    procedure UpdateSummarySelection();
+    procedure UpdateSummaryScene();
   private
     procedure UpdateOptionsSelection();
     procedure UpdateOptionsInput();
@@ -133,7 +133,7 @@ type
     procedure UpdateLobby();
     procedure UpdateGame();
     procedure UpdatePause();
-    procedure UpdateTopOut();
+    procedure UpdateSummary();
     procedure UpdateOptions();
     procedure UpdateKeyboard();
     procedure UpdateController();
@@ -287,23 +287,23 @@ begin
 end;
 
 
-procedure TLogic.PrepareTopOutSelection();
+procedure TLogic.PrepareSummarySelection();
 begin
-  Memory.TopOut.ItemIndex := ITEM_TOP_OUT_FIRST;
+  Memory.Summary.ItemIndex := ITEM_SUMMARY_FIRST;
 end;
 
 
-procedure TLogic.PrepareTopOutResult();
+procedure TLogic.PrepareSummaryResult();
 begin
-  Memory.TopOut.TotalScore    := Memory.Game.Score;
-  Memory.TopOut.PointsPerLine := Memory.Game.PointsPerLine;
-  Memory.TopOut.LinesCleared  := Memory.Game.LinesCleared;
-  Memory.TopOut.LinesBurned   := Memory.Game.LinesBurned;
-  Memory.TopOut.TetrisRate    := Memory.Game.TetrisRate;
+  Memory.Summary.TotalScore    := Memory.Game.Score;
+  Memory.Summary.PointsPerLine := Memory.Game.PointsPerLine;
+  Memory.Summary.LinesCleared  := Memory.Game.LinesCleared;
+  Memory.Summary.LinesBurned   := Memory.Game.LinesBurned;
+  Memory.Summary.TetrisRate    := Memory.Game.TetrisRate;
 end;
 
 
-procedure TLogic.PrepareTopOutBestScore();
+procedure TLogic.PrepareSummaryBestScore();
 var
   Entry: TScoreEntry;
 begin
@@ -387,13 +387,13 @@ begin
 end;
 
 
-procedure TLogic.PrepareTopOut();
+procedure TLogic.PrepareSummary();
 begin
   if FScene.Changed then
   begin
-    PrepareTopOutSelection();
-    PrepareTopOutResult();
-    PrepareTopOutBestScore();
+    PrepareSummarySelection();
+    PrepareSummaryResult();
+    PrepareSummaryBestScore();
 
     Memory.Game.Started := False;
   end;
@@ -711,7 +711,7 @@ begin
     if Memory.Game.State = GAME_STATE_UPDATE_TOP_OUT then
     begin
       if Memory.Game.Ended then
-        FScene.Current := SCENE_TOP_OUT;
+        FScene.Current := SCENE_SUMMARY;
     end
     else
       if not Input.Device.Connected or Input.Device.Start.Pressed then
@@ -788,28 +788,28 @@ begin
 end;
 
 
-procedure TLogic.UpdateTopOutSelection();
+procedure TLogic.UpdateSummarySelection();
 begin
   if InputMenuSetPrev() then
   begin
-    UpdateItemIndex(Memory.TopOut.ItemIndex, ITEM_TOP_OUT_COUNT, ITEM_PREV);
+    UpdateItemIndex(Memory.Summary.ItemIndex, ITEM_SUMMARY_COUNT, ITEM_PREV);
     Sounds.PlaySound(SOUND_BLIP);
   end;
 
   if InputMenuSetNext() then
   begin
-    UpdateItemIndex(Memory.TopOut.ItemIndex, ITEM_TOP_OUT_COUNT, ITEM_NEXT);
+    UpdateItemIndex(Memory.Summary.ItemIndex, ITEM_SUMMARY_COUNT, ITEM_NEXT);
     Sounds.PlaySound(SOUND_BLIP);
   end;
 end;
 
 
-procedure TLogic.UpdateTopOutScene();
+procedure TLogic.UpdateSummaryScene();
 begin
   FScene.Validate();
 
   if not Input.Device.Connected then
-    if Memory.TopOut.ItemIndex = ITEM_TOP_OUT_PLAY then
+    if Memory.Summary.ItemIndex = ITEM_SUMMARY_PLAY then
     begin
       if InputMenuAccepted() then
         Sounds.PlaySound(SOUND_HUM);
@@ -824,7 +824,7 @@ begin
   end;
 
   if InputMenuAccepted() or Input.Device.Start.Pressed or Input.Keyboard.Start.Pressed then
-    if Memory.TopOut.ItemIndex = ITEM_TOP_OUT_PLAY then
+    if Memory.Summary.ItemIndex = ITEM_SUMMARY_PLAY then
     begin
       Memory.Game.Reset();
 
@@ -833,7 +833,7 @@ begin
     end;
 
   if InputMenuAccepted() then
-    if Memory.TopOut.ItemIndex = ITEM_TOP_OUT_BACK then
+    if Memory.Summary.ItemIndex = ITEM_SUMMARY_BACK then
     begin
       FScene.Current := Memory.Game.FromScene;
       Sounds.PlaySound(SOUND_DROP);
@@ -1389,7 +1389,7 @@ begin
   if Memory.BSoD.State = BSOD_STATE_CONTROL then
     if InputMenuAccepted() or Input.Device.Start.Pressed or Input.Keyboard.Start.Pressed then
     begin
-      FScene.Current := SCENE_TOP_OUT;
+      FScene.Current := SCENE_SUMMARY;
       Sounds.PlaySound(SOUND_START);
     end;
 end;
@@ -1471,12 +1471,12 @@ begin
 end;
 
 
-procedure TLogic.UpdateTopOut();
+procedure TLogic.UpdateSummary();
 begin
-  PrepareTopOut();
+  PrepareSummary();
 
-  UpdateTopOutSelection();
-  UpdateTopOutScene();
+  UpdateSummarySelection();
+  UpdateSummaryScene();
 end;
 
 
@@ -1545,7 +1545,7 @@ begin
     SCENE_GAME_NORMAL: UpdateGame();
     SCENE_GAME_FLASH:  UpdateGame();
     SCENE_PAUSE:       UpdatePause();
-    SCENE_TOP_OUT:     UpdateTopOut();
+    SCENE_SUMMARY:     UpdateSummary();
     SCENE_OPTIONS:     UpdateOptions();
     SCENE_KEYBOARD:    UpdateKeyboard();
     SCENE_CONTROLLER:  UpdateController();

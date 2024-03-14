@@ -46,15 +46,15 @@ var
   Address: String = 'https://github.com/furious-programming/fairtris-2-uc/wiki/';
 begin
   case Logic.Scene.Current of
-    SCENE_MENU:        Address += 'prime-menu';
+    SCENE_MENU:        Address += 'menu';
     SCENE_LOBBY:       Address += 'lobby';
     SCENE_GAME_NORMAL: Address += 'game';
     SCENE_GAME_FLASH:  Address += 'game';
-    SCENE_PAUSE:       Address += 'game-pause';
-    SCENE_OPTIONS:     Address += 'game-options';
-    SCENE_KEYBOARD:    Address += 'set-up-keyboard';
-    SCENE_CONTROLLER:  Address += 'set-up-controller';
-    SCENE_TOP_OUT:     Address += 'summary';
+    SCENE_PAUSE:       Address += 'pause';
+    SCENE_OPTIONS:     Address += 'options';
+    SCENE_KEYBOARD:    Address += 'keyboard';
+    SCENE_CONTROLLER:  Address += 'controller';
+    SCENE_SUMMARY:     Address += 'summary';
     SCENE_BSOD:        Address += 'bsod';
   otherwise
     Terminate();

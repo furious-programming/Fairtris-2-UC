@@ -46,10 +46,10 @@ type
   private
     procedure RenderMenuSelection();
   private
-    procedure RenderLobbySelection();
-    procedure RenderLobbyItems();
-    procedure RenderLobbyParameters();
-    procedure RenderLobbyBestScores();
+    procedure RenderSetupSelection();
+    procedure RenderSetupItems();
+    procedure RenderSetupParameters();
+    procedure RenderSetupBestScores();
   private
     procedure RenderGameTop();
     procedure RenderGameBurned();
@@ -91,7 +91,7 @@ type
     procedure RenderControllerButtonScanCodes();
   private
     procedure RenderMenu();
-    procedure RenderLobby();
+    procedure RenderSetup();
     procedure RenderGame();
     procedure RenderPause();
     procedure RenderSummary();
@@ -414,20 +414,20 @@ begin
 end;
 
 
-procedure TRenderer.RenderLobbySelection();
+procedure TRenderer.RenderSetupSelection();
 begin
   RenderText(
-    ITEM_X_LOBBY   [Memory.Lobby.ItemIndex],
-    ITEM_Y_LOBBY   [Memory.Lobby.ItemIndex],
-    ITEM_TEXT_LOBBY[Memory.Lobby.ItemIndex]
+    ITEM_X_SETUP   [Memory.Setup.ItemIndex],
+    ITEM_Y_SETUP   [Memory.Setup.ItemIndex],
+    ITEM_TEXT_SETUP[Memory.Setup.ItemIndex]
   );
 
   RenderText(
-    ITEM_X_LOBBY[Memory.Lobby.ItemIndex] - ITEM_X_MARKER,
-    ITEM_Y_LOBBY[Memory.Lobby.ItemIndex],
+    ITEM_X_SETUP[Memory.Setup.ItemIndex] - ITEM_X_MARKER,
+    ITEM_Y_SETUP[Memory.Setup.ItemIndex],
     ITEM_TEXT_MARKER,
     IfThen(
-      Memory.Lobby.ItemIndex = ITEM_LOBBY_START,
+      Memory.Setup.ItemIndex = ITEM_SETUP_START,
       IfThen(Input.Device.Connected, COLOR_WHITE, COLOR_DARK),
       COLOR_WHITE
     )
@@ -435,16 +435,16 @@ begin
 end;
 
 
-procedure TRenderer.RenderLobbyItems();
+procedure TRenderer.RenderSetupItems();
 begin
   RenderText(
-    ITEM_X_LOBBY_START,
-    ITEM_Y_LOBBY_START,
-    ITEM_TEXT_LOBBY_START,
+    ITEM_X_SETUP_START,
+    ITEM_Y_SETUP_START,
+    ITEM_TEXT_SETUP_START,
     IfThen(
       Input.Device.Connected,
       IfThen(
-        Memory.Lobby.ItemIndex = ITEM_LOBBY_START,
+        Memory.Setup.ItemIndex = ITEM_SETUP_START,
         COLOR_WHITE,
         COLOR_GRAY
       ),
@@ -454,36 +454,36 @@ begin
 end;
 
 
-procedure TRenderer.RenderLobbyParameters();
+procedure TRenderer.RenderSetupParameters();
 begin
   RenderText(
-    ITEM_X_LOBBY_PARAM,
-    ITEM_Y_LOBBY_REGION,
-    ITEM_TEXT_LOBBY_REGION[Memory.Lobby.Region],
+    ITEM_X_SETUP_PARAM,
+    ITEM_Y_SETUP_REGION,
+    ITEM_TEXT_SETUP_REGION[Memory.Setup.Region],
     IfThen(
-      Memory.Lobby.ItemIndex = ITEM_LOBBY_REGION,
+      Memory.Setup.ItemIndex = ITEM_SETUP_REGION,
       COLOR_WHITE,
       COLOR_GRAY
     )
   );
 
   RenderText(
-    ITEM_X_LOBBY_PARAM,
-    ITEM_Y_LOBBY_GENERATOR,
-    ITEM_TEXT_LOBBY_GENERATOR[Memory.Lobby.Generator],
+    ITEM_X_SETUP_PARAM,
+    ITEM_Y_SETUP_GENERATOR,
+    ITEM_TEXT_SETUP_GENERATOR[Memory.Setup.Generator],
     IfThen(
-      Memory.Lobby.ItemIndex = ITEM_LOBBY_GENERATOR,
+      Memory.Setup.ItemIndex = ITEM_SETUP_GENERATOR,
       COLOR_WHITE,
       COLOR_GRAY
     )
   );
 
   RenderText(
-    ITEM_X_LOBBY_PARAM,
-    ITEM_Y_LOBBY_LEVEL,
-    Memory.Lobby.Level.ToString(),
+    ITEM_X_SETUP_PARAM,
+    ITEM_Y_SETUP_LEVEL,
+    Memory.Setup.Level.ToString(),
     IfThen(
-      Memory.Lobby.ItemIndex = ITEM_LOBBY_LEVEL,
+      Memory.Setup.ItemIndex = ITEM_SETUP_LEVEL,
       COLOR_WHITE,
       COLOR_GRAY
     )
@@ -491,19 +491,19 @@ begin
 end;
 
 
-procedure TRenderer.RenderLobbyBestScores();
+procedure TRenderer.RenderSetupBestScores();
 var
   Entry: TScoreEntry;
   Index: Integer;
 begin
   for Index := BEST_SCORES_FIRST to BEST_SCORES_LAST do
-    if Index < BestScores[Memory.Lobby.Region][Memory.Lobby.Generator].Count then
+    if Index < BestScores[Memory.Setup.Region][Memory.Setup.Generator].Count then
     begin
-      Entry := BestScores[Memory.Lobby.Region][Memory.Lobby.Generator][Index];
+      Entry := BestScores[Memory.Setup.Region][Memory.Setup.Generator][Index];
 
       RenderTextPair(
-        ITEM_X_LOBBY_BEST_LINES,
-        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        ITEM_X_SETUP_BEST_LINES,
+        ITEM_Y_SETUP_BEST + Index * BEST_SCORES_SPACING_Y,
         Converter.LinesToString(Entry.LinesCleared),
         Converter.LinesToStringPlaceholder(Entry.LinesCleared),
         COLOR_WHITE,
@@ -511,8 +511,8 @@ begin
       );
 
       RenderTextPair(
-        ITEM_X_LOBBY_BEST_LEVEL_BEGIN,
-        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        ITEM_X_SETUP_BEST_LEVEL_BEGIN,
+        ITEM_Y_SETUP_BEST + Index * BEST_SCORES_SPACING_Y,
         Converter.LevelToStringPlaceholder(Entry.LevelBegin, True),
         Converter.LevelToString(Entry.LevelBegin),
         COLOR_DARK,
@@ -520,14 +520,14 @@ begin
       );
 
       RenderText(
-        ITEM_X_LOBBY_BEST_LEVEL_DASH,
-        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        ITEM_X_SETUP_BEST_LEVEL_DASH,
+        ITEM_Y_SETUP_BEST + Index * BEST_SCORES_SPACING_Y,
         '-'
       );
 
       RenderTextPair(
-        ITEM_X_LOBBY_BEST_LEVEL_END,
-        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        ITEM_X_SETUP_BEST_LEVEL_END,
+        ITEM_Y_SETUP_BEST + Index * BEST_SCORES_SPACING_Y,
         Converter.LevelToString(Entry.LevelEnd),
         Converter.LevelToStringPlaceholder(Entry.LevelEnd),
         COLOR_WHITE,
@@ -535,8 +535,8 @@ begin
       );
 
       RenderTextPair(
-        ITEM_X_LOBBY_BEST_TETRISES,
-        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        ITEM_X_SETUP_BEST_TETRISES,
+        ITEM_Y_SETUP_BEST + Index * BEST_SCORES_SPACING_Y,
         Converter.TetrisesToStringPlaceholder(Entry.TetrisRate),
         Converter.TetrisesToString(Entry.TetrisRate),
         COLOR_DARK,
@@ -544,8 +544,8 @@ begin
       );
 
       RenderTextPair(
-        ITEM_X_LOBBY_BEST_SCORE,
-        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        ITEM_X_SETUP_BEST_SCORE,
+        ITEM_Y_SETUP_BEST + Index * BEST_SCORES_SPACING_Y,
         Converter.ScoreToStringPlaceholder(Entry.TotalScore),
         Converter.ScoreToString(Entry.TotalScore),
         COLOR_DARK,
@@ -554,8 +554,8 @@ begin
     end
     else
       RenderText(
-        ITEM_X_LOBBY_BEST_LINES,
-        ITEM_Y_LOBBY_BEST + Index * BEST_SCORES_SPACING_Y,
+        ITEM_X_SETUP_BEST_LINES,
+        ITEM_Y_SETUP_BEST + Index * BEST_SCORES_SPACING_Y,
         '-       -        -         -',
         COLOR_DARK
       );
@@ -1382,12 +1382,12 @@ begin
 end;
 
 
-procedure TRenderer.RenderLobby();
+procedure TRenderer.RenderSetup();
 begin
-  RenderLobbySelection();
-  RenderLobbyItems();
-  RenderLobbyParameters();
-  RenderLobbyBestScores();
+  RenderSetupSelection();
+  RenderSetupItems();
+  RenderSetupParameters();
+  RenderSetupBestScores();
 end;
 
 
@@ -1486,7 +1486,7 @@ begin
 
   case Logic.Scene.Current of
     SCENE_MENU:        RenderMenu();
-    SCENE_LOBBY:       RenderLobby();
+    SCENE_SETUP:       RenderSetup();
     SCENE_GAME_NORMAL: RenderGame();
     SCENE_GAME_FLASH:  RenderGame();
     SCENE_PAUSE:       RenderPause();

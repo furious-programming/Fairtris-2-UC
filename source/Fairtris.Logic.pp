@@ -50,7 +50,7 @@ type
   private
     procedure OpenHelp();
   private
-    procedure PrepareLobbySelection();
+    procedure PrepareSetupSelection();
   private
     procedure PrepareGameScene();
   private
@@ -70,7 +70,7 @@ type
     procedure PrepareControllerSelection();
     procedure PrepareControllerScanCodes();
   private
-    procedure PrepareLobby();
+    procedure PrepareSetup();
     procedure PreparePause();
     procedure PrepareSummary();
     procedure PreapreOptions();
@@ -87,11 +87,11 @@ type
     procedure UpdateMenuSelection();
     procedure UpdateMenuScene();
   private
-    procedure UpdateLobbySelection();
-    procedure UpdateLobbyRegion();
-    procedure UpdateLobbyGenerator();
-    procedure UpdateLobbyLevel();
-    procedure UpdateLobbyScene();
+    procedure UpdateSetupSelection();
+    procedure UpdateSetupRegion();
+    procedure UpdateSetupGenerator();
+    procedure UpdateSetupLevel();
+    procedure UpdateSetupScene();
   private
     procedure UpdateGameState();
     procedure UpdateGameScene();
@@ -130,7 +130,7 @@ type
     procedure UpdateCommon();
     procedure UpdateLegal();
     procedure UpdateMenu();
-    procedure UpdateLobby();
+    procedure UpdateSetup();
     procedure UpdateGame();
     procedure UpdatePause();
     procedure UpdateSummary();
@@ -261,9 +261,9 @@ begin
 end;
 
 
-procedure TLogic.PrepareLobbySelection();
+procedure TLogic.PrepareSetupSelection();
 begin
-  Memory.Lobby.ItemIndex := ITEM_LOBBY_START;
+  Memory.Setup.ItemIndex := ITEM_SETUP_START;
 end;
 
 
@@ -307,14 +307,14 @@ procedure TLogic.PrepareSummaryBestScore();
 var
   Entry: TScoreEntry;
 begin
-  Entry              := TScoreEntry.Create(Memory.Lobby.Region, True);
+  Entry              := TScoreEntry.Create(Memory.Setup.Region, True);
   Entry.LinesCleared := Memory.Game.LinesCleared;
-  Entry.LevelBegin   := Memory.Lobby.Level;
+  Entry.LevelBegin   := Memory.Setup.Level;
   Entry.LevelEnd     := Memory.Game.Level;
   Entry.TetrisRate   := Memory.Game.TetrisRate;
   Entry.TotalScore   := Memory.Game.Score;
 
-  BestScores[Memory.Lobby.Region][Memory.Lobby.Generator].Add(Entry);
+  BestScores[Memory.Setup.Region][Memory.Setup.Generator].Add(Entry);
 end;
 
 
@@ -363,15 +363,15 @@ begin
 end;
 
 
-procedure TLogic.PrepareLobby();
+procedure TLogic.PrepareSetup();
 begin
   if not FScene.Changed then Exit;
 
   if FScene.Previous = SCENE_MENU then
-    PrepareLobbySelection();
+    PrepareSetupSelection();
 
   Memory.Game.Started   := False;
-  Memory.Game.FromScene := SCENE_LOBBY;
+  Memory.Game.FromScene := SCENE_SETUP;
 end;
 
 
@@ -519,7 +519,7 @@ begin
   if InputMenuAccepted() then
   begin
     case Memory.Menu.ItemIndex of
-      ITEM_MENU_PLAY:    FScene.Current := SCENE_LOBBY;
+      ITEM_MENU_PLAY:    FScene.Current := SCENE_SETUP;
       ITEM_MENU_OPTIONS: FScene.Current := SCENE_OPTIONS;
       ITEM_MENU_QUIT:    FScene.Current := SCENE_QUIT;
     end;
@@ -535,32 +535,32 @@ begin
 end;
 
 
-procedure TLogic.UpdateLobbySelection();
+procedure TLogic.UpdateSetupSelection();
 begin
   if InputMenuSetPrev() then
   begin
-    UpdateItemIndex(Memory.Lobby.ItemIndex, ITEM_LOBBY_COUNT, ITEM_PREV);
+    UpdateItemIndex(Memory.Setup.ItemIndex, ITEM_SETUP_COUNT, ITEM_PREV);
     Sounds.PlaySound(SOUND_BLIP);
   end;
 
   if InputMenuSetNext() then
   begin
-    UpdateItemIndex(Memory.Lobby.ItemIndex, ITEM_LOBBY_COUNT, ITEM_NEXT);
+    UpdateItemIndex(Memory.Setup.ItemIndex, ITEM_SETUP_COUNT, ITEM_NEXT);
     Sounds.PlaySound(SOUND_BLIP);
   end;
 end;
 
 
-procedure TLogic.UpdateLobbyRegion();
+procedure TLogic.UpdateSetupRegion();
 var
   Frames:  Integer;
   Changed: Boolean = False;
 begin
-  if Memory.Lobby.ItemIndex <> ITEM_LOBBY_REGION then Exit;
+  if Memory.Setup.ItemIndex <> ITEM_SETUP_REGION then Exit;
 
   if InputOptionSetPrev() then
   begin
-    UpdateItemIndex(Memory.Lobby.Region, REGION_COUNT, ITEM_PREV);
+    UpdateItemIndex(Memory.Setup.Region, REGION_COUNT, ITEM_PREV);
     Changed := True;
 
     Sounds.PlaySound(SOUND_SHIFT);
@@ -568,7 +568,7 @@ begin
 
   if InputOptionSetNext() then
   begin
-    UpdateItemIndex(Memory.Lobby.Region, REGION_COUNT, ITEM_NEXT);
+    UpdateItemIndex(Memory.Setup.Region, REGION_COUNT, ITEM_NEXT);
     Changed := True;
 
     Sounds.PlaySound(SOUND_SHIFT);
@@ -576,9 +576,9 @@ begin
 
   if Changed then
   begin
-    Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.Lobby.Region];
+    Clock.FrameRateLimit := CLOCK_FRAMERATE_LIMIT[Memory.Setup.Region];
 
-    case Memory.Lobby.Region of
+    case Memory.Setup.Region of
       REGION_NTSC: Frames := CLOCK_FRAMERATE_PAL  * ROSE_DURATION_CYCLE;
       REGION_PAL:  Frames := CLOCK_FRAMERATE_NTSC * ROSE_DURATION_CYCLE;
     end;
@@ -588,75 +588,75 @@ begin
 end;
 
 
-procedure TLogic.UpdateLobbyGenerator();
+procedure TLogic.UpdateSetupGenerator();
 begin
-  if Memory.Lobby.ItemIndex <> ITEM_LOBBY_GENERATOR then Exit;
+  if Memory.Setup.ItemIndex <> ITEM_SETUP_GENERATOR then Exit;
 
   if InputOptionSetPrev() then
   begin
-    UpdateItemIndex(Memory.Lobby.Generator, GENERATOR_COUNT, ITEM_PREV);
+    UpdateItemIndex(Memory.Setup.Generator, GENERATOR_COUNT, ITEM_PREV);
     Sounds.PlaySound(SOUND_SHIFT);
   end;
 
   if InputOptionSetNext() then
   begin
-    UpdateItemIndex(Memory.Lobby.Generator, GENERATOR_COUNT, ITEM_NEXT);
+    UpdateItemIndex(Memory.Setup.Generator, GENERATOR_COUNT, ITEM_NEXT);
     Sounds.PlaySound(SOUND_SHIFT);
   end;
 
-  Generators.GeneratorID := Memory.Lobby.Generator;
+  Generators.GeneratorID := Memory.Setup.Generator;
 end;
 
 
-procedure TLogic.UpdateLobbyLevel();
+procedure TLogic.UpdateSetupLevel();
 begin
-  if Memory.Lobby.ItemIndex <> ITEM_LOBBY_LEVEL then Exit;
+  if Memory.Setup.ItemIndex <> ITEM_SETUP_LEVEL then Exit;
 
   if InputOptionSetPrev() then
   begin
-    Memory.Lobby.Autorepeat := 0;
+    Memory.Setup.Autorepeat := 0;
 
-    UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT, ITEM_PREV);
+    UpdateItemIndex(Memory.Setup.Level, LEVEL_COUNT, ITEM_PREV);
     Sounds.PlaySound(SOUND_SHIFT);
   end
   else
     if InputOptionRollPrev() then
     begin
-      Memory.Lobby.Autorepeat += 1;
+      Memory.Setup.Autorepeat += 1;
 
-      if Memory.Lobby.Autorepeat = ITEM_AUTOREPEAT_CHARGE[Memory.Lobby.Region] then
+      if Memory.Setup.Autorepeat = ITEM_AUTOREPEAT_CHARGE[Memory.Setup.Region] then
       begin
-        Memory.Lobby.Autorepeat := ITEM_AUTOREPEAT_PRECHARGE[Memory.Lobby.Region];
+        Memory.Setup.Autorepeat := ITEM_AUTOREPEAT_PRECHARGE[Memory.Setup.Region];
 
-        UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT, ITEM_PREV);
+        UpdateItemIndex(Memory.Setup.Level, LEVEL_COUNT, ITEM_PREV);
         Sounds.PlaySound(SOUND_SHIFT);
       end;
     end;
 
   if InputOptionSetNext() then
   begin
-    Memory.Lobby.Autorepeat := 0;
+    Memory.Setup.Autorepeat := 0;
 
-    UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT, ITEM_NEXT);
+    UpdateItemIndex(Memory.Setup.Level, LEVEL_COUNT, ITEM_NEXT);
     Sounds.PlaySound(SOUND_SHIFT);
   end
   else
     if InputOptionRollNext() then
     begin
-      Memory.Lobby.Autorepeat += 1;
+      Memory.Setup.Autorepeat += 1;
 
-      if Memory.Lobby.Autorepeat = ITEM_AUTOREPEAT_CHARGE[Memory.Lobby.Region] then
+      if Memory.Setup.Autorepeat = ITEM_AUTOREPEAT_CHARGE[Memory.Setup.Region] then
       begin
-        Memory.Lobby.Autorepeat := ITEM_AUTOREPEAT_PRECHARGE[Memory.Lobby.Region];
+        Memory.Setup.Autorepeat := ITEM_AUTOREPEAT_PRECHARGE[Memory.Setup.Region];
 
-        UpdateItemIndex(Memory.Lobby.Level, LEVEL_COUNT, ITEM_NEXT);
+        UpdateItemIndex(Memory.Setup.Level, LEVEL_COUNT, ITEM_NEXT);
         Sounds.PlaySound(SOUND_SHIFT);
       end;
     end;
 end;
 
 
-procedure TLogic.UpdateLobbyScene();
+procedure TLogic.UpdateSetupScene();
 begin
   FScene.Validate();
 
@@ -667,7 +667,7 @@ begin
   end;
 
   if not Input.Device.Connected then
-    if Memory.Lobby.ItemIndex = ITEM_LOBBY_START then
+    if Memory.Setup.ItemIndex = ITEM_SETUP_START then
     begin
       if InputMenuAccepted() then
         Sounds.PlaySound(SOUND_HUM);
@@ -676,13 +676,13 @@ begin
     end;
 
   if InputMenuAccepted() then
-  case Memory.Lobby.ItemIndex of
-    ITEM_LOBBY_START:
+  case Memory.Setup.ItemIndex of
+    ITEM_SETUP_START:
     begin
       FScene.Current := SCENE_GAME_NORMAL;
       Sounds.PlaySound(SOUND_START);
     end;
-    ITEM_LOBBY_BACK:
+    ITEM_SETUP_BACK:
     begin
       FScene.Current := SCENE_MENU;
       Sounds.PlaySound(SOUND_DROP);
@@ -1442,15 +1442,15 @@ begin
 end;
 
 
-procedure TLogic.UpdateLobby();
+procedure TLogic.UpdateSetup();
 begin
-  PrepareLobby();
+  PrepareSetup();
 
-  UpdateLobbySelection();
-  UpdateLobbyRegion();
-  UpdateLobbyGenerator();
-  UpdateLobbyLevel();
-  UpdateLobbyScene();
+  UpdateSetupSelection();
+  UpdateSetupRegion();
+  UpdateSetupGenerator();
+  UpdateSetupLevel();
+  UpdateSetupScene();
 end;
 
 
@@ -1541,7 +1541,7 @@ begin
   case FScene.Current of
     SCENE_LEGAL:       UpdateLegal();
     SCENE_MENU:        UpdateMenu();
-    SCENE_LOBBY:       UpdateLobby();
+    SCENE_SETUP:       UpdateSetup();
     SCENE_GAME_NORMAL: UpdateGame();
     SCENE_GAME_FLASH:  UpdateGame();
     SCENE_PAUSE:       UpdatePause();

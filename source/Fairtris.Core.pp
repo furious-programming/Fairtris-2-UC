@@ -353,9 +353,9 @@ begin
   Memory.Game.FallSpeed := 1;
 
   if Memory.Game.Level < LEVEL_LAST then
-    Memory.Game.FallSpeed := AUTOFALL_FRAMES[Memory.Lobby.Region, Memory.Game.Level]
+    Memory.Game.FallSpeed := AUTOFALL_FRAMES[Memory.Setup.Region, Memory.Game.Level]
   else
-    Memory.Game.FallSpeed := AUTOFALL_FRAMES_MAX[Memory.Lobby.Region];
+    Memory.Game.FallSpeed := AUTOFALL_FRAMES_MAX[Memory.Setup.Region];
 
   if Memory.Game.FallTimer >= Memory.Game.FallSpeed then
     UpdatePieceControlDropMove();
@@ -375,10 +375,10 @@ begin
   begin
     Memory.Game.AutorepeatX += 1;
 
-    if Memory.Game.AutorepeatX < Memory.Options.Autoshift(Memory.Lobby.Region) then
+    if Memory.Game.AutorepeatX < Memory.Options.Autoshift(Memory.Setup.Region) then
       Exit
     else
-      Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES[Memory.Lobby.Region];
+      Memory.Game.AutorepeatX := AUTOSHIFT_FRAMES[Memory.Setup.Region];
   end;
 
   if Input.Device.Left.Down then
@@ -388,7 +388,7 @@ begin
       Sounds.PlaySound(SOUND_SHIFT);
     end
     else
-      Memory.Game.AutorepeatX := Memory.Options.Autoshift(Memory.Lobby.Region);
+      Memory.Game.AutorepeatX := Memory.Options.Autoshift(Memory.Setup.Region);
 
   if Input.Device.Right.Down then
     if CanShiftPiece(PIECE_SHIFT_RIGHT) then
@@ -397,7 +397,7 @@ begin
       Sounds.PlaySound(SOUND_SHIFT);
     end
     else
-      Memory.Game.AutorepeatX := Memory.Options.Autoshift(Memory.Lobby.Region);
+      Memory.Game.AutorepeatX := Memory.Options.Autoshift(Memory.Setup.Region);
 end;
 
 
@@ -507,14 +507,14 @@ begin
 
   Memory.Game.AutospinCharged := False;
   Memory.Game.FallPoints      := 0;
-  Memory.Game.AutorepeatX     := Memory.Options.Autoshift(Memory.Lobby.Region);
+  Memory.Game.AutorepeatX     := Memory.Options.Autoshift(Memory.Setup.Region);
 
   if CanPlacePiece() then
     Memory.Game.State := GAME_STATE_PIECE_CONTROL
   else
   begin
     Memory.Game.State       := GAME_STATE_UPDATE_TOP_OUT;
-    Memory.Game.TopOutTimer := TOP_OUT_FRAMES[Memory.Lobby.Region];
+    Memory.Game.TopOutTimer := TOP_OUT_FRAMES[Memory.Setup.Region];
 
     Sounds.PlaySound(SOUND_TOP_OUT, True);
   end;
@@ -606,7 +606,7 @@ begin
   if Memory.Game.ClearCount > 0 then
   begin
     if not Memory.Game.AfterTransition then
-      if Memory.Game.Lines + Memory.Game.ClearCount >= TRANSITION_LINES[Memory.Lobby.Region, Memory.Lobby.Level] then
+      if Memory.Game.Lines + Memory.Game.ClearCount >= TRANSITION_LINES[Memory.Setup.Region, Memory.Setup.Level] then
         HappenedFirstTransition := True;
 
     if Memory.Game.AfterTransition then
@@ -673,14 +673,14 @@ procedure TCore.Reset();
 begin
   Memory.Game.Reset();
   Memory.Game.Started     := True;
-  Memory.Game.AutorepeatY := PIECE_FRAMES_HANG[Memory.Lobby.Region];
+  Memory.Game.AutorepeatY := PIECE_FRAMES_HANG[Memory.Setup.Region];
   Memory.Game.PieceID     := Generators.Generator.Pick();
 
   Generators.Generator.Step();
 
   Memory.Game.Next        := Generators.Generator.Pick();
-  Memory.Game.Level       := Memory.Lobby.Level;
-  Memory.Game.Best        := BestScores[Memory.Lobby.Region][Memory.Lobby.Generator].BestResult;
+  Memory.Game.Level       := Memory.Setup.Level;
+  Memory.Game.Best        := BestScores[Memory.Setup.Region][Memory.Setup.Generator].BestResult;
   Memory.Game.NextVisible := True;
 end;
 

@@ -267,9 +267,9 @@ begin
   FShiftNTSC := Memory.Options.ShiftNTSC;
   FShiftPAL  := Memory.Options.ShiftPAL;
   FSounds    := Memory.Options.Sounds;
-  FRegion    := Memory.Lobby.Region;
-  FGenerator := Memory.Lobby.Generator;
-  FLevel     := Memory.Lobby.Level;
+  FRegion    := Memory.Setup.Region;
+  FGenerator := Memory.Setup.Generator;
+  FLevel     := Memory.Setup.Level;
 end;
 
 

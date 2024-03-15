@@ -47,7 +47,7 @@ var
 begin
   case Logic.Scene.Current of
     SCENE_MENU:        Address += 'Main-menu';
-    SCENE_LOBBY:       Address += 'Gameplay-setup';
+    SCENE_SETUP:       Address += 'Gameplay-setup';
     SCENE_GAME_NORMAL: Address += 'Gameplay';
     SCENE_GAME_FLASH:  Address += 'Gameplay';
     SCENE_PAUSE:       Address += 'Game-pause';

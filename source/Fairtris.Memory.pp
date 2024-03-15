@@ -57,7 +57,7 @@ type
 
 
 type
-  TLobbyMemory = class(TObject)
+  TSetupMemory = class(TObject)
   public
     procedure Initialize();
   public
@@ -248,7 +248,7 @@ type
     FLegal:      TLegalMemory;
     FRose:       TRoseMemory;
     FMenu:       TMenuMemory;
-    FLobby:      TLobbyMemory;
+    FSetup:      TSetupMemory;
     FGame:       TGameMemory;
     FPause:      TPauseMemory;
     FSummary:    TSummaryMemory;
@@ -266,7 +266,7 @@ type
     property Legal:      TLegalMemory      read FLegal;
     property Rose:       TRoseMemory       read FRose;
     property Menu:       TMenuMemory       read FMenu;
-    property Lobby:      TLobbyMemory      read FLobby;
+    property Setup:      TSetupMemory      read FSetup;
     property Game:       TGameMemory       read FGame;
     property Pause:      TPauseMemory      read FPause;
     property Summary:    TSummaryMemory    read FSummary;
@@ -313,9 +313,9 @@ begin
 end;
 
 
-procedure TLobbyMemory.Initialize();
+procedure TSetupMemory.Initialize();
 begin
-  ItemIndex  := ITEM_LOBBY_START;
+  ItemIndex  := ITEM_SETUP_START;
   Autorepeat := 0;
 
   Region    := Settings.General.Region;
@@ -528,7 +528,7 @@ begin
   FLegal      := TLegalMemory.Create();
   FRose       := TRoseMemory.Create();
   FMenu       := TMenuMemory.Create();
-  FLobby      := TLobbyMemory.Create();
+  FSetup      := TSetupMemory.Create();
   FGame       := TGameMemory.Create();
   FPause      := TPauseMemory.Create();
   FSummary     := TSummaryMemory.Create();
@@ -545,7 +545,7 @@ begin
   FLegal.Free();
   FRose.Free();
   FMenu.Free();
-  FLobby.Free();
+  FSetup.Free();
   FGame.Free();
   FPause.Free();
   FSummary.Free();
@@ -564,7 +564,7 @@ begin
   FLegal.Initialize();
   FRose.Initialize();
   FMenu.Initialize();
-  FLobby.Initialize();
+  FSetup.Initialize();
   FPause.Initialize();
   FOptions.Initialize();
   FKeyboard.Initialize();

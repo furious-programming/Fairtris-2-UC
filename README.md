@@ -53,7 +53,7 @@ In the first **Fairtris**, just like in the classic **Tetris®**, the goal was t
 
 To diversify the gameplay, support for glitched colors of pieces and stack bricks has been added, consistent with that existing in **Nintendo Tetris®**. These glitched colors, as in the original, are used at levels `138` to `255`, which requires clearing over `1,300` lines. In the original, the pieces in some levels were black and therefore almost invisible, which made playing very difficult. Since the new version of **Fairtris** uses gentle gradients, also for pieces and the content of the stack, the colors can be consistent with the predecessor while not being unfair.
 
-The final challenge is to pass level `255`, which in **Nintendo Tetris®** caused the level counter to overflow and return to level `0`. **Fairtris 2** has a special handling of such a situation and a reward for the player for achieving such an outstanding goal. Beating level `255` results in... it's a secret — it's up to you to find out!
+The ultimate challenge is to pass level `255`, which in **Nintendo Tetris®** caused the level counter to overflow and return to level `0`. **Fairtris 2** has a special handling of such a situation and a reward for the player for achieving such an outstanding achievement. Beating level `255` results in... it's a secret — It's up to you to discover what it is!
 
 </br>
 

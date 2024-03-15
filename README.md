@@ -91,7 +91,7 @@ The new version has dozens of minor improvements and novelties, making the game'
 * [Gameplay](https://github.com/furious-programming/Fairtris-2-UC/wiki/Gameplay)
 * [Game pause](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-pause)
 * [Game summary](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-summary)
-* [Game Options](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-options)
+* [Game Options:](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-options)
     * [Set up keyboard](https://github.com/furious-programming/Fairtris-2-UC/wiki/Set-up-keyboard)
     * [Set up controller](https://github.com/furious-programming/Fairtris-2-UC/wiki/Set-up-controller)
 

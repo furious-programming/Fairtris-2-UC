@@ -80,27 +80,27 @@ The new version has dozens of minor improvements and novelties, making the game'
 # Table of Content
 
 ## General
-* [Home](https://github.com/furious-programming/Fairtris-2-UC/wiki/Home)
-* [First launch](https://github.com/furious-programming/Fairtris-2-UC/wiki/First-launch)
-* [Default controls](https://github.com/furious-programming/Fairtris-2-UC/wiki/Default-controls)
+* **[Home](https://github.com/furious-programming/Fairtris-2-UC/wiki/Home)**
+* **[First launch](https://github.com/furious-programming/Fairtris-2-UC/wiki/First-launch)**
+* **[Default controls](https://github.com/furious-programming/Fairtris-2-UC/wiki/Default-controls)**
 
 ## Game screens
-* [Screens list](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-screens)
-* [Main menu](https://github.com/furious-programming/Fairtris-2-UC/wiki/Main-menu)
-* [Gameplay setup](https://github.com/furious-programming/Fairtris-2-UC/wiki/Gameplay-setup)
-* [Gameplay](https://github.com/furious-programming/Fairtris-2-UC/wiki/Gameplay)
-* [Game pause](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-pause)
-* [Game summary](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-summary)
-* [Game Options:](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-options)
-    * [Set up keyboard](https://github.com/furious-programming/Fairtris-2-UC/wiki/Set-up-keyboard)
-    * [Set up controller](https://github.com/furious-programming/Fairtris-2-UC/wiki/Set-up-controller)
+* **[Screens list](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-screens)**
+* **[Main menu](https://github.com/furious-programming/Fairtris-2-UC/wiki/Main-menu)**
+* **[Gameplay setup](https://github.com/furious-programming/Fairtris-2-UC/wiki/Gameplay-setup)**
+* **[Gameplay](https://github.com/furious-programming/Fairtris-2-UC/wiki/Gameplay)**
+* **[Game pause](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-pause)**
+* **[Game summary](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-summary)**
+* **[Game Options](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-options):**
+    * **[Set up keyboard](https://github.com/furious-programming/Fairtris-2-UC/wiki/Set-up-keyboard)**
+    * **[Set up controller](https://github.com/furious-programming/Fairtris-2-UC/wiki/Set-up-controller)**
 
 ## Game specifics
-* [Game regions](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-regions)
-* [RNG types](https://github.com/furious-programming/Fairtris-2-UC/wiki/RNG-types)
+* **[Game regions](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-regions)**
+* **[RNG types](https://github.com/furious-programming/Fairtris-2-UC/wiki/RNG-types)**
 
 ## More help
-* [Acknowledgments and links](https://github.com/furious-programming/Fairtris-2-UC/wiki/Acknowledgments-and-links)
+* **[Acknowledgments and links](https://github.com/furious-programming/Fairtris-2-UC/wiki/Acknowledgments-and-links)**
 
 </br>
 

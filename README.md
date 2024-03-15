@@ -1,6 +1,6 @@
 THIS DOCUMENT AND THE PROJECT WIKI ARE STILL UNDER DEVELOPMENT!
 
-![banner.png](blob/readme/banner.png)
+![banner.png](wiki/banner.png)
 
 **[Fairtris 2: The Ultimate Challenge](https://github.com/furious-programming/Fairtris-2-UC)**</br>
 Copyleft (ɔ) furious programming 2024. All rights reversed.

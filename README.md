@@ -39,7 +39,7 @@ Maxout is no feat today — currently the best players in the world know no limi
 
 ## New game design and aspect ratio
 
-The new version of **Fairtris** has one, richer graphics design and the game image is rendered in `16:10` aspect ratio, which is the standard for modern LCD displays. Instead of flat characters, piece bricks and other game objects, the new version uses more colors and subtle gradients, as well as more animated elements, including the main background for all game scenes. Now it feels more like a **SNES** game instead of an **NES** game.
+The new version of **Fairtris** has one, richer graphics design and the game image is rendered in `16:10` aspect ratio, which is the standard for modern LCD displays. Instead of flat characters, piece bricks and other game objects, the new version uses more colors and subtle gradients, as well as more animated elements, including the main background for all game scenes. Two-color counters for various game counters were also used, with dark gray placeholders resembling electronic displays. Now it feels more like a **SNES** game instead of an **NES** game.
 
 </b>
 
@@ -54,6 +54,32 @@ In the first **Fairtris**, just like in the classic **Tetris®**, the goal was t
 To diversify the gameplay, support for glitched colors of pieces and stack bricks has been added, consistent with that existing in **Nintendo Tetris®**. These glitched colors, as in the original, are used at levels `138` to `255`, which requires clearing over `1,300` lines. In the original, the pieces in some levels were black and therefore almost invisible, which made playing very difficult. Since the new version of **Fairtris** uses gentle gradients, also for pieces and the content of the stack, the colors can be consistent with the predecessor while not being unfair.
 
 The ultimate challenge is to pass level `255`, which in **Nintendo Tetris®** caused the level counter to overflow and return to level `0`. **Fairtris 2** has a special handling of such a situation and a reward for the player for achieving such an outstanding achievement. Beating level `255` results in... it's a secret — It's up to you to discover what it is!
+
+## Other improvements
+
+The new version has dozens of minor improvements and novelties, making the game's operation and controls richer and even more convenient, ensuring a better experience. It's hard to list all differences — just everything that could be improved and added was improved and added.
+
+## Important features
+
+- game mechanics inspired by those from the Nintendo Tetris® video game,
+- **DAS** mechanics fixed and spin buffering added, making the controls fabulously responsive,
+- ability to change the speed of shifting pieces according to your preferences,
+- extended mechanics with basic **wall kick** and **multi-spawn soft-drop**,
+- capped the maximum falling speed of pieces to that consistent with level `19`,
+- support for **NTSC** and **PAL** regions (60fps and 50fps respectively),
+- support for as many as **SEVEN** random piece generators, including the classic RNG,
+- **support for glitched original color palettes of pieces, on levels** `138` **to** `255`,
+- **secret after beating level** `255`,
+- the ability to start the game from any level up to the level `19`,
+- the ability to play on a keyboard or any USB controller (with input mapping support),
+- supports window mode and exclusive video mode, for maximum performance and responsiveness,
+- support for additional meters, such as **tetrises**, **burned**, as well as **gain** popup,
+- stores the best results for each game region and RNG type,
+- has a pause menu with the ability to quickly restart the game and change options,
+- shows the game summary screen after each game,
+- it's light and very fast — should run smoothly even on a heavily loaded PC,
+- it is fully portable, no installation required,
+- and many more!
 
 </br>
 

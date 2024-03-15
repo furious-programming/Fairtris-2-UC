@@ -1,6 +1,6 @@
 ![banner.png](wiki/banner.png)
 
-**[Fairtris 2: The Ultimate Challenge](https://github.com/furious-programming/Fairtris-2-UC)**</br>
+**Fairtris 2: The Ultimate Challenge**</br>
 Copyleft (ɔ) furious programming 2024. All rights reversed.
 
 </br>

@@ -43,19 +43,19 @@ uses
 
 procedure THelpThread.Execute();
 var
-  Address: String = 'https://github.com/furious-programming/fairtris-2-uc/wiki/';
+  Address: String = 'https://github.com/furious-programming/Fairtris-2-UC/wiki/';
 begin
   case Logic.Scene.Current of
-    SCENE_MENU:        Address += 'menu';
-    SCENE_LOBBY:       Address += 'lobby';
-    SCENE_GAME_NORMAL: Address += 'game';
-    SCENE_GAME_FLASH:  Address += 'game';
-    SCENE_PAUSE:       Address += 'pause';
-    SCENE_OPTIONS:     Address += 'options';
-    SCENE_KEYBOARD:    Address += 'keyboard';
-    SCENE_CONTROLLER:  Address += 'controller';
-    SCENE_SUMMARY:     Address += 'summary';
-    SCENE_BSOD:        Address += 'bsod';
+    SCENE_MENU:        Address += 'Main-menu';
+    SCENE_LOBBY:       Address += 'Gameplay-setup';
+    SCENE_GAME_NORMAL: Address += 'Gameplay';
+    SCENE_GAME_FLASH:  Address += 'Gameplay';
+    SCENE_PAUSE:       Address += 'Game-pause';
+    SCENE_SUMMARY:     Address += 'Game-summary';
+    SCENE_OPTIONS:     Address += 'Game-options';
+    SCENE_KEYBOARD:    Address += 'Set-up-keyboard';
+    SCENE_CONTROLLER:  Address += 'Set-up-controller';
+    SCENE_BSOD:        Address += 'BSoD';
   otherwise
     Terminate();
     Exit;

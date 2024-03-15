@@ -56,9 +56,6 @@ begin
     SCENE_KEYBOARD:    Address += 'Set-up-keyboard';
     SCENE_CONTROLLER:  Address += 'Set-up-controller';
     SCENE_BSOD:        Address += 'BSoD';
-  otherwise
-    Terminate();
-    Exit;
   end;
 
   ShellExecute(0, 'open', PChar(Address), nil, nil, SW_SHOWNORMAL);

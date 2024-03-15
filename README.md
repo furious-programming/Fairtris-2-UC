@@ -99,9 +99,6 @@ The new version has dozens of minor improvements and novelties, making the game'
 * **[Game regions](https://github.com/furious-programming/Fairtris-2-UC/wiki/Game-regions)**
 * **[RNG types](https://github.com/furious-programming/Fairtris-2-UC/wiki/RNG-types)**
 
-## More help
-* **[Acknowledgments and links](https://github.com/furious-programming/Fairtris-2-UC/wiki/Acknowledgments-and-links)**
-
 </br>
 
 # License

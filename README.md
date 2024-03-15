@@ -1,3 +1,5 @@
+THIS DOCUMENT AND THE PROJECT WIKI ARE STILL UNDER DEVELOPMENT!
+
 ![banner.png](blob/readme/banner.png)
 
 **Fairtris 2: The Ultimate Challenge**</br>

@@ -31,19 +31,13 @@ The first **[Fairtris](https://github.com/furious-programming/Fairtris)** was ma
 
 **Maxout is no feat today** — currently the best players in the world know no limits, they can go so far that the classic **[Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game))** gives up, starts rendering game frames with glitched colors, or even crashes and goes into soft lock. The first to do this was **[Blue Scuti](https://www.youtube.com/watch?v=GuJ5UuknsHU)**, and his achievement in the form of a game crash became an incredible sensation, which was even reported by the media around the world. Soon, others joined this elite, including **[Fractal](https://www.youtube.com/watch?v=Hr_Reo8GRu0)** and **[PixelAndy](https://www.youtube.com/watch?v=sx2qPhPb5iQ)** (as of the date of writing this document). This was the main impulse for creating the **[Fairtris](https://github.com/furious-programming/Fairtris)** sequel, it was time to take the next step.
 
-</b>
-
 ## Removed [NES Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game)) compatibility
 
 **[Fairtris 2](https://github.com/furious-programming/Fairtris-2-UC)** has been redefined, new goals have been defined. The decision has been made to discontinue compatibility support with classic **[Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game))** and tools such as **[NestrisChamps](https://nestrischamps.herokuapp.com/)** and **[Maxout Club](https://maxoutclub.com/)**. The new version should have the shape of a typical game, not an experimental tool for testing various algorithms. Everything related to compatibility with the progenitor has been removed. This is mainly about the classic theme and aspect ratio, as well as the classic, clumsy control mechanics and **hard-drop**, which was an experiment. Transition to level `19` no longer has any significance, and there is no killscreen at level `29`, which is such a high speed of falling pieces that further play becomes practically impossible. Speedrun and qualification modes have also been removed, as well as support for setting a fixed seed for RNG.
 
-</br>
-
 ## New game design and aspect ratio
 
 The new version of **[Fairtris](https://github.com/furious-programming/Fairtris-2-UC)** has one, richer graphics design and the game image is rendered in `16:10` aspect ratio, which is the standard for modern LCD displays. Instead of flat characters, piece bricks and other game objects, the new version uses more colors and subtle gradients, as well as more animated elements, including the main background for all game scenes. Two-color counters for various game counters were also used, with dark gray placeholders resembling electronic displays. Now it feels more like a **[SNES](https://en.wikipedia.org/wiki/Super_Nintendo_Entertainment_System)** game instead of an **[NES](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** game.
-
-</b>
 
 ## Unified control mechanics
 

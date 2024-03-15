@@ -100,3 +100,5 @@ Information on the license can be found in the **[LICENSE](LICENSE)** file. In g
 # Acknowledgments and useful links
 
 In addition to the **[previously gained knowledge](https://github.com/furious-programming/Fairtris#acknowledgments-and-useful-links)**, useful to create the first **[Fairtris](https://github.com/furious-programming/Fairtris)** video game, during the development of **Fairtris 2** the **[FCEUX](https://fceux.com/)** emulator and a modified ROM of the original **[Nintendo Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game))**, called **[TetrisGYM](https://github.com/kirjavascript/TetrisGYM)**, were used. Many thanks to the authors of **[Lazarus](https://www.lazarus-ide.org/)**, the **[SDL2 headers](https://github.com/PascalGameDevelopment/SDL2-for-Pascal)** and the **[SDL library](https://www.libsdl.org/)**. These tools allowed for the convenient creation of the **Fairtris** in a light and super-efficient form.
+
+The animation of the game's main background is modeled on the one from the main menu of **[Chase Ace 2](https://youtu.be/g08CSSpd05k?si=zWTetw4z7RbcHHgF&t=107)**.

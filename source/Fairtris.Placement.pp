@@ -110,10 +110,10 @@ end;
 
 constructor TPlacement.Create();
 begin
-  SDL_GetDisplayBounds(0, @FVideoBounds);
+  SDL_GetDisplayBounds(MONITOR_DEFAULT, @FVideoBounds);
 
-  FMonitorIndex := 0;
-  SDL_GetDisplayBounds(0, @FMonitorBounds);
+  FMonitorIndex := MONITOR_DEFAULT;
+  SDL_GetDisplayBounds(MONITOR_DEFAULT, @FMonitorBounds);
 
   FWindowSizeID := SIZE_DEFAULT;
   UpdateWindow();

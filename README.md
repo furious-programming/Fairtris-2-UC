@@ -19,7 +19,7 @@ If you are using **Free Pascal IDE** or regular text editor such as **Notepad++*
 
 # What is Fairtris 2?
 
-**[Fairtris 2](https://github.com/furious-programming/Fairtris-2-UC)** is a video game, a clone of the 32-year-old **[Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game))** produced by **[Nintendo](https://www.nintendo.com)** for the **[Famicom](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** and **[NES](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** consoles, designed for modern Windows and Linux systems. It is the successor to the first **[Fairtris](https://github.com/furious-programming/Fairtris)** video game, with refreshed graphics, newly defined functionality and introducing a number of new features that ensure even more fun.
+**[Fairtris 2](https://github.com/furious-programming/Fairtris-2-UC)** is a video game, a clone of the 35-year-old **[Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game))** produced by **[Nintendo](https://www.nintendo.com)** for the **[Famicom](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** and **[NES](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** consoles, designed for modern Windows and Linux systems. It is the successor to the first **[Fairtris](https://github.com/furious-programming/Fairtris)** video game, with refreshed graphics, newly defined functionality and introducing a number of new features that ensure even more fun.
 
 </br>
 

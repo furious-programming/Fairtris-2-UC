@@ -96,7 +96,7 @@ type
   public
     procedure Initialize(); virtual;
   public
-    procedure Shuffle(APreShuffling: Boolean = False); virtual; abstract;
+    procedure Shuffle(); virtual; abstract;
     procedure Step(APicking: Boolean = False); virtual;
   public
     function Pick(): Integer; virtual; abstract;
@@ -110,8 +110,6 @@ type
     FBagPick:  Integer;
     FBagSwap:  Integer;
     FBagPiece: Integer;
-  private
-    procedure PreShuffle();
   protected
     procedure PerformStep(); override;
   public
@@ -120,7 +118,7 @@ type
   public
     procedure Initialize(); override;
   public
-    procedure Shuffle(APreShuffling: Boolean = False); override;
+    procedure Shuffle(); override;
   public
     function Pick(): Integer; override;
   end;
@@ -136,8 +134,6 @@ type
     FBagPick:   Integer;
     FBagSwap:   Integer;
     FBagPiece:  Integer;
-  private
-    procedure PreShuffle();
   protected
     procedure PerformStep(); override;
   public
@@ -146,7 +142,7 @@ type
   public
     procedure Initialize(); override;
   public
-    procedure Shuffle(APreShuffling: Boolean = False); override;
+    procedure Shuffle(); override;
   public
     function Pick(): Integer; override;
   end;
@@ -163,7 +159,7 @@ type
   protected
     procedure PerformStep(); override;
   public
-    procedure Shuffle(APreShuffling: Boolean = False); override;
+    procedure Shuffle(); override;
   public
     function Pick(): Integer; override;
   end;
@@ -188,7 +184,7 @@ type
   protected
     procedure PerformStep(); override;
   public
-    procedure Shuffle(APreShuffling: Boolean = False); override;
+    procedure Shuffle(); override;
   public
     function Pick(): Integer; override;
   end;
@@ -206,7 +202,7 @@ type
     constructor Create(); override;
     destructor  Destroy(); override;
   public
-    procedure Shuffle(APreShuffling: Boolean = False); override;
+    procedure Shuffle(); override;
   public
     function Pick(): Integer; override;
   end;
@@ -227,7 +223,7 @@ type
     constructor Create(); override;
     destructor  Destroy(); override;
   public
-    procedure Shuffle(APreShuffling: Boolean = False); override;
+    procedure Shuffle(); override;
   public
     function Pick(): Integer; override;
   end;
@@ -453,20 +449,6 @@ begin
 end;
 
 
-procedure T7BagGenerator.PreShuffle();
-var
-  ShuffleCount: Integer;
-begin
-  ShuffleCount := Hi(FRegister.Seed);
-
-  while ShuffleCount > 0 do
-  begin
-    Shuffle(True);
-    ShuffleCount -= 1;
-  end;
-end;
-
-
 procedure T7BagGenerator.PerformStep();
 begin
   FRegister.Step();
@@ -484,7 +466,7 @@ begin
 end;
 
 
-procedure T7BagGenerator.Shuffle(APreShuffling: Boolean);
+procedure T7BagGenerator.Shuffle();
 begin
   FRegister.Step();
   FBags[0].Swap(FRegister.Seed);
@@ -533,21 +515,6 @@ begin
 end;
 
 
-procedure TMultiBagGenerator.PreShuffle();
-var
-  ShuffleCount: Integer;
-begin
-  ShuffleCount := Hi(FRegister.Seed);
-  ShuffleCount *= MULTIBAG_BAGS_COUNT;
-
-  while ShuffleCount > 0 do
-  begin
-    Shuffle(True);
-    ShuffleCount -= 1;
-  end;
-end;
-
-
 procedure TMultiBagGenerator.PerformStep();
 var
   Index: Integer;
@@ -575,7 +542,7 @@ begin
 end;
 
 
-procedure TMultiBagGenerator.Shuffle(APreShuffling: Boolean);
+procedure TMultiBagGenerator.Shuffle();
 var
   Index: Integer;
 begin
@@ -658,7 +625,7 @@ begin
 end;
 
 
-procedure TClassicGenerator.Shuffle(APreShuffling: Boolean = False);
+procedure TClassicGenerator.Shuffle();
 begin
   FRegister.Step();
 end;
@@ -736,7 +703,7 @@ begin
 end;
 
 
-procedure TBalancedGenerator.Shuffle(APreShuffling: Boolean);
+procedure TBalancedGenerator.Shuffle();
 begin
   FRegister.Step();
 end;
@@ -798,7 +765,7 @@ begin
 end;
 
 
-procedure TTGMGenerator.Shuffle(APreShuffling: Boolean);
+procedure TTGMGenerator.Shuffle();
 begin
   FRegister.Step();
 end;
@@ -858,7 +825,7 @@ begin
 end;
 
 
-procedure TTGM3Generator.Shuffle(APreShuffling: Boolean);
+procedure TTGM3Generator.Shuffle();
 begin
   FRegister.Step();
 end;

@@ -52,7 +52,7 @@ type
 type
   IGenerable = interface(IInterface)
     procedure Initialize();
-    procedure Shuffle(APreShuffling: Boolean = False);
+    procedure Shuffle();
     procedure Step(APicking: Boolean = False);
     function  Pick(): Integer;
   end;

@@ -1051,7 +1051,7 @@ const
 const
   COLOR_WHITE = $FFFFFF;
   COLOR_GRAY  = $7F7F7F;
-  COLOR_DARK  = $3F3F3F;
+  COLOR_DARK  = $1F1F1F;
 
 
 const

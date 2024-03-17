@@ -240,6 +240,8 @@ var
   StoreCount: Integer;
   Index:      Integer;
 begin
+  if FEntries.Count = 0 then Exit;
+
   StoreCount := Min(FEntries.Count, BEST_SCORES_COUNT);
 
   FScoresFile.Clear();

@@ -127,6 +127,7 @@ var
 implementation
 
 uses
+  SDL2,
   Math,
   SysUtils,
   Fairtris.Arrays;
@@ -177,9 +178,16 @@ end;
 
 constructor TGeneratorEntries.Create(const AFileName: String; ARegionID: Integer);
 begin
-  FScoresFile := TMemIniFile.Create(AFileName);
-  FEntries    := TScoreEntries.Create();
-  FRegion     := ARegionID;
+  FScoresFile := TMemIniFile.Create(
+    {$IFDEF WINDOWS}
+    AFileName
+    {$ELSE}
+    SDL_GetPrefPath('furious-programming', 'fairtris2') + AFileName
+    {$ENDIF}
+  );
+
+  FEntries := TScoreEntries.Create();
+  FRegion  := ARegionID;
 end;
 
 

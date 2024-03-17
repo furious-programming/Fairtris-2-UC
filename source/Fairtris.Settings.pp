@@ -383,7 +383,13 @@ end;
 
 constructor TSettings.Create();
 begin
-  FSettingsFile := TMemIniFile.Create(SETTINGS_FILENAME);
+  FSettingsFile := TMemIniFile.Create(
+    {$IFDEF WINDOWS}
+    SETTINGS_FILENAME
+    {$ELSE}
+    SDL_GetPrefPath('furious-programming', 'fairtris-2') + SETTINGS_FILENAME
+    {$ENDIF}
+  );
 
   FVideo      := TVideoSettings.Create();
   FGeneral    := TGeneralSettings.Create();

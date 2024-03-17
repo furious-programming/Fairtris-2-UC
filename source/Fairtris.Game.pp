@@ -178,8 +178,11 @@ begin
   Memory.Initialize();
   Placement.Initialize();
   Sounds.Initilize();
-  Taskbar.Initialize();
   Generators.Initialize();
+
+  {$IFDEF WINDOWS}
+  Taskbar.Initialize();
+  {$ENDIF}
 end;
 
 

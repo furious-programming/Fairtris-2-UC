@@ -22,17 +22,22 @@ unit Fairtris.Taskbar;
 
 interface
 
+{$IFDEF WINDOWS}
 uses
   ShlObj;
+{$ENDIF}
 
 
 type
   TTaskbar = class(TObject)
+  {$IFDEF WINDOWS}
   private
     FButton:    ITaskBarList3;
     FSupported: Boolean;
   public
     procedure Initialize();
+  {$ENDIF}
+  public
     procedure Update();
   end;
 
@@ -45,12 +50,16 @@ implementation
 
 uses
   SDL2,
+  {$IFDEF WINDOWS}
   ComObj,
+  {$ENDIF}
   Math,
   SysUtils,
   Fairtris.Window,
   Fairtris.Clock;
 
+
+{$IFDEF WINDOWS}
 
 procedure TTaskbar.Initialize();
 var
@@ -60,14 +69,19 @@ begin
   FSupported := Supports(Instance, ITaskBarList3, FButton);
 end;
 
+{$ENDIF}
+
 
 procedure TTaskbar.Update();
+{$IFDEF WINDOWS}
 var
   ButtonValue: Integer;
+{$ENDIF}
 begin
   if Clock.FrameRate.Changed then
     SDL_SetWindowTitle(Window.Window, PChar('Fairtris 2 — %dfps'.Format([Clock.FrameRate.Current])));
 
+  {$IFDEF WINDOWS}
   if FSupported and Clock.FrameLoad.Changed then
   begin
     ButtonValue := Max(1, Min(Clock.FrameLoad.Current, 100));
@@ -75,6 +89,7 @@ begin
     FButton.SetProgressState(Window.Handle, TBPF_PAUSED);
     FButton.SetProgressValue(Window.Handle, ButtonValue, 100);
   end;
+  {$ENDIF}
 end;
 
 

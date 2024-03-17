@@ -182,7 +182,7 @@ begin
     {$IFDEF WINDOWS}
     AFileName
     {$ELSE}
-    SDL_GetPrefPath('furious-programming', 'fairtris2') + AFileName
+    SDL_GetPrefPath(FOLDER_ORGANIZATION, FOLDER_APPLICATION) + AFileName
     {$ENDIF}
   );
 

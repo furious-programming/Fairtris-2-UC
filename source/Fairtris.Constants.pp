@@ -1141,6 +1141,11 @@ const
 
 
 const
+  FOLDER_ORGANIZATION = 'furious-programming';
+  FOLDER_APPLICATION  = 'fairtris2';
+
+
+const
   ERROR_TITLE = 'Fairtris 2: The Ultimate Crash!';
 
 const

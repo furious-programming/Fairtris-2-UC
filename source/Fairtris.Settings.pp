@@ -387,7 +387,7 @@ begin
     {$IFDEF WINDOWS}
     SETTINGS_FILENAME
     {$ELSE}
-    SDL_GetPrefPath('furious-programming', 'fairtris-2') + SETTINGS_FILENAME
+    SDL_GetPrefPath(FOLDER_ORGANIZATION, FOLDER_APPLICATION) + SETTINGS_FILENAME
     {$ENDIF}
   );
 

@@ -5,7 +5,7 @@ Copyleft (ɔ) furious programming 2024. All rights reversed.
 
 </br>
 
-PC clone of the official classic **[Nintendo Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game))** for the **[NES](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** console and the successor to the **[Fairtris](https://github.com/furious-programming/Fairtris)** video game, intended for Windows and Linux systems. Ready to take on the ultimate challenge? **[Download the game](https://github.com/furious-programming/Fairtris-2-UC/releases/download/v2.0.0.20/Fairtris_2.0.0.20_release.zip)** and try yourself!
+PC clone of the official classic **[Nintendo Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game))** for the **[NES](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** console and the successor to the **[Fairtris](https://github.com/furious-programming/Fairtris)** video game, intended mainly for desktop platforms. Ready to take on the ultimate challenge? **[Download the game](https://github.com/furious-programming/Fairtris-2-UC/releases/download/v2.0.0.20/Fairtris_2.0.0.20_release.zip)** and try yourself!
 
 </br></br>
 
@@ -19,7 +19,7 @@ If you are using **Free Pascal IDE** or regular text editor such as **Notepad++*
 
 # What is Fairtris 2?
 
-**[Fairtris 2](https://github.com/furious-programming/Fairtris-2-UC)** is a video game, a clone of the 35-year-old **[Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game))** produced by **[Nintendo](https://www.nintendo.com)** for the **[Famicom](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** and **[NES](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** consoles, designed for modern Windows and Linux systems. It is the successor to the first **[Fairtris](https://github.com/furious-programming/Fairtris)** video game, with refreshed graphics, newly defined functionality and introducing a number of new features that ensure even more fun.
+**[Fairtris 2](https://github.com/furious-programming/Fairtris-2-UC)** is a video game, a clone of the 35-year-old **[Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game))** produced by **[Nintendo](https://www.nintendo.com)** for the **[Famicom](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** and **[NES](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** consoles, designed mainly for modern desktop platforms. It is the successor to the first **[Fairtris](https://github.com/furious-programming/Fairtris)** video game, with refreshed graphics, newly defined functionality and introducing a number of new features that ensure even more fun.
 
 </br>
 
@@ -104,14 +104,6 @@ The new version has dozens of minor improvements and novelties, making the game'
 # License
 
 Information on the license can be found in the **[LICENSE](LICENSE)** file. In general, this project is also completely free, you can use it for whatever purpose you want, both the entire game and parts of it. So play, share, fork, modify — do what you want, I still don't give a shit about it.
-
-</br>
-
-# Bindings
-
-**Fairtris 2** mainly targets 64-bit **Windows** systems, versions `Vista`, `7`, `8`, `8.1`, `10` and `11`. In the future, its clones for other platforms may appear — if someone decides to fork this repository and modify the game source code. Currently available releases:
-
-* **[Fairtris 2 for Windows](https://github.com/furious-programming/fairtris-2-uc)** by **[furious programming](https://github.com/furious-programming)**
 
 </br>
 

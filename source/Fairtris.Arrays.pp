@@ -69,14 +69,14 @@ const
 const
   GROUND_FILENAME: array [SCENE_FIRST .. SCENE_LAST] of String = (
     'legal.png',
-    'rose normal.png',
-    'rose flash.png',
+    'rose-normal.png',
+    'rose-flash.png',
     'menu.png',
     'setup.png',
-    'game normal.png',
-    'game flash.png',
+    'game-normal.png',
+    'game-flash.png',
     'pause.png',
-    'top out.png',
+    'top-out.png',
     'options.png',
     'keyboard.png',
     'controller.png',
@@ -92,9 +92,9 @@ const
   SPRITE_FILENAME: array [SPRITE_FIRST .. SPRITE_LAST] of String = (
     'charset.png',
     'bricks.png',
-    'bricks_glitched.png',
+    'bricks-glitched.png',
     'pieces.png',
-    'pieces_glitched.png',
+    'pieces-glitched.png',
     'controller.png'
   );
 
@@ -112,7 +112,7 @@ const
     'burn.wav',
     'tetris.wav',
     'transition.wav',
-    'top out.wav',
+    'top-out.wav',
     'success.wav',
     'pause.wav',
     'hum.wav',

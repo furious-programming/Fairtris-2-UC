@@ -36,7 +36,7 @@ type
 implementation
 
 uses
-  Windows,
+  LCLIntf,
   Fairtris.Logic,
   Fairtris.Constants;
 
@@ -58,7 +58,7 @@ begin
     SCENE_BSOD:        Address += 'BSoD';
   end;
 
-  ShellExecute(0, 'open', PChar(Address), nil, nil, SW_SHOWNORMAL);
+  OpenURL(Address);
   Terminate();
 end;
 

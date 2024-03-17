@@ -82,6 +82,7 @@ uses
 
 procedure TGame.CreateSystem();
 begin
+  SDL_SetHint(SDL_HINT_RENDER_DRIVER,                'opengl');
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,         'linear');
   SDL_SetHint(SDL_HINT_RENDER_VSYNC,                 '0');
   SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, '0');

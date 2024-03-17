@@ -98,12 +98,12 @@ begin
     SDL_GetWindowSize(AWindow, nil, @Height);
 
     if APoint^.Y < Round(Height * 0.2) then
-      Result := SDL_HITTEST_DRAGGABLE
-    else
     begin
-      Result := SDL_HITTEST_NORMAL;
+      Result := SDL_HITTEST_DRAGGABLE;
       Placement.ExposeWindow();
-    end;
+    end
+    else
+      Result := SDL_HITTEST_NORMAL;
   end;
 end;
 
@@ -325,7 +325,7 @@ begin
   if not FVideoEnabled then
   begin
     UpdateMonitor();
-    UpdateWindowBounds();
+    SDL_GetWindowPosition(Window.Window, @FWindowBounds.X, @FWindowBounds.Y);
   end
 end;
 

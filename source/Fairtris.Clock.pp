@@ -92,7 +92,6 @@ implementation
 
 uses
   SDL2,
-  Windows,
   Math,
   SysUtils,
   DateUtils,
@@ -131,15 +130,13 @@ end;
 
 function TClock.GetCounterFrequency(): Int64;
 begin
-  Result := 0;
-  QueryPerformanceFrequency(Result);
+  Result := SDL_GetPerformanceFrequency();
 end;
 
 
 function TClock.GetCounterValue(): Int64;
 begin
-  Result := 0;
-  QueryPerformanceCounter(Result);
+  Result := SDL_GetPerformanceCounter();
 end;
 
 

@@ -30,7 +30,9 @@ uses
 type
   TWindow = class(TObject)
   private
+    {$IFDEF WINDOWS}
     FHandle:   THandle;
+    {$ENDIF}
     FWindow:   PSDL_Window;
     FRenderer: PSDL_Renderer;
   private
@@ -39,9 +41,11 @@ type
     constructor Create();
     destructor  Destroy(); override;
   public
+    {$IFDEF WINDOWS}
+    property Handle:   THandle       read FHandle;
+    {$ENDIF}
     property Window:   PSDL_Window   read FWindow;
     property Renderer: PSDL_Renderer read FRenderer;
-    property Handle:   THandle       read FHandle;
     property Focused:  Boolean       read GetFocused;
   end;
 
@@ -71,8 +75,10 @@ end;
 
 
 constructor TWindow.Create();
+{$IFDEF WINDOWS}
 var
   SysInfo: TSDL_SysWMInfo;
+{$ENDIF}
 begin
   FWindow := SDL_CreateWindow('Fairtris 2', SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0, 0, SDL_WINDOW_BORDERLESS);
 
@@ -87,10 +93,12 @@ begin
   SDL_SetRenderDrawBlendMode(FRenderer, SDL_BLENDMODE_BLEND);
   SDL_Version(SysInfo.Version);
 
+  {$IFDEF WINDOWS}
   if SDL_GetWindowWMInfo(FWindow, @SysInfo) = SDL_TRUE then
     FHandle := SysInfo.Win.Window
   else
     raise SDLException.CreateFmt(ERROR_MESSAGE_SDL, [ERROR_MESSAGE[ERROR_SDL_CREATE_HANDLE], SDL_GetError()]);
+  {$ENDIF}
 end;
 
 

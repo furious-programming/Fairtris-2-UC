@@ -85,7 +85,7 @@ const
   );
 
 const
-  GROUND_PATH = 'grounds\';
+  GROUND_PATH = 'grounds' + DirectorySeparator;
 
 
 const
@@ -99,7 +99,7 @@ const
   );
 
 const
-  SPRITE_PATH = 'sprites\';
+  SPRITE_PATH = 'sprites' + DirectorySeparator;
 
 
 const
@@ -122,8 +122,8 @@ const
 
 const
   SOUND_PATH: array [SOUND_REGION_FIRST .. SOUND_REGION_LAST] of String = (
-    'sounds\ntsc\',
-    'sounds\pal\'
+    'sounds' + DirectorySeparator + 'ntsc' + DirectorySeparator,
+    'sounds' + DirectorySeparator + 'pal'  + DirectorySeparator
   );
 
 const
@@ -149,8 +149,8 @@ const
 
 const
   BEST_SCORES_PATH: array [REGION_FIRST .. REGION_LAST] of String = (
-    'scores\ntsc\',
-    'scores\pal\'
+    'scores' + DirectorySeparator + 'ntsc' + DirectorySeparator,
+    'scores' + DirectorySeparator + 'pal'  + DirectorySeparator
   );
 
 

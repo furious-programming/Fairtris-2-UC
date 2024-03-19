@@ -1110,7 +1110,7 @@ begin
   if not Memory.Keyboard.Mapping then
     if InputMenuRejected() then
     begin
-      Input.Keyboard.Device[SDL_SCANCODE_BACKSPACE].Validate();
+      Input.Keyboard.Device[SDL_SCANCODE_ESCAPE].Validate();
       Input.Controller.B.Validate();
 
       Memory.Keyboard.Changing := False;

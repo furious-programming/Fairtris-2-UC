@@ -89,7 +89,7 @@ type
     property Device:    TDevice read FDevice;
     property Connected: Boolean read GetConnected;
   public
-    property Switch  [AKeyID: Integer]: TSwitch read GetSwitch;
+    property Switch  [AKeyID: Integer]: TSwitch read GetSwitch; default;
     property ScanCode[AKeyID: Integer]: UInt8   read GetScanCode;
   public
     property Up:     TSwitch index TRIGGER_KEYBOARD_KEY_UP     read GetSwitch;

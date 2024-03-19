@@ -200,49 +200,49 @@ end;
 
 function TLogic.InputMenuSetPrev(): Boolean;
 begin
-  Result := Input.Fixed.Up.Pressed or Input.Controller.Up.Pressed;
+  Result := Input.Keyboard.Device[SDL_SCANCODE_UP].Pressed or Input.Controller.Up.Pressed;
 end;
 
 
 function TLogic.InputMenuSetNext(): Boolean;
 begin
-  Result := Input.Fixed.Down.Pressed or Input.Controller.Down.Pressed;
+  Result := Input.Keyboard.Device[SDL_SCANCODE_DOWN].Pressed or Input.Controller.Down.Pressed;
 end;
 
 
 function TLogic.InputMenuAccepted(): Boolean;
 begin
-  Result := Input.Fixed.Accept.Pressed or Input.Controller.Start.Pressed or Input.Controller.A.Pressed;
+  Result := Input.Keyboard.Device[SDL_SCANCODE_RETURN].Pressed or Input.Controller.Start.Pressed or Input.Controller.A.Pressed;
 end;
 
 
 function TLogic.InputMenuRejected(): Boolean;
 begin
-  Result := Input.Fixed.Cancel.Pressed or Input.Controller.B.Pressed;
+  Result := Input.Keyboard.Device[SDL_SCANCODE_ESCAPE].Pressed or Input.Controller.B.Pressed;
 end;
 
 
 function TLogic.InputOptionSetPrev(): Boolean;
 begin
-  Result := Input.Fixed.Left.Pressed or Input.Controller.Left.Pressed;
+  Result := Input.Keyboard.Device[SDL_SCANCODE_LEFT].Pressed or Input.Controller.Left.Pressed;
 end;
 
 
 function TLogic.InputOptionSetNext(): Boolean;
 begin
-  Result := Input.Fixed.Right.Pressed or Input.Controller.Right.Pressed;
+  Result := Input.Keyboard.Device[SDL_SCANCODE_RIGHT].Pressed or Input.Controller.Right.Pressed;
 end;
 
 
 function TLogic.InputOptionRollPrev(): Boolean;
 begin
-  Result := Input.Fixed.Left.Down or Input.Controller.Left.Down;
+  Result := Input.Keyboard.Device[SDL_SCANCODE_LEFT].Down or Input.Controller.Left.Down;
 end;
 
 
 function TLogic.InputOptionRollNext(): Boolean;
 begin
-  Result := Input.Fixed.Right.Down or Input.Controller.Right.Down;
+  Result := Input.Keyboard.Device[SDL_SCANCODE_RIGHT].Down or Input.Controller.Right.Down;
 end;
 
 
@@ -1082,7 +1082,7 @@ begin
   end;
 
   if Memory.Keyboard.KeyIndex < ITEM_KEYBOARD_KEY_LAST then
-    if Input.Fixed.Clear.Pressed then
+    if Input.Keyboard.Device[SDL_SCANCODE_BACKSPACE].Pressed then
       if Memory.Keyboard.ScanCodes[Memory.Keyboard.KeyIndex] <> KEYBOARD_SCANCODE_KEY_NOT_MAPPED then
       begin
         Memory.Keyboard.ScanCodes[Memory.Keyboard.KeyIndex] := KEYBOARD_SCANCODE_KEY_NOT_MAPPED;
@@ -1110,7 +1110,7 @@ begin
   if not Memory.Keyboard.Mapping then
     if InputMenuRejected() then
     begin
-      Input.Fixed.Cancel.Validate();
+      Input.Keyboard.Device[SDL_SCANCODE_BACKSPACE].Validate();
       Input.Controller.B.Validate();
 
       Memory.Keyboard.Changing := False;
@@ -1125,7 +1125,7 @@ var
 begin
   if not Memory.Keyboard.Mapping then Exit;
 
-  if Input.Fixed.Cancel.Pressed then
+  if Input.Keyboard.Device[SDL_SCANCODE_ESCAPE].Pressed then
   begin
     Memory.Keyboard.Mapping := False;
     Sounds.PlaySound(SOUND_DROP);
@@ -1240,7 +1240,7 @@ begin
   end;
 
   if Memory.Controller.ButtonIndex < ITEM_CONTROLLER_BUTTON_LAST then
-    if Input.Fixed.Clear.Pressed then
+    if Input.Keyboard.Device[SDL_SCANCODE_BACKSPACE].Pressed then
       if Memory.Controller.ScanCodes[Memory.Controller.ButtonIndex] <> CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED then
       begin
         Memory.Controller.ScanCodes[Memory.Controller.ButtonIndex] := CONTROLLER_SCANCODE_BUTTON_NOT_MAPPED;
@@ -1268,7 +1268,7 @@ begin
   if not Memory.Controller.Mapping then
     if InputMenuRejected() then
     begin
-      Input.Fixed.Cancel.Validate();
+      Input.Keyboard.Device[SDL_SCANCODE_ESCAPE].Validate();
       Input.Controller.B.Validate();
 
       Memory.Controller.Changing := False;
@@ -1283,7 +1283,7 @@ var
 begin
   if not Memory.Controller.Mapping then Exit;
 
-  if Input.Fixed.Cancel.Pressed then
+  if Input.Keyboard.Device[SDL_SCANCODE_ESCAPE].Pressed then
   begin
     Memory.Controller.Mapping := False;
     Sounds.PlaySound(SOUND_DROP);
@@ -1421,10 +1421,16 @@ begin
     if Memory.Keyboard.Mapping then
       Exit;
 
-  if Input.Fixed.Help.Pressed    then OpenHelp();
-  if Input.Fixed.Video.Pressed   then Placement.ToggleVideoMode();
-  if Input.Fixed.Enlarge.Pressed then Placement.EnlargeWindow();
-  if Input.Fixed.Reduce.Pressed  then Placement.ReduceWindow();
+  if Input.Keyboard.Device[SDL_SCANCODE_F1].Pressed     then OpenHelp();
+  if Input.Keyboard.Device[SDL_SCANCODE_F11].Pressed    then Placement.ToggleVideoMode();
+  if Input.Keyboard.Device[SDL_SCANCODE_EQUALS].Pressed then Placement.EnlargeWindow();
+  if Input.Keyboard.Device[SDL_SCANCODE_MINUS].Pressed  then Placement.ReduceWindow();
+
+  if Input.Keyboard.Device[SDL_SCANCODE_LALT].Down and Input.Keyboard.Device[SDL_SCANCODE_RETURN].Pressed then
+  begin
+    Placement.ToggleVideoMode();
+    Input.Keyboard.Device[SDL_SCANCODE_RETURN].Validate();
+  end;
 end;
 
 

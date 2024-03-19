@@ -81,6 +81,7 @@ var
 implementation
 
 uses
+  SDL2,
   Math,
   Fairtris.Clock,
   Fairtris.Input,
@@ -661,7 +662,7 @@ begin
   if Memory.Game.TopOutTimer > 0 then
     Memory.Game.TopOutTimer -= 1
   else
-    if Input.Device.Start.Pressed or Input.Fixed.Accept.Pressed or Input.Fixed.Cancel.Pressed then
+    if Input.Device.Start.Pressed or Input.Keyboard.Device[SDL_SCANCODE_RETURN].Pressed or Input.Keyboard.Device[SDL_SCANCODE_ESCAPE].Pressed then
     begin
       Memory.Game.Ended := True;
       Sounds.PlaySound(SOUND_START);

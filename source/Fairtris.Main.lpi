@@ -25,6 +25,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="2"/>
+      <MinorVersionNr Value="1"/>
       <RevisionNr Value="1"/>
       <StringTable CompanyName="furious programming" FileDescription="Fairtris 2: The Ultimate Challenge" InternalName="Fairtris2" LegalCopyright="Copyleft 2024 furious programming. All rights reversed." OriginalFilename="fairtris2.exe" ProductName="Fairtris 2" ProductVersion="2"/>
     </VersionInfo>
@@ -82,7 +83,7 @@
         <PackageName Value="LCLBase"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="28">
+    <Units Count="27">
       <Unit0>
         <Filename Value="Fairtris.Main.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -188,13 +189,9 @@
         <IsPartOfProject Value="True"/>
       </Unit25>
       <Unit26>
-        <Filename Value="Fairtris.Navigation.pp"/>
-        <IsPartOfProject Value="True"/>
-      </Unit26>
-      <Unit27>
         <Filename Value="Fairtris.Help.pp"/>
         <IsPartOfProject Value="True"/>
-      </Unit27>
+      </Unit26>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

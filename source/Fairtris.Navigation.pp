@@ -44,15 +44,15 @@ type
     procedure Validate();
     procedure Invalidate();
   public
-    property Up:     TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_UP       read GetKey;
-    property Down:   TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_DOWN     read GetKey;
-    property Left:   TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_LEFT     read GetKey;
-    property Right:  TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_RIGHT    read GetKey;
-    property Accept: TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_ACCEPT   read GetKey;
-    property Cancel: TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_CANCEL   read GetKey;
-    property Clear:  TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_CLEAR    read GetKey;
-    property Help:   TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_HELP     read GetKey;
-    property Video:  TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_VIDEO    read GetKey;
+    property Up:      TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_UP      read GetKey;
+    property Down:    TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_DOWN    read GetKey;
+    property Left:    TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_LEFT    read GetKey;
+    property Right:   TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_RIGHT   read GetKey;
+    property Accept:  TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_ACCEPT  read GetKey;
+    property Cancel:  TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_CANCEL  read GetKey;
+    property Clear:   TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_CLEAR   read GetKey;
+    property Help:    TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_HELP    read GetKey;
+    property Video:   TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_VIDEO   read GetKey;
     property Enlarge: TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_ENLARGE read GetKey;
     property Reduce:  TSwitch index TRIGGER_KEYBOARD_KEY_FIXED_REDUCE  read GetKey;
   end;

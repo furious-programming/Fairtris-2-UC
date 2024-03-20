@@ -48,7 +48,6 @@ type
     procedure UpdateWindowBoundsMouse();
     procedure UpdateWindowClient();
     procedure UpdateWindowCursor();
-    procedure UpdateWindowHitTest();
     procedure UpdateWindowPlacement();
   private
     procedure UpdateMonitor();
@@ -91,13 +90,13 @@ function WindowHitTest(AWindow: PSDL_Window; const APoint: PSDL_Point; AData: Po
 var
   Height: Integer;
 begin
-  if Placement.WindowSize = SIZE_FULLSCREEN then
+  if Placement.VideoEnabled or (Placement.WindowSize = SIZE_FULLSCREEN) then
     Result := SDL_HITTEST_NORMAL
   else
   begin
     SDL_GetWindowSize(AWindow, nil, @Height);
 
-    if APoint^.Y < Round(Height * 0.2) then
+    if APoint^.Y < Height div 5 then
     begin
       Result := SDL_HITTEST_DRAGGABLE;
       Placement.ExposeWindow();
@@ -110,6 +109,7 @@ end;
 
 constructor TPlacement.Create();
 begin
+  SDL_SetWindowHitTest(Window.Window, @WindowHitTest, nil);
   SDL_GetDisplayBounds(MONITOR_DEFAULT, @FVideoBounds);
 
   FMonitorIndex := MONITOR_DEFAULT;
@@ -231,15 +231,6 @@ begin
 end;
 
 
-procedure TPlacement.UpdateWindowHitTest();
-begin
-  if FVideoEnabled or (FWindowSizeID = SIZE_FULLSCREEN) then
-    SDL_SetWindowHitTest(Window.Window, nil, nil)
-  else
-    SDL_SetWindowHitTest(Window.Window, @WindowHitTest, nil);
-end;
-
-
 procedure TPlacement.UpdateWindowPlacement();
 begin
   SDL_SetWindowSize    (Window.Window, FWindowBounds.W, FWindowBounds.H);
@@ -259,7 +250,6 @@ begin
   UpdateWindowBounds();
   UpdateWindowClient();
   UpdateWindowCursor();
-  UpdateWindowHitTest();
   UpdateWindowPlacement();
 end;
 
@@ -280,7 +270,6 @@ begin
 
     UpdateWindowClient();
     UpdateWindowCursor();
-    UpdateWindowHitTest();
   end
   else
   begin

@@ -988,6 +988,7 @@ const
     'Unable to create SDL window',
     'Unable to create SDL window renderer',
     'Unable to get the SDL version and thus the window handle',
+    'Unable to register the hit-test callback for the SDL window.',
     'Unable to create back buffer texture',
     'Unable to create BSoD buffer texture',
     'Unable to create quit buffer texture',

@@ -61,8 +61,30 @@ implementation
 
 uses
   Fairtris.Classes,
+  Fairtris.Placement,
   Fairtris.Arrays,
   Fairtris.Constants;
+
+
+function WindowHitTest(AWindow: PSDL_Window; const APoint: PSDL_Point; AData: Pointer): TSDL_HitTestResult; cdecl;
+var
+  Height: Integer;
+begin
+  if Placement.VideoEnabled or (Placement.WindowSize = SIZE_FULLSCREEN) then
+    Result := SDL_HITTEST_NORMAL
+  else
+  begin
+    SDL_GetWindowSize(AWindow, nil, @Height);
+
+    if APoint^.Y < Height div 4 then
+    begin
+      Result := SDL_HITTEST_DRAGGABLE;
+      Placement.ExposeWindow();
+    end
+    else
+      Result := SDL_HITTEST_NORMAL;
+  end;
+end;
 
 
 function GetWindowInstance(): PSDL_Window;
@@ -84,6 +106,9 @@ begin
 
   if FWindow = nil then
     raise SDLException.CreateFmt(ERROR_MESSAGE_SDL, [ERROR_MESSAGE[ERROR_SDL_CREATE_WINDOW], SDL_GetError()]);
+
+  if SDL_SetWindowHitTest(FWindow, @WindowHitTest, nil) <> 0 then
+    raise SDLException.CreateFmt(ERROR_MESSAGE_SDL, [ERROR_MESSAGE[ERROR_SDL_CREATE_HITTEST], SDL_GetError()]);
 
   FRenderer := SDL_CreateRenderer(FWindow, -1, SDL_RENDERER_ACCELERATED or SDL_RENDERER_TARGETTEXTURE);
 

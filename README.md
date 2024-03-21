@@ -5,7 +5,7 @@ Copyleft (ɔ) furious programming 2024. All rights reversed.
 
 </br>
 
-PC clone of the official classic **[Nintendo Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game))** for the **[NES](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** console and the successor to the **[Fairtris](https://github.com/furious-programming/Fairtris)** video game, intended mainly for modern desktop platforms. Ready to take on the ultimate challenge? **[Download the game](https://github.com/furious-programming/Fairtris-2-UC/releases/tag/v.2.0.1)** and try yourself!
+PC clone of the official classic **[Nintendo Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game))** for the **[NES](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** console and the successor to the **[Fairtris](https://github.com/furious-programming/Fairtris)** video game, intended mainly for modern desktop platforms. Ready to take on the ultimate challenge? **[Download the game](https://github.com/furious-programming/Fairtris-2-UC/releases/tag/v2.1.1)** and try yourself!
 
 </br></br>
 

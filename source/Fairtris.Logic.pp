@@ -212,13 +212,13 @@ end;
 
 function TLogic.InputMenuAccepted(): Boolean;
 begin
-  Result := Input.Keyboard.Device[SDL_SCANCODE_RETURN].Pressed or Input.Controller.Start.Pressed or Input.Controller.A.Pressed;
+  Result := Input.Keyboard.Device[SDL_SCANCODE_RETURN].Pressed or Input.Controller.Start.Pressed or Input.Controller.B.Pressed;
 end;
 
 
 function TLogic.InputMenuRejected(): Boolean;
 begin
-  Result := Input.Keyboard.Device[SDL_SCANCODE_ESCAPE].Pressed or Input.Controller.B.Pressed;
+  Result := Input.Keyboard.Device[SDL_SCANCODE_ESCAPE].Pressed or Input.Controller.A.Pressed;
 end;
 
 
@@ -1111,7 +1111,7 @@ begin
     if InputMenuRejected() then
     begin
       Input.Keyboard.Device[SDL_SCANCODE_ESCAPE].Validate();
-      Input.Controller.B.Validate();
+      Input.Controller.A.Validate();
 
       Memory.Keyboard.Changing := False;
       Sounds.PlaySound(SOUND_DROP);
@@ -1269,7 +1269,7 @@ begin
     if InputMenuRejected() then
     begin
       Input.Keyboard.Device[SDL_SCANCODE_ESCAPE].Validate();
-      Input.Controller.B.Validate();
+      Input.Controller.A.Validate();
 
       Memory.Controller.Changing := False;
       Sounds.PlaySound(SOUND_DROP);

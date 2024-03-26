@@ -181,7 +181,7 @@ uses
 
 constructor TLogic.Create();
 begin
-  FScene := TScene.Create({$IFDEF MODE_DEBUG} SCENE_MENU {$ELSE} SCENE_LEGAL {$ENDIF});
+  FScene := TScene.Create(SCENE_LEGAL);
 end;
 
 
@@ -477,7 +477,7 @@ procedure TLogic.UpdateLegalScene();
 begin
   FScene.Validate();
 
-  if Memory.Legal.Timer = DURATION_HANG_LEGAL * Clock.FrameRateLimit then
+  if InputMenuAccepted() or InputMenuRejected() or (Memory.Legal.Timer = DURATION_HANG_LEGAL * Clock.FrameRateLimit) then
     FScene.Current := SCENE_MENU;
 end;
 

@@ -37,6 +37,8 @@ The first **Fairtris** was mainly an experiment to create the classic **[Tetris�
 
 The new version of **[Fairtris](https://github.com/furious-programming/Fairtris-2-UC)** has one, richer graphics design and the game image is rendered in `16:10` aspect ratio, which is the standard for modern LCD displays. Instead of flat characters, piece bricks and other game objects, the new version uses more colors and subtle gradients, as well as more animated elements, including the main background for all game scenes. Two-color counters for various game counters were also used, with dark gray placeholders resembling electronic displays. Now it feels more like a **[SNES](https://en.wikipedia.org/wiki/Super_Nintendo_Entertainment_System)** game instead of an **[NES](https://en.wikipedia.org/wiki/Nintendo_Entertainment_System)** game.
 
+![game.png](https://github.com/furious-programming/Fairtris-2-UC/blob/master/wiki/game.png)
+
 ## Unified control mechanics
 
 The controls have been unified, only the best mechanics have been selected, ensuring the best responsiveness and intuitive control, and adapting them to the new game goals. Instead of supporting the classic control mechanics, it is now possible to set the speed of automatic shifting of pieces, called **[DAS](https://www.youtube.com/watch?v=JeccfAI_ujo)**. By default, the speed is consistent with its predecessor, but more experienced players can increase it to be able to stack higher and wait longer for the longbar.
@@ -46,6 +48,8 @@ The controls have been unified, only the best mechanics have been selected, ensu
 In the first **Fairtris**, just like in the classic **[Tetris®](https://en.wikipedia.org/wiki/Tetris_(NES_video_game))**, the goal was to collect as many points as possible and reach level `29`, at which most of the time the game ended (killscreen). **[Fairtris 2](https://github.com/furious-programming/Fairtris-2-UC)** does not have any killscreen limitations. The maximum falling speed of the pieces has been set to that of level `19`, which ensures an infinitely long gameplay. However, this still does not change the fact that playing at this speed is difficult and requires a lot of experience, so the bar is still set high.
 
 To diversify the gameplay, support for glitched colors of pieces and stack bricks has been added, consistent with that existing in **Nintendo Tetris®**. These glitched colors, as in the original, are used at levels `138` to `255`, which requires clearing over `1,300` lines. In the original, the pieces in some levels were black and therefore almost invisible, which made playing very difficult. Since the new version of **Fairtris** uses gentle gradients, also for pieces and the content of the stack, the colors can be consistent with the predecessor while not being unfair.
+
+![glitch.png](https://github.com/furious-programming/Fairtris-2-UC/blob/master/wiki/glitch.png)
 
 The ultimate challenge is to pass level `255`, which in **Nintendo Tetris®** caused the level counter to overflow and return to level `0`. **Fairtris 2** has a special handling of such a situation and a reward for the player for achieving such an outstanding achievement. Beating level `255` results in... it's a secret — It's up to you to discover what it is!
 
